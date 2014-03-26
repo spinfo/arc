@@ -1,6 +1,17 @@
-*.class
+# arc .gitignore file #
 
-# Package Files #
+*.class
 *.jar
 *.war
 *.ear
+
+logs/
+target/
+exports/
+bin/
+
+.cache
+.DS_Store
+.svn
+.gwt/
+.metadata/
