@@ -1,0 +1,221 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>gwt</groupId>
+	<artifactId>arc</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<!-- GENERAL PROPERTIES -->
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<arc.project.build>../arc.gwt/target</arc.project.build>
+		<arc.project.name>arc-${project.version}</arc.project.name>
+		<gwt.version>2.6.0</gwt.version>
+		<cglib.version>3.1</cglib.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<spring.version>3.1.3.RELEASE</spring.version>
+		<!-- JETTY VERSIONS http://mvnrepository.com/artifact/org.eclipse.jetty.aggregate/jetty-all -->
+		<jetty.version>8.1.9.v20130131</jetty.version>
+		<jetty.default.port>8080</jetty.default.port>
+	</properties>
+
+	<dependencies>
+		<!-- SERVLET -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<!-- SPRING -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+			<optional>false</optional>
+		</dependency>
+		<!-- GWT -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<!-- GWT-SERVICE-SPRING-BEAN-MAPPER -->
+		<dependency>
+			<groupId>net.sf.gwt-widget</groupId>
+			<artifactId>gwt-sl</artifactId>
+			<version>1.3-RC1</version>
+		</dependency>
+		<!-- GWT-BOOTSTRAP -->
+		<dependency>
+			<groupId>com.github.gwtbootstrap</groupId>
+			<artifactId>gwt-bootstrap</artifactId>
+			<version>2.2.1.0</version>
+		</dependency>
+		<!-- CODE GENERATION LIBRARY -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>${cglib.version}</version>
+		</dependency>
+		<!-- LOGGING -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<!-- FILE UPLOAD -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.0.Final</version>
+		</dependency>
+		<dependency>
+			<!-- Workaround to support Java 7 -->
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>1.7.0</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/../lib/tools.jar</systemPath>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- JETTY -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.version}</version>
+				<configuration>
+					<contextXml>jetty-context.xml</contextXml>
+					<webAppConfig>
+						<baseResource implementation="org.eclipse.jetty.util.resource.ResourceCollection">
+							<resourcesAsCSV>${arc.project.build}/${arc.project.name}</resourcesAsCSV>
+						</baseResource>
+						<descriptor>${arc.project.build}/${arc.project.name}/WEB-INF/web.xml</descriptor>
+					</webAppConfig>
+					<classesDirectory>${arc.project.build}/${arc.project.name}/WEB-INF/classes</classesDirectory>
+					<systemProperties>
+						<systemProperty>
+							<name>jetty.port</name>
+							<value>${jetty.default.port}</value>
+						</systemProperty>
+					</systemProperties>
+					<stopPort>9991</stopPort>
+					<stopKey>stop</stopKey>
+				</configuration>
+			</plugin>
+			<!-- GWT -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt.version}</version>
+				<configuration>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<compileReport>true</compileReport>
+					<draftCompile>${gwt.draft-compile}</draftCompile>
+					<style>${gwt.style}</style>
+					<optimizationLevel>${gwt.optimizationlevel}</optimizationLevel>
+					<runTarget>index.jsp</runTarget>
+					<localWorkers>4</localWorkers>
+					<extraJvmArgs>-Xmx1G</extraJvmArgs>
+					<enableClosureCompiler>${gwt.enableclosurecompiler}</enableClosureCompiler>
+					<compileSourcesArtifacts>
+						<!-- <compileSourcesArtifact>de.djmiha.sample:PROJECTNAME1</compileSourcesArtifact> -->
+						<!-- <compileSourcesArtifact>de.djmiha.sample:PROJECTNAME2</compileSourcesArtifact> -->
+					</compileSourcesArtifacts>
+					<modules>
+						<module>de.uni_koeln.spinfo.arc.editor.Editor${gwt.module.suffix}</module>
+					</modules>
+				</configuration>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<!-- GWT-DEVELOPMENT-MODE -->
+		<profile>
+			<id>gwt-dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<gwt.draft-compile>true</gwt.draft-compile>
+				<!-- One of obfuscated, pretty, and detailed -->
+				<gwt.style>pretty</gwt.style>
+				<!-- Value between 1 and 9 -->
+				<gwt.optimizationlevel>1</gwt.optimizationlevel>
+				<gwt.module.suffix>Dev</gwt.module.suffix>
+			</properties>
+		</profile>
+		<!-- GWT-PRODUCTION-MODE -->
+		<profile>
+			<id>gwt-prod</id>
+			<properties>
+				<gwt.draft-compile>false</gwt.draft-compile>
+				<gwt.style>obfuscated</gwt.style>
+				<gwt.optimizationlevel>9</gwt.optimizationlevel>
+				<gwt.module.suffix></gwt.module.suffix>
+			</properties>
+		</profile>
+	</profiles>
+
+
+</project>

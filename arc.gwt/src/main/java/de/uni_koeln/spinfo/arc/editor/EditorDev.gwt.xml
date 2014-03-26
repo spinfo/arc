@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='de.uni_koeln.spinfo.arc.editor'>
+
+	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard' />
+	<inherits name="com.github.gwtbootstrap.Bootstrap" />
+
+	<entry-point class='de.uni_koeln.spinfo.arc.editor.client.Editor' />
+
+	<source path='client' />
+	<source path='shared' />
+
+	<!-- Only build for Chrome -->
+	<set-property name="user.agent" value="safari" />
+
+	<!-- Inherit logging module -->
+	<inherits name="com.google.gwt.logging.Logging" />
+
+	<!-- To change the default logLevel -->
+	<set-property name="gwt.logging.logLevel" value="INFO" />
+
+	<!-- To disable the Pop-up Handler -->
+	<set-property name="gwt.logging.popupHandler" value="ENABLED" />
+
+	<!-- To enable server-side logging -->
+	<set-property name="gwt.logging.simpleRemoteHandler" value="ENABLED" />
+
+</module>
