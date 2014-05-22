@@ -13,7 +13,8 @@
 				<!-- Key as defined in the service interface -->
 				<!-- @RemoteServiceRelativePath(prefix/KEY) -->
 				<!-- Value as defined in the service implementation -->
-				<entry key="/welcome" value-ref="welcomeService" />
+				<!-- <entry key="/welcome" value-ref="welcomeService" /> -->
+				
 			</map>
 		</property>
 	</bean>

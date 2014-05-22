@@ -1,0 +1,120 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:style>
+	.title {
+		text-align: center;
+		padding: 10px;
+		margin-left: auto;
+		margin-right: auto;
+		background-color: silver;
+		font-size: 50px;
+		font-weight: 900;
+	}
+	
+	.infoBlock {
+		
+	}
+	
+	.info {
+		text-align: left;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 10px;
+		background-color: #E0F5FF;
+		font-size: 20px;
+		font-weight: normal;
+	}
+	
+	.subInfo {
+		text-align: left;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 15px; <!--
+		background-color: #EBF5FF; -->
+		font-size: 20px;
+		font-weight: normal;
+	}
+	</ui:style>
+	<g:VerticalPanel width="100%" height="100%">
+		<g:cell verticalAlignment="ALIGN_MIDDLE" addStyleNames="{style.infoBlock}">
+			<g:DecoratorPanel>
+				<g:VerticalPanel ui:field="headerPanel">
+					<g:Label ui:field="headerText" addStyleNames="{style.title}">
+						choose a
+						working unit
+					</g:Label>
+					<g:VerticalPanel addStyleNames="{style.info}">
+						<g:Label ui:field="contentText" addStyleNames="{style.info}">
+							Hello dear
+							user! We kindly ask you to
+							draw attention to the
+							working unit
+							browser left hand.
+							Please select a unit which suits your
+							linguistic knowledge and try..
+						</g:Label>
+						<g:Label addStyleNames="{style.subInfo}">
+							a) .. to locate mispelled results
+							of OCR by adding a
+							Form-Modification
+						</g:Label>
+						<g:Label addStyleNames="{style.subInfo}">
+							b) .. to annotate/correct wrong automated tagging or tag words
+							whichhaven't been tagged yet respectively
+						</g:Label>
+							<g:Label addStyleNames="{style.subInfo}">
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+								or other things like imagine some text which is good for testing
+								if this window scrolls
+							</g:Label>
+					</g:VerticalPanel>
+				</g:VerticalPanel>
+			</g:DecoratorPanel>
+		</g:cell>
+	</g:VerticalPanel>
+</ui:UiBinder> 

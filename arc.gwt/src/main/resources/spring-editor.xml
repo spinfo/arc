@@ -16,7 +16,7 @@
 
 	<context:annotation-config />
 
-	<context:component-scan base-package="de.uni_koeln.spinfo.arc" />
+	<context:component-scan base-package="de.spinfo.arc.editor" />
 
 	<import resource="spring-mvc.xml" />
 	

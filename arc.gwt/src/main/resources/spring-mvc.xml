@@ -18,10 +18,12 @@
 	<mvc:annotation-driven />
 
 	<mvc:resources mapping="/assets/**" location="/assets/" />
+	<mvc:resources mapping="/gwtcomp-icons/**" location="/gwtcomp-icons/" />
+	<mvc:resources mapping="/arc/editor/**" location="/arc/editor/" />
 	<mvc:resources mapping="/favicon.ico" location="/" />
 	<mvc:resources mapping="/*.html" location="/" />
-	<mvc:resources mapping="/de.uni_koeln.spinfo.arc.editor/**"
-		location="/de.uni_koeln.spinfo.arc.editor/" />
+	<mvc:resources mapping="/de.spinfo.arc.editor/**"
+		location="/de.spinfo.arc.editor/" />
 	
 	
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
