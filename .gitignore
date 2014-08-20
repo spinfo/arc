@@ -15,3 +15,9 @@ bin/
 .svn
 .gwt/
 .metadata/
+
+
+# Intellij
+.idea/
+*.iml
+*.iws
