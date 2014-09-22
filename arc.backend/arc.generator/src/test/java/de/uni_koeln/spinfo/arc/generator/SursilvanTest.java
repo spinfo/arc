@@ -32,7 +32,7 @@ public class SursilvanTest {
      *
      * @throws UnknownHostException
      */
-    @Test
+    @Test 
     public void testVFGenerator() throws UnknownHostException {
 
         Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
