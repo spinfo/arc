@@ -14,426 +14,416 @@ import java.util.*;
 
 public class ARCMapperTest {
 
-    static ARCMapper mapper;
-    static MongoClient mongoClient;
-    static DB db;
+	static ARCMapper mapper;
+	static MongoClient mongoClient;
+	static DB db;
 
-    @BeforeClass
-    public static void initialize() throws UnknownHostException {
-        mapper = new ARCMapper();
-        mongoClient = new MongoClient("localhost", 27017);
-        db = mongoClient.getDB("arc");
+	@BeforeClass
+	public static void initialize() throws UnknownHostException {
+		mapper = new ARCMapper();
+		mongoClient = new MongoClient("localhost", 27017);
+		db = mongoClient.getDB("arc");
 
-    }
+	}
 
+	@Test
+	public void testTagIdiomWithChapterInfo() {
 
-    @Test
-    public void testTagIdiomWithChapterInfo() {
+		DBCollection chapter = db.getCollection("chapter");
+		DBCollection language = db.getCollection("language");
 
+		Map<Long, Long> intervals = new HashMap<>();
 
-        DBCollection chapter = db.getCollection("chapter");
-        DBCollection language = db.getCollection("language");
+		intervals.put(61L, 0L);
 
-        Map<Long, Long> intervals = new HashMap<>();
+		mapper.tagIdiomWithChapterInfo(chapter, language, intervals,
+				"sursilvan");
 
-        intervals.put(61L, 0L);
+	}
 
-        mapper.tagIdiomWithChapterInfo(chapter, language, intervals, "sursilvan");
+	@Test
+	public void testGetlastModifications() throws IOException {
+		DBCollection arcCollection = db.getCollection("arc_sursilvan");
 
-    }
+		Map<ObjectId, String> mods = mapper.getlastModifications(arcCollection,
+				"sursilvan");
 
+		List<String> listmods = new LinkedList<>();
 
-    @Test
-    public void testGetlastModifications() throws IOException {
-        DBCollection arcCollection = db.getCollection("arc_sursilvan");
+		for (String s : mods.values()) {
 
-        Map<ObjectId, String> mods = mapper.getlastModifications(arcCollection,
-                "sursilvan");
+			listmods.add(s);
 
-        List<String> listmods = new LinkedList<>();
+		}
 
-        for (String s : mods.values()) {
+		DictUtils.printList(listmods, "/Users/franciscomondaca/Desktop/",
+				"sursilvan_tokens");
 
-            listmods.add(s);
+	}
 
-        }
+	@Ignore
+	@Test
+	public void testAddPos() throws UnknownHostException {
 
-        DictUtils.printList(listmods, "/Users/franciscomondaca/Desktop/",
-                "sursilvan_tokens");
+		Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
 
-    }
+		DBCollection arc_collection = db.getCollection("sur_test");
+		DBCollection nvs_collection = db.getCollection("nvs_antlr4");
 
-    @Ignore
-    @Test
-    public void testAddPos() throws UnknownHostException {
+		Map<String, TreeSet<String>> vf = vfg.generateVollForms(nvs_collection);
 
-        Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
+		mapper.addPOS(arc_collection, "sursilvan", vf);
 
-        DBCollection arc_collection = db.getCollection("sur_test");
-        DBCollection nvs_collection = db.getCollection("nvs_antlr4");
+	}
 
-        Map<String, TreeSet<String>> vf = vfg.generateVollForms(nvs_collection);
+	@Ignore
+	@Test
+	public void testAddMetadata() throws UnknownHostException {
 
-        mapper.addPOS(arc_collection, "sursilvan", vf);
+		DBCollection metadataCollection = db.getCollection("meta");
+		DBCollection arcCollection = db.getCollection("arc_copy");
 
-    }
+		mapper.addMetadata(metadataCollection, arcCollection);
 
-    @Ignore
-    @Test
-    public void testAddMetadata() throws UnknownHostException {
+	}
 
-        DBCollection metadataCollection = db.getCollection("meta");
-        DBCollection arcCollection = db.getCollection("arc_copy");
+	@Ignore
+	@Test
+	public void testMatchPOS() throws IOException {
 
-        mapper.addMetadata(metadataCollection, arcCollection);
+		DBCollection arc_collection = db.getCollection("surtest_metadata_copy");
+		DBCollection nvs_collection = db.getCollection("nvs_antlr4");
 
-    }
+		// Generate vollformen
+		Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
 
-    @Ignore
-    @Test
-    public void testMatchPOS() throws IOException {
+		Map<String, TreeSet<String>> vf = vfg.generateVollForms(nvs_collection);
 
-        DBCollection arc_collection = db.getCollection("surtest_metadata_copy");
-        DBCollection nvs_collection = db.getCollection("nvs_antlr4");
+		// Get last modifications
+		Map<ObjectId, String> lastMods = mapper.getlastModifications(
+				arc_collection, "");
+		// Get the POS associated with the entry
+		Map<ObjectId, TreeSet<String>> matchPOS = mapper.matchPOS(lastMods, vf);
 
-        // Generate vollformen
-        Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
+		// to TXT
+		DictUtils.printMap(matchPOS, "/Users/franciscomondaca/Desktop/",
+				"matchPOS_NVS_VFGenerator");
 
-        Map<String, TreeSet<String>> vf = vfg.generateVollForms(nvs_collection);
+	}
 
-        // Get last modifications
-        Map<ObjectId, String> lastMods = mapper.getlastModifications(
-                arc_collection, "");
-        // Get the POS associated with the entry
-        Map<ObjectId, TreeSet<String>> matchPOS = mapper.matchPOS(lastMods, vf);
+	@Ignore
+	@Test
+	public void testInsertPOS() throws IOException {
 
-        // to TXT
-        DictUtils.printMap(matchPOS, "/Users/franciscomondaca/Desktop/",
-                "matchPOS_NVS_VFGenerator");
+		DBCollection collection = db.getCollection("surtest_metadata_copy");
 
-    }
+		Map<ObjectId, TreeSet<String>> posMap = mapper
+				.getPOSfromTXT("/Users/franciscomondaca/Desktop/matchPOS.txt");
 
-    @Ignore
-    @Test
-    public void testInsertPOS() throws IOException {
+		// insert POS_Info to the collection
+		mapper.insertPOS(collection, posMap);
 
-        DBCollection collection = db.getCollection("surtest_metadata_copy");
+	}
 
-        Map<ObjectId, TreeSet<String>> posMap = mapper
-                .getPOSfromTXT("/Users/franciscomondaca/Desktop/matchPOS.txt");
+	@Ignore
+	@Test
+	public void testGetEntriesWithoutPOS() throws IOException {
+
+		DBCollection collection = db.getCollection("surtest_metadata_copy");
+
+		Map<ObjectId, String> entriesWithoutPOS = mapper
+				.getEntriesWithoutPOS(collection);
+		DictUtils.printMap(entriesWithoutPOS,
+				"/Users/franciscomondaca/Desktop/", "entriesWithoutPOS");
+
+	}
+
+	@Ignore
+	@Test
+	public void countGenForms() throws IOException {
+
+		DBCollection arc_collection = db.getCollection("surtest_metadata_copy");
+		DBCollection nvs_collection = db.getCollection("nvs_antlr4");
 
-        // insert POS_Info to the collection
-        mapper.insertPOS(collection, posMap);
+		Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
+		Map<String, TreeSet<String>> vf = vfg.generateVollForms(nvs_collection);
+		System.out.println(vf.size());
 
-    }
+		DictUtils.printMap(vf, "/Users/franciscomondaca/Desktop/", "vfg");
 
-    @Ignore
-    @Test
-    public void testGetEntriesWithoutPOS() throws IOException {
+	}
 
-        DBCollection collection = db.getCollection("surtest_metadata_copy");
+	@Ignore
+	@Test
+	public void countPOSFromAntlr4() throws IOException {
 
-        Map<ObjectId, String> entriesWithoutPOS = mapper
-                .getEntriesWithoutPOS(collection);
-        DictUtils.printMap(entriesWithoutPOS,
-                "/Users/franciscomondaca/Desktop/", "entriesWithoutPOS");
+		DBCollection collection = db.getCollection("nvs_antlr4");
 
-    }
-
-    @Ignore
-    @Test
-    public void countGenForms() throws IOException {
-
-        DBCollection arc_collection = db.getCollection("surtest_metadata_copy");
-        DBCollection nvs_collection = db.getCollection("nvs_antlr4");
+		Map<String, Integer> countPOS = DictUtils.countPOS(collection,
+				"nvs_pos");
 
-        Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
-        Map<String, TreeSet<String>> vf = vfg.generateVollForms(nvs_collection);
-        System.out.println(vf.size());
+		DictUtils.printMap(countPOS, "/Users/franciscomondaca/Desktop/",
+				"antlr4_pos");
 
-        DictUtils.printMap(vf, "/Users/franciscomondaca/Desktop/", "vfg");
+	}
 
-    }
+	@Test
+	public void testTagIdiom() {
 
-    @Ignore
-    @Test
-    public void countPOSFromAntlr4() throws IOException {
+		// arc_sursilvan
+		DBCollection arcCollection = db.getCollection("arc_sursilvan_copy");
 
-        DBCollection collection = db.getCollection("nvs_antlr4");
+		Map<String, Map<Integer, Integer>> sursilvan = new HashMap<>();
 
-        Map<String, Integer> countPOS = DictUtils.countPOS(collection,
-                "nvs_pos");
+		Map<Integer, Integer> sursilvan_I = new HashMap<>();
 
-        DictUtils.printMap(countPOS, "/Users/franciscomondaca/Desktop/",
-                "antlr4_pos");
+		sursilvan_I.put(1, 278);
+		sursilvan_I.put(285, 298);
+		sursilvan_I.put(302, 306);
+		sursilvan_I.put(310, 329);
+		sursilvan_I.put(346, 348);
+		sursilvan_I.put(353, 370);
+		sursilvan_I.put(373, 514);
+		sursilvan_I.put(518, 598);
+		sursilvan_I.put(606, 774);
+		sursilvan_I.put(784, 797);
+		sursilvan_I.put(807, 821);
 
-    }
+		Map<Integer, Integer> sursilvan_II = new HashMap<Integer, Integer>();
+		sursilvan_II.put(1, 278);
+		sursilvan_II.put(283, 344);
+		sursilvan_II.put(346, 349);
+		sursilvan_II.put(353, 354);
+		sursilvan_II.put(361, 366);
+		sursilvan_II.put(379, 385);
+		sursilvan_II.put(388, 392);
+		sursilvan_II.put(399, 473);
+		sursilvan_II.put(474, 487);
+		sursilvan_II.put(489, 509);
+		// Aufpassen -auch sutselvisch (512-513)-
+		sursilvan_II.put(512, 526);
+		sursilvan_II.put(568, 569);
+		sursilvan_II.put(573, 578);
+		sursilvan_II.put(585, 592);
+		sursilvan_II.put(594, 617);
+		sursilvan_II.put(625, 696);
 
+		// Lieder
+		Map<Integer, Integer> sursilvan_III = new HashMap<Integer, Integer>();
+		sursilvan_III.put(1, 30);
 
-    @Test
-    public void testTagIdiom() {
+		Map<Integer, Integer> sursilvan_IV = new HashMap<Integer, Integer>();
+		sursilvan_IV.put(17, 426);
+		sursilvan_IV.put(426, 736);
+		sursilvan_IV.put(974, 1019);
 
-        //arc_sursilvan
-        DBCollection arcCollection = db.getCollection("arc_sursilvan_copy");
+		Map<Integer, Integer> sursilvan_XII = new HashMap<Integer, Integer>();
+		sursilvan_XII.put(1, 327);
 
+		Map<Integer, Integer> sursilvan_XIII = new HashMap<Integer, Integer>();
+		sursilvan_XIII.put(18, 111);
+		sursilvan_XIII.put(114, 114);
+		sursilvan_XIII.put(123, 148);
+		sursilvan_XIII.put(150, 157);
+		sursilvan_XIII.put(176, 213);
+		sursilvan_XIII.put(215, 219);
+		sursilvan_XIII.put(222, 225);
+		sursilvan_XIII.put(229, 238);
+		sursilvan_XIII.put(242, 244);
 
-        Map<String, Map<Integer, Integer>> sursilvan = new HashMap<>();
+		sursilvan.put("I", sursilvan_I);
+		sursilvan.put("II", sursilvan_II);
+		sursilvan.put("III", sursilvan_III);
+		sursilvan.put("IV", sursilvan_IV);
+		sursilvan.put("XII", sursilvan_XII);
+		sursilvan.put("XIII", sursilvan_XIII);
 
-        Map<Integer, Integer> sursilvan_I = new HashMap<>();
+		mapper.tagIdiomAllEntries(arcCollection, "sursilvan", sursilvan);
 
-        sursilvan_I.put(1, 278);
-        sursilvan_I.put(285, 298);
-        sursilvan_I.put(302, 306);
-        sursilvan_I.put(310, 329);
-        sursilvan_I.put(346, 348);
-        sursilvan_I.put(353, 370);
-        sursilvan_I.put(373, 514);
-        sursilvan_I.put(518, 598);
-        sursilvan_I.put(606, 774);
-        sursilvan_I.put(784, 797);
-        sursilvan_I.put(807, 821);
+		// mapper.tagIdiomPerWord(arcCollection, "sursilvan", "I", sursilvan_I);
 
-        Map<Integer, Integer> sursilvan_II = new HashMap<Integer, Integer>();
-        sursilvan_II.put(1, 278);
-        sursilvan_II.put(283, 344);
-        sursilvan_II.put(346, 349);
-        sursilvan_II.put(353, 354);
-        sursilvan_II.put(361, 366);
-        sursilvan_II.put(379, 385);
-        sursilvan_II.put(388, 392);
-        sursilvan_II.put(399, 473);
-        sursilvan_II.put(474, 487);
-        sursilvan_II.put(489, 509);
-        // Aufpassen -auch sutselvisch (512-513)-
-        sursilvan_II.put(512, 526);
-        sursilvan_II.put(568, 569);
-        sursilvan_II.put(573, 578);
-        sursilvan_II.put(585, 592);
-        sursilvan_II.put(594, 617);
-        sursilvan_II.put(625, 696);
+	}
 
-        // Lieder
-        Map<Integer, Integer> sursilvan_III = new HashMap<Integer, Integer>();
-        sursilvan_III.put(1, 30);
+	@Test
+	public void getDiffWordDiffs() throws IOException {
 
-        Map<Integer, Integer> sursilvan_IV = new HashMap<Integer, Integer>();
-        sursilvan_IV.put(17, 426);
-        sursilvan_IV.put(426, 736);
-        sursilvan_IV.put(974, 1019);
+		DBCollection arc_sursilvan = db.getCollection("arc_sursilvan");
+		DBCollection word = db.getCollection("word");
 
-        Map<Integer, Integer> sursilvan_XII = new HashMap<Integer, Integer>();
-        sursilvan_XII.put(1, 327);
+		File file = new File("/Users/franciscomondaca/Desktop/toCompare.txt");
+		FileReader in = new FileReader(file);
+		BufferedReader br = new BufferedReader(in);
 
-        Map<Integer, Integer> sursilvan_XIII = new HashMap<Integer, Integer>();
-        sursilvan_XIII.put(18, 111);
-        sursilvan_XIII.put(114, 114);
-        sursilvan_XIII.put(123, 148);
-        sursilvan_XIII.put(150, 157);
-        sursilvan_XIII.put(176, 213);
-        sursilvan_XIII.put(215, 219);
-        sursilvan_XIII.put(222, 225);
-        sursilvan_XIII.put(229, 238);
-        sursilvan_XIII.put(242, 244);
+		FileWriter writer = new FileWriter(
+				"/Users/franciscomondaca/Desktop/out.txt");
+		BufferedWriter out = new BufferedWriter(writer);
 
-        sursilvan.put("I", sursilvan_I);
-        sursilvan.put("II", sursilvan_II);
-        sursilvan.put("III", sursilvan_III);
-        sursilvan.put("IV", sursilvan_IV);
-        sursilvan.put("XII", sursilvan_XII);
-        sursilvan.put("XIII", sursilvan_XIII);
+		String l;
 
-        mapper.tagIdiomAllEntries(arcCollection, "sursilvan", sursilvan);
+		while ((l = br.readLine()) != null) {
 
-        // mapper.tagIdiomPerWord(arcCollection, "sursilvan", "I", sursilvan_I);
+			l = l.replaceAll("\"", "").replaceAll(",", "")
+					.replaceAll("\\t", "");
 
-    }
+			System.out.println(l);
 
+			BasicDBObject arc_o = new BasicDBObject("token_info.xml_id", l);
 
-    @Test
-    public void getDiffWordDiffs() throws IOException {
+			BasicDBObject word_o = new BasicDBObject("page_id", l);
 
-        DBCollection arc_sursilvan = db.getCollection("arc_sursilvan");
-        DBCollection word = db.getCollection("word");
+			long word_q = arc_sursilvan.count(arc_o);
 
+			long arc_q = word.count(word_o);
 
-        File file = new File("/Users/franciscomondaca/Desktop/toCompare.txt");
-        FileReader in = new FileReader(file);
-        BufferedReader br = new BufferedReader(in);
+			StringBuilder builder = new StringBuilder();
+			builder.append(l);
+			builder.append("\t");
+			builder.append(word_q);
+			builder.append("\t");
+			builder.append(arc_q);
+			builder.append("\n");
 
-        FileWriter writer = new FileWriter("/Users/franciscomondaca/Desktop/out.txt");
-        BufferedWriter out = new BufferedWriter(writer);
+			out.append(builder.toString());
 
-        String l;
+		}
+		out.close();
 
-        while ((l = br.readLine()) != null) {
+	}
 
-            l = l.replaceAll("\"", "").replaceAll(",", "").replaceAll("\\t", "");
+	@Test
+	public void testMongoCommandsArrays() {
 
-            System.out.println(l);
+		DBCollection arc = db.getCollection("arc_sursilvan");
 
+		DBObject query = QueryBuilder.start("lang_info")
+				.elemMatch(new BasicDBObject("idiom", "sursilvan")).get();
+		DBCursor arcCursor = arc.find(query);
+		System.out.println(arcCursor.size());
 
-            BasicDBObject arc_o = new BasicDBObject("token_info.xml_id", l);
+		for (int i = 0; i < arcCursor.size(); i++) {
+			DBObject object = arcCursor.next();
+			String os = object.toString();
+			System.out.println(os);
 
-            BasicDBObject word_o = new BasicDBObject("page_id", l);
+			break;
+		}
 
+	}
 
-            long word_q = arc_sursilvan.count(arc_o);
+	@Test
+	public void testMongoCommandsArrays_S() {
 
-            long arc_q = word.count(word_o);
+		DBCollection arc = db.getCollection("arc_sursilvan");
 
-            StringBuilder builder = new StringBuilder();
-            builder.append(l);
-            builder.append("\t");
-            builder.append(word_q);
-            builder.append("\t");
-            builder.append(arc_q);
-            builder.append("\n");
+		DBObject criteria = new QueryBuilder().put("phys_info.oct_vol")
+				.is("XII").and("phys_info.oct_page").greaterThan("1")
+				.lessThanEquals("11").get();
 
-            out.append(builder.toString());
+		DBCursor arcCursor = arc.find(criteria);
+		System.out.println(arcCursor.size());
 
+		DBCollection surtest = db.getCollection("surtest_metadata");
 
-        }
-        out.close();
+		DBCursor surtestCursor = surtest.find();
+		System.out.println(surtestCursor.size());
 
-    }
+	}
 
+	@Test
+	public void addMetadataToSpecificFiles() {
 
-    @Test
-    public void testMongoCommandsArrays() {
+		DBCollection arc = db.getCollection("arc_metadata");
+		DBCollection metadata = db.getCollection("meta");
 
-        DBCollection arc = db.getCollection("arc_sursilvan");
+		DBCursor arcCursor = arc.find(new BasicDBObject("token_info.xml_id",
+				"PPN345572629_0038-0366.xml"));
 
-        DBObject query = QueryBuilder.start("lang_info")
-                .elemMatch(new BasicDBObject("idiom", "sursilvan")).get();
-        DBCursor arcCursor = arc.find(query);
-        System.out.println(arcCursor.size());
+		for (int i = 0; i < arcCursor.size(); i++) {
 
-        for (int i = 0; i < arcCursor.size(); i++) {
-            DBObject object = arcCursor.next();
-            String os = object.toString();
-            System.out.println(os);
+			DBObject doc = arcCursor.next();
 
-            break;
-        }
+			DBObject token_info = (DBObject) doc.get("token_info");
 
-    }
+			// Get the page_id from the Entry
+			String page_id_fromARC = (String) token_info.get("xml_id");
+			System.out.println(page_id_fromARC);
 
+			String token = (String) token_info.get("original");
+			System.out.println(token);
 
-    @Test
-    public void testMongoCommandsArrays_S() {
+			// Get the metadata related to the Entry
+			BasicDBObject md = new BasicDBObject();
+			md.put("xml_id", page_id_fromARC);
 
-        DBCollection arc = db.getCollection("arc_sursilvan");
+			DBCursor metaCursor = metadata.find(md);
 
-        DBObject criteria = new QueryBuilder().put("phys_info.oct_vol")
-                .is("XII").and("phys_info.oct_page").greaterThan("1")
-                .lessThanEquals("11").get();
+			if (metaCursor != null) {
 
-        DBCursor arcCursor = arc.find(criteria);
-        System.out.println(arcCursor.size());
+				BasicDBObject metadata_obj = (BasicDBObject) metaCursor.next();
 
-        DBCollection surtest = db.getCollection("surtest_metadata");
+				BasicDBObject phys_info = (BasicDBObject) metadata_obj
+						.get("phys_info");
 
-        DBCursor surtestCursor = surtest.find();
-        System.out.println(surtestCursor.size());
+				doc.put("phys_info", phys_info);
 
-    }
+				arc.save(doc);
 
-    @Test
-    public void addMetadataToSpecificFiles() {
+			}
 
-        DBCollection arc = db.getCollection("arc_metadata");
-        DBCollection metadata = db.getCollection("meta");
+		}
 
-        DBCursor arcCursor = arc.find(new BasicDBObject("token_info.xml_id",
-                "PPN345572629_0038-0366.xml"));
+	}
 
-        for (int i = 0; i < arcCursor.size(); i++) {
+	@Test
+	public void compareCollectionsEntries() throws IOException {
 
-            DBObject doc = arcCursor.next();
+		DBCollection coll1 = db.getCollection("arc_metadata");
+		DBCollection coll2 = db.getCollection("surtest_metadata");
 
-            DBObject token_info = (DBObject) doc.get("token_info");
+		BasicDBObject toSearch = new BasicDBObject("phys_info.oct_vol", "XII");
 
-            // Get the page_id from the Entry
-            String page_id_fromARC = (String) token_info.get("xml_id");
-            System.out.println(page_id_fromARC);
+		DBCursor coll1Cursor = coll1.find(toSearch);
+		DBCursor coll2Cursor = coll2.find(toSearch);
 
-            String token = (String) token_info.get("original");
-            System.out.println(token);
+		List<String> coll1List = new ArrayList<>();
+		List<String> coll2List = new ArrayList<>();
 
-            // Get the metadata related to the Entry
-            BasicDBObject md = new BasicDBObject();
-            md.put("xml_id", page_id_fromARC);
+		System.out.println("coll1Cursor: " + coll1Cursor.size());
+		System.out.println("coll2Cursor: " + coll2Cursor.size());
 
-            DBCursor metaCursor = metadata.find(md);
+		for (DBObject coll1Obj : coll1Cursor) {
 
-            if (metaCursor != null) {
+			BasicDBObject t1 = (BasicDBObject) coll1Obj.get("token_info");
+			String coll1String = (String) t1.get("original");
+			coll1List.add(coll1String);
 
-                BasicDBObject metadata_obj = (BasicDBObject) metaCursor.next();
+		}
 
-                BasicDBObject phys_info = (BasicDBObject) metadata_obj
-                        .get("phys_info");
+		for (DBObject coll2Obj : coll2Cursor) {
 
-                doc.put("phys_info", phys_info);
+			BasicDBObject t2 = (BasicDBObject) coll2Obj.get("token_info");
+			String coll2String = (String) t2.get("original");
+			coll2List.add(coll2String);
 
-                arc.save(doc);
+		}
 
-            }
+		// if(coll1List.containsAll(coll2List)){
+		// System.out.println("boi");
+		// }
 
-        }
+		Collections.sort(coll1List);
+		Collections.sort(coll2List);
 
-    }
+		DictUtils.printList(coll1List, "/Users/franciscomondaca/Desktop/",
+				"coll1List_sorted");
 
-    @Test
-    public void compareCollectionsEntries() throws IOException {
+		DictUtils.printList(coll2List, "/Users/franciscomondaca/Desktop/",
+				"coll2List_sorted");
 
-        DBCollection coll1 = db.getCollection("arc_metadata");
-        DBCollection coll2 = db.getCollection("surtest_metadata");
+		// coll1List.removeAll(coll2List);
+		// DictUtils.printList(coll1List, "/Users/franciscomondaca/Desktop/",
+		// "diffcoll");
 
-        BasicDBObject toSearch = new BasicDBObject("phys_info.oct_vol", "XII");
-
-        DBCursor coll1Cursor = coll1.find(toSearch);
-        DBCursor coll2Cursor = coll2.find(toSearch);
-
-        List<String> coll1List = new ArrayList<>();
-        List<String> coll2List = new ArrayList<>();
-
-        System.out.println("coll1Cursor: " + coll1Cursor.size());
-        System.out.println("coll2Cursor: " + coll2Cursor.size());
-
-        for (DBObject coll1Obj : coll1Cursor) {
-
-            BasicDBObject t1 = (BasicDBObject) coll1Obj.get("token_info");
-            String coll1String = (String) t1.get("original");
-            coll1List.add(coll1String);
-
-        }
-
-        for (DBObject coll2Obj : coll2Cursor) {
-
-            BasicDBObject t2 = (BasicDBObject) coll2Obj.get("token_info");
-            String coll2String = (String) t2.get("original");
-            coll2List.add(coll2String);
-
-        }
-
-        // if(coll1List.containsAll(coll2List)){
-        // System.out.println("boi");
-        // }
-
-        Collections.sort(coll1List);
-        Collections.sort(coll2List);
-
-        DictUtils.printList(coll1List, "/Users/franciscomondaca/Desktop/",
-                "coll1List_sorted");
-
-        DictUtils.printList(coll2List, "/Users/franciscomondaca/Desktop/",
-                "coll2List_sorted");
-
-        // coll1List.removeAll(coll2List);
-        // DictUtils.printList(coll1List, "/Users/franciscomondaca/Desktop/",
-        // "diffcoll");
-
-    }
-
+	}
 
 }
