@@ -670,12 +670,10 @@ public class Vallader_VFGenerator {
                 // Verben auf -gir
                 if (stamm.endsWith("g")) {
                     addConjugations(stamm + "i", verbClass);
-                    addInversion(stamm, verbClass);
                 }
                 // Verben auf -glir
                 else if (stamm.endsWith("gl")) {
                     addConjugations(stamm + "i", verbClass);
-                    addInversion(stamm, verbClass);
                 }
             }
         } else if (endung.equals("er")) {
@@ -685,7 +683,6 @@ public class Vallader_VFGenerator {
             if (stamm.endsWith("g")) {
                 addVF(stamm, "V_GVRB");
                 addConjugations(stamm + "i", verbClass);
-                addInversion(stamm + "i", verbClass);
             }
 
         } else if (endung.equals("ar")) {
@@ -694,27 +691,30 @@ public class Vallader_VFGenerator {
             // Verben auf -giar
             if (stamm.endsWith("gi")) {
                 addVF(stamm.substring(0, stamm.length() - 1), "V_GVRB");
-                addInversion(stamm, verbClass);
+                addConjugations(stamm, verbClass);
             }
             // Verben auf -gliar
             else if (stamm.endsWith("gli")) {
                 addVF(stamm.substring(0, stamm.length() - 1), "V_GVRB");
-                addInversion(stamm, verbClass);
+                addConjugations(stamm, verbClass);
             }
             // Verben auf -iar
             else if (stamm.endsWith("i")) {
-                generateAirConjugations(stamm.substring(0, stamm.length() - 1));
-                addInversion(stamm, verbClass);
-                addInversion(stamm.substring(0, stamm.length() - 1) + "j", verbClass);
+            	String iarStamm = stamm.substring(0, stamm.length() - 1);
+            	
+                addConjugations(iarStamm + "aj", verbClass);
+                // 1. und 2. Person Plural
+                addConjugations(stamm + "i", verbClass);
+               
             }
         } else {
             System.out.println("unbekanntes Verb - falsche Endung: " + endung);
             return;
         }
-
+        
+        // zusätzliche Formen mit i anstatt j
         if (stamm.endsWith("j")) {
             addVF(stamm.substring(0, stamm.length() - 1) + "i", "V_GVRB");
-            addInversion(stamm, verbClass);
         }
 
         addConjugations(stamm, verbClass);
@@ -808,10 +808,20 @@ public class Vallader_VFGenerator {
         if (verbClass == VerbClass.AR || verbClass == VerbClass.AIR || verbClass == VerbClass.ER) {
             addVF(stamm + "ain", pos);        // 1. Ps Pl
             addVF(stamm + "ais", pos);        // 2. Ps Pl
+            // Inversion
+            addVF(stamm + "aina", pos);
         } else {        // (verbClass == verbClass.IR)
             addVF(stamm + "in", pos);        // 1. Ps Pl
             addVF(stamm + "is", pos);        // 2. Ps Pl
+            
+            // Inversion
+            addVF(stamm + "ina", pos);
         }
+        
+        // Inversion
+        addVF(stamm + "a'l", pos);
+        addVF(stamm + "'la", pos);
+        addVF(stamm + "na", pos);
     }
 
     private void addIndikativImperfekt(String stamm, VerbClass verbClass,
@@ -825,6 +835,11 @@ public class Vallader_VFGenerator {
         addVF(stamm + "ast", pos);        // 2. Ps Sg
         addVF(stamm + "an", pos);        // 1. Ps Pl, 3. Ps Pl
         addVF(stamm + "at", pos);        // 2. Ps Pl
+        
+        // Inversion
+        addVF(stamm + "a'l", pos);
+        addVF(stamm + "'la", pos);
+        addVF(stamm + "na", pos);
     }
 
     private void addIndikativFuturI(String stamm, VerbClass verbClass,
@@ -839,6 +854,12 @@ public class Vallader_VFGenerator {
         addVF(stamm + "a", pos);        // 3. Ps Sg
         addVF(stamm + "an", pos);        // 1. Ps Pl, 3. Ps Pl
         addVF(stamm + "at", pos);        // 2. Ps Pl
+        
+        // Inversion
+        addVF(stamm + "aja", pos);
+        addVF(stamm + "à'l", pos);
+        addVF(stamm + "à'la", pos);
+        addVF(stamm + "ana", pos);
     }
 
     private void addKonjunktivPraesens(String stamm, VerbClass verbClass,
@@ -860,52 +881,18 @@ public class Vallader_VFGenerator {
         addVF(stamm + "ast", pos);        // 2. Ps Sg
         addVF(stamm + "an", pos);        // 1. Ps Pl, 3. Ps Pl
         addVF(stamm + "at", pos);        // 2. Ps Pl
-    }
-
-    private void generateAirConjugations(String stamm) {
-
-        // Indikativ Präsens
-        addVF(stamm + "ai", "V_GVRB");
-        addVF(stamm + "aja", "V_GVRB");
-        addVF(stamm + "iain", "V_GVRB");
-        addVF(stamm + "iais", "V_GVRB");
-        addVF(stamm + "ajan", "V_GVRB");
-    }
-
-    private void addInversion(String stamm, VerbClass verbClass) {
-
-        String klStamm = stamm.substring(0, stamm.length() - 1);
-
-        if (verbClass == VerbClass.IR) {
-            addVF(stamm + "a", "V_GVRB");
-            addVF(stamm + "ast", "V_GVRB");
-            addVF(stamm + "a'l", "V_GVRB");
-            addVF(klStamm + "'la", "V_GVRB");
-            addVF(klStamm + "ina", "V_GVRB");
-            addVF(klStamm + "is", "V_GVRB");
-            addVF(klStamm + "na", "V_GVRB");
-        } else if (verbClass == VerbClass.AR) {
-            addVF(stamm + "a", "V_GVRB");
-            addVF(stamm + "ast", "V_GVRB");
-            addVF(stamm + "a'l", "V_GVRB");
-            addVF(klStamm + "'la", "V_GVRB");
-            addVF(stamm + "aina", "V_GVRB");
-            addVF(stamm + "ais", "V_GVRB");
-            addVF(klStamm + "na", "V_GVRB");
-        } else if (verbClass == VerbClass.ER) {
-            addVF(stamm + "a", "V_GVRB");
-            addVF(stamm + "ast", "V_GVRB");
-            addVF(stamm + "a'l", "V_GVRB");
-            addVF(klStamm + "'la", "V_GVRB");
-            addVF(stamm + "aina", "V_GVRB");
-            addVF(stamm + "ais", "V_GVRB");
-            addVF(klStamm + "na", "V_GVRB");
-        }
-
+        
+        // Inversion
+        addVF(stamm + "a", pos);
+        addVF(stamm + "'la", pos);
+        addVF(stamm + "na", pos);
+       
     }
 
     private void addIrregularVerbs() {
-
+    	
+    	String stamm = "";
+    	
         // esser
         // infinitiv
         addVF("esser", "V_ESSER");
@@ -935,15 +922,9 @@ public class Vallader_VFGenerator {
         addVF("d'eiran", "V_ESSER");
         addVF("d'eirat", "V_ESSER");
         // Indikativ Futur I
-        addVF("sarà", "V_ESSER");
-        addVF("sarast", "V_ESSER");
-        addVF("saran", "V_ESSER");
-        addVF("sarat", "V_ESSER");
+        addIndikativFuturI("s", VerbClass.ER, "V_ESSER");
         // Konjunktiv Präsens
-        addVF("saja", "V_ESSER");
-        addVF("sajast", "V_ESSER");
-        addVF("sajan", "V_ESSER");
-        addVF("sajat", "V_ESSER");
+        addKonjunktivPraesens("saj", VerbClass.ER, "V_ESSER");
         // Konjunktiv Imperfekt
         addVF("füss", "V_ESSER");
         addVF("füssast", "V_ESSER");
@@ -955,10 +936,7 @@ public class Vallader_VFGenerator {
         // infinitiv
         addVF("avair", "V_AVAIR");
         // Partizip
-        addVF("gnü", "V_PP");
-        addVF("grüts", "V_PP");
-        addVF("gnüda", "V_PP");
-        addVF("gnüdas", "V_PP");
+        addPartizip("gn", VerbClass.AIR);
         // Gerundium
         addVF("aviond", "V_AVAIR");
         // Imperativ
@@ -972,28 +950,14 @@ public class Vallader_VFGenerator {
         addVF("vais", "V_AVAIR");
         addVF("han", "V_AVAIR");
         // Indikativ Imperfekt
-        addVF("vaiva", "V_AVAIR");
-        addVF("vaivast", "V_AVAIR");
-        addVF("vaivans", "V_AVAIR");
-        addVF("vaivat", "V_AVAIR");
-        addVF("vaivan", "V_AVAIR");
+        addIndikativImperfekt("v", VerbClass.AIR, "V_AVAIR");
         // Indikativ Futur I
-        addVF("varà", "V_AVAIR");
-        addVF("varast", "V_AVAIR");
-        addVF("varan", "V_AVAIR");
-        addVF("varat", "V_AVAIR");
+        addIndikativFuturI("v", VerbClass.AIR, "V_AVAIR");
         // Konjunktiv Präsens
         addVF("n'haja", "V_AVAIR");
-        addVF("hajast", "V_AVAIR");
-        addVF("haja", "V_AVAIR");
-        addVF("hajan", "V_AVAIR");
-        addVF("hajat", "V_AVAIR");
+        addKonjunktivPraesens("haj", VerbClass.AIR, "V_AVAIR");
         // Konjunktiv Imperfekt
-        addVF("vess", "V_AVAIR");
-        addVF("vessast", "V_AVAIR");
-        addVF("vess", "V_AVAIR");
-        addVF("vessan", "V_AVAIR");
-        addVF("vessat", "V_AVAIR");
+        addKonjunktivImperfekt("v", VerbClass.AIR, "V_AVAIR");
 
         // star
         // infinitiv
@@ -1015,20 +979,14 @@ public class Vallader_VFGenerator {
         addVF("stais", "V_GVRB");
         addVF("stan", "V_GVRB");
         // Indikativ Imperfekt
-        addVF("staiva", "V_GVRB");
-        addVF("staivan", "V_GVRB");
-        // Indikativ Imperfekt
-        addVF("starà", "V_GVRB");
-        addVF("staran", "V_GVRB");
+        addIndikativImperfekt("st", VerbClass.AR, "V_GVRB");
+        // Indikativ Futur I
+        addIndikativFuturI("st", VerbClass.AR, "V_GVRB");
         // Konjunktiv Präsens
-        addVF("stetta", "V_GVRB");
-        addVF("stettast", "V_GVRB");
-        addVF("stettan", "V_GVRB");
-        addVF("stettat", "V_GVRB");
-        addVF("hajat", "V_GVRB");
+        addKonjunktivPraesens("stett", VerbClass.AR, "V_GVRB");
         // Konjunktiv Imperfekt
-        addVF("stess", "V_GVRB");
-        addVF("stessan", "V_GVRB");
+        addKonjunktivImperfekt("st", VerbClass.AR, "V_GVRB");
+ 
 
         // ir
         // infinitiv
@@ -1051,19 +1009,13 @@ public class Vallader_VFGenerator {
         addVF("giais", "V_GVRB");
         addVF("van", "V_GVRB");
         // Indikativ Imperfekt
-        addVF("giaiva", "V_GVRB");
-        addVF("giaivan", "V_GVRB");
+        addIndikativImperfekt("gi", VerbClass.AR, "V_GVRB");
         // Indikativ Futur I
-        addVF("giarà", "V_GVRB");
-        addVF("giaran", "V_GVRB");
+        addIndikativFuturI("gi", VerbClass.AR, "V_GVRB");
         // Konjunktiv Präsens
-        addVF("giaja", "V_GVRB");
-        addVF("giajast", "V_GVRB");
-        addVF("giajan", "V_GVRB");
-        addVF("giajat", "V_GVRB");
+        addKonjunktivPraesens("giaj", VerbClass.AR, "V_GVRB");
         // Konjunktiv Imperfekt
-        addVF("gess", "V_GVRB");
-        addVF("gessan", "V_GVRB");
+        addKonjunktivImperfekt("g", VerbClass.AR, "V_GVRB");
 
         // gnir
         // infinitiv
@@ -1086,19 +1038,12 @@ public class Vallader_VFGenerator {
         addVF("gnin", "V_GVRB");
         addVF("gnis", "V_GVRB");
         addVF("vegnan", "V_GVRB");
-        // Indikativ Imperfekt
-        addVF("gniva", "V_GVRB");
-        addVF("gnivan", "V_GVRB");
+        // Indikativ Imperfekt - regelmäßig
         // Indikativ Futur I
-        addVF("gnarà", "V_GVRB");
-        addVF("gnaran", "V_GVRB");
+        addIndikativFuturI("gn", VerbClass.AR, "V_GVRB");
         // Konjunktiv Präsens
-        addVF("vegna", "V_GVRB");
-        addVF("vegnast", "V_GVRB");
-        addVF("vegnat", "V_GVRB");
-        // Konjunktiv Imperfekt
-        addVF("gniss", "V_GVRB");
-        addVF("gnissan", "V_GVRB");
+        addKonjunktivPraesens("vegn", VerbClass.IR, "V_GVRB");
+        // Konjunktiv Imperfekt - regelmäßig
 
         // dar
         // infinitiv
@@ -1120,22 +1065,14 @@ public class Vallader_VFGenerator {
         addVF("dain", "V_GVRB");
         addVF("dais", "V_GVRB");
         addVF("dan", "V_GVRB");
-        // Indikativ Imperfekt
-        addVF("daiva", "V_GVRB");
-        addVF("daivan", "V_GVRB");
-        // Indikativ Futur I
-        addVF("darà", "V_GVRB");
-        addVF("daran", "V_GVRB");
+        // Indikativ Imperfekt - regelmäßig
+        // Indikativ Futur I - regelmäßig
         // Konjunktiv Präsens
-        addVF("detta", "V_GVRB");
-        addVF("dettast", "V_GVRB");
-        addVF("dettan", "V_GVRB");
-        addVF("dettat", "V_GVRB");
-        // Konjunktiv Imperfekt
-        addVF("dess", "V_GVRB");
-        addVF("dessan", "V_GVRB");
+        addKonjunktivPraesens("dett", VerbClass.AR, "V_GVRB");
+        // Konjunktiv Imperfekt - regelmäßig
+       
 
-        // dar
+        // dir
         // infinitiv
         addVF("dir", "V_GVRB");
         // Partizip
@@ -1156,19 +1093,14 @@ public class Vallader_VFGenerator {
         addVF("dischais", "V_GVRB");
         addVF("dischan", "V_GVRB");
         // Indikativ Imperfekt
-        addVF("dschaiva", "V_GVRB");
-        addVF("dschaivan", "V_GVRB");
+        addIndikativImperfekt("dsch", VerbClass.AR, "V_GVRB");
         // Indikativ Futur I
-        addVF("dscharà", "V_GVRB");
-        addVF("dschaivan", "V_GVRB");
+        addIndikativFuturI("dsch", VerbClass.AR, "V_GVRB");
         // Konjunktiv Präsens
-        addVF("dia", "V_GVRB");
-        addVF("diast", "V_GVRB");
-        addVF("dian", "V_GVRB");
-        addVF("diat", "V_GVRB");
+        addKonjunktivPraesens("di", VerbClass.IR, "V_GVRB");
         // Konjunktiv Imperfekt
-        addVF("dschess", "V_GVRB");
-        addVF("dschessan", "V_GVRB");
+        addKonjunktivImperfekt("dsch", VerbClass.AR, "V_GVRB");
+      
 
         // modale Verben
 
@@ -1193,20 +1125,11 @@ public class Vallader_VFGenerator {
         addVF("fain", "V_MOD");
         addVF("fais", "V_MOD");
         addVF("fain", "V_MOD");
-        // Indikativ Imperfekt
-        addVF("faiva", "V_MOD");
-        addVF("faivan", "V_MOD");
-        // Indikativ Futur I
-        addVF("farà", "V_MOD");
-        addVF("faran", "V_MOD");
+        // Indikativ Imperfekt - regelmäßig
+        // Indikativ Futur I - regelmäßig
         // Konjunktiv Präsens
-        addVF("fetscha", "V_MOD");
-        addVF("fetschast", "V_MOD");
-        addVF("fetschan", "V_MOD");
-        addVF("fetschat", "V_MOD");
-        // Konjunktiv Imperfekt
-        addVF("fess", "V_MOD");
-        addVF("fessan", "V_MOD");
+        addKonjunktivPraesens("fetsch", VerbClass.AR, "V_MOD");
+        // Konjunktiv Imperfekt - regelmäßig
 
         // vulair
         // infinitiv
@@ -1231,38 +1154,26 @@ public class Vallader_VFGenerator {
         addVF("lain", "V_MOD");
         addVF("lais", "V_MOD");
         // Indikativ Imperfekt
-        addVF("vulaiva", "V_MOD");
-        addVF("vulaivan", "V_MOD");
-        addVF("laiva", "V_MOD");
-        addVF("laivan", "V_MOD");
+        addIndikativImperfekt("vul", VerbClass.AIR, "V_MOD");
+        addIndikativImperfekt("l", VerbClass.AIR, "V_MOD");
         // Indikativ Futur I
-        addVF("vularà", "V_MOD");
-        addVF("vularan", "V_MOD");
-        addVF("larà", "V_MOD");
-        addVF("laran", "V_MOD");
+        addIndikativFuturI("vul", VerbClass.AIR, "V_MOD");
+        addIndikativFuturI("l", VerbClass.AIR, "V_MOD");
         // Konjunktiv Präsens
-        addVF("vöglia", "V_MOD");
-        addVF("vögliast", "V_MOD");
-        addVF("vöglian", "V_MOD");
-        addVF("vögliat", "V_MOD");
+        addKonjunktivPraesens("vögli", VerbClass.AIR, "V_MOD");
         // Konjunktiv Imperfekt
-        addVF("vuless", "V_MOD");
-        addVF("vulessan", "V_MOD");
-        addVF("less", "V_MOD");
-        addVF("lessan", "V_MOD");
+        addKonjunktivImperfekt("vul", VerbClass.AIR, "V_MOD");
+        addKonjunktivImperfekt("l", VerbClass.AIR, "V_MOD");
 
 
         // pudair
         // infinitiv
         addVF("pudair", "V_MOD");
         // Partizip
-        addVF("pudü", "V_PP");
-        addVF("pudüts", "V_PP");
-        addVF("pudüda", "V_PP");
-        addVF("pudüdas", "V_PP");
+        addPartizip("pud", VerbClass.AIR);
         // Gerundium
         addVF("pudiond", "V_MOD");
-        // Imperativ
+        // Imperativ --
 
         // Indikativ Präsens
         addVF("poss", "V_MOD");
@@ -1272,30 +1183,21 @@ public class Vallader_VFGenerator {
         addVF("pudais", "V_MOD");
         addVF("pon", "V_MOD");
         // Indikativ Imperfekt
-        addVF("pudaiva", "V_MOD");
-        addVF("pudaivan", "V_MOD");
+        addIndikativImperfekt("pud", VerbClass.AIR, "V_MOD");
         // Indikativ Futur I
-        addVF("pudarà", "V_MOD");
-        addVF("pudaran", "V_MOD");
+        addIndikativFuturI("pud", VerbClass.AIR, "V_MOD");
         // Konjunktiv Präsens
-        addVF("possa", "V_MOD");
-        addVF("possast", "V_MOD");
-        addVF("possan", "V_MOD");
-        addVF("possat", "V_MOD");
+        addKonjunktivPraesens("poss", VerbClass.AIR, "V_MOD");
         // Konjunktiv Imperfekt
-        addVF("pudess", "V_MOD");
-        addVF("pudessan", "V_MOD");
+        addKonjunktivImperfekt("pud", VerbClass.AIR, "V_MOD");
 
 
         // stuvair
-        String stamm = "stuv";
+        stamm = "stuv";
         // infinitiv
         addVF("stuvair", "V_MOD");
         // Partizip
-        addVF(stamm + "ü", "V_PP");
-        addVF(stamm + "üts", "V_PP");
-        addVF(stamm + "üda", "V_PP");
-        addVF(stamm + "üdas", "V_PP");
+        addPartizip(stamm, VerbClass.AIR);
         // Gerundium
         addVF(stamm + "iond", "V_MOD");
         // Imperativ
@@ -1308,31 +1210,22 @@ public class Vallader_VFGenerator {
         addVF("stuvais", "V_MOD");
         addVF("ston", "V_MOD");
         // Indikativ Imperfekt
-        addVF("stuvaiva", "V_MOD");
-        addVF("stuvaivan", "V_MOD");
+        addIndikativImperfekt("stuv", VerbClass.AIR, "V_MOD");
         // Indikativ Futur I
-        addVF(stamm + "arà", "V_MOD");
-        addVF(stamm + "aran", "V_MOD");
+        addIndikativFuturI("stuv", VerbClass.AIR, "V_MOD");
         // Konjunktiv Präsens
-        addVF("stöglia", "V_MOD");
+        addKonjunktivPraesens("stögli", VerbClass.AIR, "V_MOD");
         addVF("stopcha", "V_MOD");
-        addVF("stögliast", "V_MOD");
-        addVF("stöglian", "V_MOD");
         addVF("stopchan", "V_MOD");
-        addVF("stögliat", "V_MOD");
         // Konjunktiv Imperfekt
-        addVF(stamm + "ess", "V_MOD");
-        addVF(stamm + "essan", "V_MOD");
+        addKonjunktivImperfekt(stamm, VerbClass.AIR, "V_MOD");
 
         // savair
         stamm = "sav";
         // infinitiv
         addVF("savair", "V_MOD");
         // Partizip
-        addVF(stamm + "ü", "V_PP");
-        addVF(stamm + "üts", "V_PP");
-        addVF(stamm + "üda", "V_PP");
-        addVF(stamm + "üdas", "V_PP");
+        addPartizip(stamm, VerbClass.AIR);
         // Gerundium
         addVF(stamm + "iond", "V_MOD");
         // Imperativ
@@ -1344,20 +1237,15 @@ public class Vallader_VFGenerator {
         addVF(stamm + "ais", "V_MOD");
         addVF("san", "V_MOD");
         // Indikativ Imperfekt
-        addVF(stamm + "aiva", "V_MOD");
-        addVF(stamm + "aivan", "V_MOD");
+        addIndikativImperfekt(stamm, VerbClass.AIR, "V_MOD");
         // Indikativ Futur I
-        addVF(stamm + "arà", "V_MOD");
-        addVF(stamm + "aran", "V_MOD");
+        addIndikativFuturI(stamm, VerbClass.AIR, "V_MOD");
         // Konjunktiv Präsens
-        addVF("sapcha", "V_MOD");
-        addVF("sapchast", "V_MOD");
-        addVF("sapchan", "V_MOD");
-        addVF("sapchat", "V_MOD");
+        addKonjunktivPraesens("sapch", VerbClass.AIR, "V_MOD");
         // Konjunktiv Imperfekt
-        addVF(stamm + "ess", "V_MOD");
-        addVF(stamm + "essan", "V_MOD");
-
+        addKonjunktivImperfekt(stamm, VerbClass.AIR, "V_MOD");
+    
+        // Defektive Modalverben
         // dovair
         // Indikativ Präsens
         addVF("dess", "V_GVRB");
