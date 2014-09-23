@@ -10,6 +10,14 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+/**
+ * 
+ * User: andreasvogt
+ * Date: 29/7/14
+ * Time: 2:37 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
 public class Puter_VFGenerator {
 	
 	Map<String, TreeSet<String>> vollForms = new TreeMap<String, TreeSet<String>>();
