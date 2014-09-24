@@ -62,7 +62,7 @@ public class Puter_VFGenerator {
 					addPronouns();
 //					addConjunctions();
 					addArticles();
-//					addAdjectives();
+//					addIrregularAdjectives();
 					
 				}
 			}
@@ -696,12 +696,11 @@ public class Puter_VFGenerator {
 					// Verben auf -gir
 					if (stamm.endsWith("g")) {
 						addConjugations(stamm+"i", verbClass);
-						addInversion(stamm, verbClass);
 					}
 					// Verben auf -glir
 					else if  (stamm.endsWith("gl")) {
 						addConjugations(stamm+"i", verbClass);
-						addInversion(stamm, verbClass);
+						
 					}
 				}
 			} else if (endung.equals("er")) {
@@ -711,7 +710,6 @@ public class Puter_VFGenerator {
 				if (stamm.endsWith("g")) {
 					addVF(stamm, "V_GVRB");
 					addConjugations(stamm+"i", verbClass);
-					addInversion(stamm+"i", verbClass);
 				}
 				
 			} else {
@@ -721,7 +719,6 @@ public class Puter_VFGenerator {
 			
 			if (stamm.endsWith("j")) {
 				addVF(stamm.substring(0, stamm.length()-1)+"i", "V_GVRB");
-				addInversion(stamm, verbClass);
 			}
 			
 			addConjugations(stamm, verbClass);
@@ -832,10 +829,22 @@ public class Puter_VFGenerator {
 			if (verbClass == VerbClass.ER || verbClass == VerbClass.AIR) {
 				addVF(stamm + "ains", pos);		// 1. Ps Pl
 				addVF(stamm + "ais", pos);		// 2. Ps Pl
+				
+				// Inversion
+	            addVF(stamm + "ainsa", pos);
 			} else {		// (verbClass == verbClass.IR)
 				addVF(stamm + "ins", pos);		// 1. Ps Pl
 				addVF(stamm + "is", pos);		// 2. Ps Pl
+				
+				// Inversion
+	            addVF(stamm + "insa", pos);
 			}
+			
+			 // Inversion
+			addVF(stamm + "i", pos);
+	        addVF(stamm + "a'l", pos);
+	        addVF(stamm + "'la", pos);
+	        addVF(stamm + "ane", pos);
 		}
 		
 		private void addIndikativImperfekt(String stamm, VerbClass verbClass,
@@ -850,6 +859,12 @@ public class Puter_VFGenerator {
 			addVF(stamm + "ans", pos);		// 1. Ps Pl
 			addVF(stamm + "as", pos);		// 2. Ps Pl
 			addVF(stamm + "an", pos);		// 3. Ps Pl	
+			
+			// TODO: In Puter so?
+			// Inversion
+	        addVF(stamm + "a'l", pos);
+	        addVF(stamm + "'la", pos);
+	        addVF(stamm + "na", pos);
 		}
 		
 		private void addIndikativPassoDefinieu(String stamm, VerbClass verbClass, String pos) {
@@ -877,6 +892,13 @@ public class Puter_VFGenerator {
 			addVF(stamm + "ons", pos);		// 1. Ps Pl
 			addVF(stamm + "os", pos);		// 2. Ps Pl
 			addVF(stamm + "on", pos);		// 3. Ps Pl
+			
+			// TODO: In Puter so?
+			 // Inversion
+	        addVF(stamm + "aja", pos);
+	        addVF(stamm + "à'l", pos);
+	        addVF(stamm + "à'la", pos);
+	        addVF(stamm + "ana", pos);
 		}
 		
 		private void addIndikativFuturDubitativ(String stamm, VerbClass verbClass, String pos) {
@@ -912,21 +934,13 @@ public class Puter_VFGenerator {
 			addVF(stamm + "ast", pos);		// 2. Ps Sg
 			addVF(stamm + "ans", pos);		// 1. Ps Pl
 			addVF(stamm + "as", pos);		// 2. Ps Pl
-			addVF(stamm + "an", pos);		// 3. Ps Pl	
-		}
-		
-		
-		private void addInversion(String stamm, VerbClass verbClass) {
+			addVF(stamm + "an", pos);		// 3. Ps Pl
 			
-			String klStamm = stamm.substring(0, stamm.length()-1);
-			
-			if (verbClass == VerbClass.ER){
-				addVF(stamm+"i", "V_GVRB"); addVF(klStamm+"i", "V_GVRB"); addVF(stamm+"ast", "V_GVRB");addVF(stamm+"a'l", "V_GVRB");addVF(klStamm+"'la", "V_GVRB");addVF(stamm+"ainsa", "V_GVRB");addVF(stamm+"ais", "V_GVRB");addVF(stamm+"ane", "V_GVRB");
-			
-			} else if (verbClass == VerbClass.IR) {
-				addVF(stamm+"i", "V_GVRB"); addVF(stamm+"ast", "V_GVRB");addVF(stamm+"a'l", "V_GVRB");addVF(klStamm+"'la", "V_GVRB");addVF(stamm+"insa", "V_GVRB");addVF(stamm+"is", "V_GVRB");addVF(klStamm+"ane", "V_GVRB");
-			}
-			
+			//TODO: in Puter so?
+			// Inversion
+	        addVF(stamm + "a", pos);
+	        addVF(stamm + "'la", pos);
+	        addVF(stamm + "na", pos);
 		}
 
 		private void addIrregularVerbs() {
@@ -970,21 +984,21 @@ public class Puter_VFGenerator {
 			addVF("d'he", "V_AVAIR");addVF("hest", "V_AVAIR");addVF("ho", "V_AVAIR");addVF("vains", "V_AVAIR");addVF("vais", "V_AVAIR");addVF("haun", "V_AVAIR");
 			addVF("avains", "V_AVAIR");addVF("avais", "V_AVAIR");
 			// Indikativ Imperfekt
-			addVF("vaiva", "V_AVAIR");addVF("vaivast", "V_AVAIR");addVF("vaivans", "V_AVAIR");addVF("vaivas", "V_AVAIR");addVF("vaivan", "V_AVAIR");
-			addVF("avaiva", "V_AVAIR");addVF("avaivast", "V_AVAIR");addVF("avaivans", "V_AVAIR");addVF("avaivas", "V_AVAIR");addVF("avaivan", "V_AVAIR");
+			addIndikativImperfekt("v", VerbClass.AIR, "V_AVAIR");
+			addIndikativImperfekt("av", VerbClass.AIR, "V_AVAIR");
 			// Indikativ passo definieu
-			addVF("avet", "V_ESSER");addVF("avettast", "V_ESSER");addVF("avettans", "V_ESSER");addVF("avettas", "V_ESSER");addVF("avettan", "V_ESSER");
+			addIndikativPassoDefinieu("av", VerbClass.AIR, "V_AVAIR");
 			// Indikativ Futur I
-			addVF("varo", "V_AVAIR");addVF("varost", "V_AVAIR");addVF("varons", "V_AVAIR");addVF("varos", "V_AVAIR");addVF("varon", "V_AVAIR");
-			addVF("avaro", "V_AVAIR");addVF("avarost", "V_AVAIR");addVF("avarons", "V_AVAIR");addVF("avaros", "V_AVAIR");addVF("avaron", "V_AVAIR");
+			addIndikativFuturI("v", VerbClass.AIR, "V_AVAIR");
+			addIndikativFuturI("av", VerbClass.AIR, "V_AVAIR");
 			// Indikativ futur dubitativ
-			addVF("varegia", "V_ESSER");addVF("varegiast", "V_ESSER");addVF("varegians", "V_ESSER");addVF("varegias", "V_ESSER");addVF("varegian", "V_ESSER");
-			addVF("avaregia", "V_ESSER");addVF("avaregiast", "V_ESSER");addVF("avaregians", "V_ESSER");addVF("avaregias", "V_ESSER");addVF("avaregian", "V_ESSER");
+			addIndikativFuturDubitativ("v", VerbClass.AIR, "V_AVAIR");
+			addIndikativFuturDubitativ("av", VerbClass.AIR, "V_AVAIR");
 			// Konjunktiv Präsens
-			addVF("hegia", "V_AVAIR");addVF("hegiast", "V_AVAIR");addVF("hegians", "V_AVAIR");addVF("hegias", "V_AVAIR");addVF("hegian", "V_AVAIR");
+			addKonjunktivPraesens("hegi", VerbClass.AIR, "V_AVAIR");
 			// Konjunktiv Imperfekt
-			addVF("vess", "V_AVAIR");addVF("vessast", "V_AVAIR");addVF("vess", "V_AVAIR");addVF("vessans", "V_AVAIR");addVF("vessas", "V_AVAIR");addVF("vessan", "V_AVAIR");
-			addVF("avess", "V_AVAIR");addVF("avessast", "V_AVAIR");addVF("avess", "V_AVAIR");addVF("avessans", "V_AVAIR");addVF("avessas", "V_AVAIR");addVF("avessan", "V_AVAIR");
+			addKonjunktivImperfekt("v", VerbClass.AIR, "V_AVAIR");
+			addKonjunktivImperfekt("av", VerbClass.AIR, "V_AVAIR");
 			
 			// ster
 			// infinitiv
@@ -998,23 +1012,17 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("stun", "V_GVRB");addVF("stest", "V_GVRB");addVF("sto", "V_GVRB");addVF("stains", "V_GVRB");addVF("stais", "V_GVRB");addVF("staun", "V_GVRB");
 			// Indikativ Imperfekt
-			stamm = "staiv";
-			addVF(stamm + "a", "V_GVRB");addVF(stamm + "ast", "V_GVRB");addVF(stamm + "ans", "V_GVRB");addVF(stamm + "as", "V_GVRB");addVF(stamm + "an", "V_GVRB");	
+			addIndikativImperfekt("st", VerbClass.ER, "V_GVRB");
 			// Indikativ passo definieu
-			stamm = "ste";
-			addVF(stamm + "t", "V_GVRB");addVF(stamm + "ttast", "V_GVRB");addVF(stamm + "ttans", "V_GVRB");addVF(stamm + "ttas", "V_GVRB");addVF(stamm + "ttan", "V_GVRB");
+			addIndikativPassoDefinieu("st", VerbClass.ER, "V_GVRB");
 			// Indikativ Futur I
-			stamm = "star";
-			addVF(stamm + "o", "V_GVRB");addVF(stamm + "ost", "V_GVRB");addVF(stamm + "ons", "V_GVRB");	addVF(stamm + "os", "V_GVRB");addVF(stamm + "on", "V_GVRB");
+			addIndikativFuturI("st", VerbClass.ER, "V_GVRB");
 			// Indikativ futur dubitativ
-			stamm = "sta";
-			addVF(stamm + "regia", "V_GVRB");addVF(stamm + "regiast", "V_GVRB");addVF(stamm + "regians", "V_GVRB");addVF(stamm + "regias", "V_GVRB");addVF(stamm + "regian", "V_GVRB");
+			addIndikativFuturDubitativ("st", VerbClass.ER, "V_GVRB");
 			// Konjunktiv Präsens
-			addVF("stetta", "V_GVRB");addVF("stettast", "V_GVRB");addVF("stettans", "V_GVRB");addVF("stettas", "V_GVRB");
+			addKonjunktivPraesens("stett", VerbClass.ER, "V_GVRB");
 			// Konjunktiv Imperfekt
-			stamm = "ste";
-			addVF(stamm + "ss", "V_GVRB");addVF(stamm + "ssast", "V_GVRB");addVF(stamm + "ssans", "V_GVRB");addVF(stamm + "ssas", "V_GVRB");addVF(stamm + "ssan", "V_GVRB");
-			
+			addKonjunktivImperfekt("st", VerbClass.ER, "V_GVRB");
 			
 			// ir
 			// infinitiv
@@ -1030,24 +1038,22 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("vegn", "V_GVRB");addVF("vest", "V_GVRB");addVF("vo", "V_GVRB");addVF("giains", "V_GVRB");addVF("giais", "V_GVRB");addVF("vaun", "V_GVRB");
 			// Indikativ Imperfekt
-			stamm = "giaiv";
-			addVF(stamm + "a", "V_GVRB");addVF(stamm + "ast", "V_GVRB");addVF(stamm + "ans", "V_GVRB");addVF(stamm + "as", "V_GVRB");addVF(stamm + "an", "V_GVRB");	
+			addIndikativImperfekt("gi", VerbClass.ER, "V_GVRB");
 			// Indikativ passo definieu
-			stamm = "ge";
-			addVF(stamm + "t", "V_GVRB");addVF(stamm + "ttast", "V_GVRB");addVF(stamm + "ttans", "V_GVRB");addVF(stamm + "ttas", "V_GVRB");addVF(stamm + "ttan", "V_GVRB");
+			addIndikativPassoDefinieu("g", VerbClass.ER, "V_GVRB");
 			// Indikativ Futur I
-			stamm = "giar";
-			addVF(stamm + "o", "V_GVRB");addVF(stamm + "ost", "V_GVRB");addVF(stamm + "ons", "V_GVRB");	addVF(stamm + "os", "V_GVRB");addVF(stamm + "on", "V_GVRB");
+			addIndikativFuturI("gi", VerbClass.ER, "V_GVRB");
 			// Indikativ futur dubitativ
-			stamm = "gia";
-			addVF(stamm + "regia", "V_GVRB");addVF(stamm + "regiast", "V_GVRB");addVF(stamm + "regians", "V_GVRB");addVF(stamm + "regias", "V_GVRB");addVF(stamm + "regian", "V_GVRB");
+			addIndikativFuturDubitativ("gi", VerbClass.ER, "V_GVRB");
 			// Konjunktiv Präsens
-			addVF("giaja", "V_GVRB");addVF("giajast", "V_GVRB");addVF("giajans", "V_GVRB");addVF("giajas", "V_GVRB");
+			addKonjunktivPraesens("giaj", VerbClass.ER, "V_GVRB");
 			// Konjunktiv Imperfekt
-			stamm = "ge";
-			addVF(stamm + "ss", "V_GVRB");addVF(stamm + "ssast", "V_GVRB");addVF(stamm + "ssans", "V_GVRB");addVF(stamm + "ssas", "V_GVRB");addVF(stamm + "ssan", "V_GVRB");
+			addKonjunktivImperfekt("g", VerbClass.ER, "V_GVRB");
+			
+			
 			
 			// gnir
+			stamm = "gn";
 			// infinitiv
 			addVF("gnir", "V_GVRB");
 			// Partizip
@@ -1059,23 +1065,15 @@ public class Puter_VFGenerator {
 			addVF("vè'm", "V_GVRB");addVF("vè'ns", "V_GVRB");
 			// Indikativ Präsens
 			addVF("vegn", "V_GVRB");addVF("vest", "V_GVRB");addVF("vo", "V_GVRB");addVF("giains", "V_GVRB");addVF("giais", "V_GVRB");addVF("vaun", "V_GVRB");
-			// Indikativ Imperfekt
-			stamm = "gniv";
-			addVF(stamm + "a", "V_GVRB");addVF(stamm + "ast", "V_GVRB");addVF(stamm + "ans", "V_GVRB");addVF(stamm + "as", "V_GVRB");addVF(stamm + "an", "V_GVRB");	
-			// Indikativ passo definieu
-			stamm = "gni";
-			addVF(stamm + "t", "V_GVRB");addVF(stamm + "ttast", "V_GVRB");addVF(stamm + "ttans", "V_GVRB");addVF(stamm + "ttas", "V_GVRB");addVF(stamm + "ttan", "V_GVRB");
+			// Indikativ Imperfekt - regelmäßig
+			// Indikativ passo definieu - regelmäßig
 			// Indikativ Futur I
-			stamm = "gnar";
-			addVF(stamm + "o", "V_GVRB");addVF(stamm + "ost", "V_GVRB");addVF(stamm + "ons", "V_GVRB");	addVF(stamm + "os", "V_GVRB");addVF(stamm + "on", "V_GVRB");
+			addIndikativFuturI("gn", VerbClass.ER, "V_GVRB");
 			// Indikativ futur dubitativ
-			stamm = "gna";
-			addVF(stamm + "regia", "V_GVRB");addVF(stamm + "regiast", "V_GVRB");addVF(stamm + "regians", "V_GVRB");addVF(stamm + "regias", "V_GVRB");addVF(stamm + "regian", "V_GVRB");
+			addIndikativFuturDubitativ("gn", VerbClass.ER, "V_GVRB");
 			// Konjunktiv Präsens
-			addVF("vegna", "V_GVRB");addVF("vegnast", "V_GVRB");addVF("vegnans", "V_GVRB");addVF("vegnas", "V_GVRB");
-			// Konjunktiv Imperfekt
-			stamm = "gni";
-			addVF(stamm + "ss", "V_GVRB");addVF(stamm + "ssast", "V_GVRB");addVF(stamm + "ssans", "V_GVRB");addVF(stamm + "ssas", "V_GVRB");addVF(stamm + "ssan", "V_GVRB");
+			addKonjunktivPraesens("vegn", VerbClass.ER, "V_GVRB");
+			// Konjunktiv Imperfekt - regelmäßig
 			
 			
 			// der
@@ -1092,22 +1090,12 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("dun", "V_GVRB");addVF("dest", "V_GVRB");addVF("do", "V_GVRB");addVF("dains", "V_GVRB");addVF("dais", "V_GVRB");addVF("daun", "V_GVRB");
 			// Indikativ Imperfekt
-			stamm = "daiv";
-			addVF(stamm + "a", "V_GVRB");addVF(stamm + "ast", "V_GVRB");addVF(stamm + "ans", "V_GVRB");addVF(stamm + "as", "V_GVRB");addVF(stamm + "an", "V_GVRB");	
 			// Indikativ passo definieu
-			stamm = "de";
-			addVF(stamm + "t", "V_GVRB");addVF(stamm + "ttast", "V_GVRB");addVF(stamm + "ttans", "V_GVRB");addVF(stamm + "ttas", "V_GVRB");addVF(stamm + "ttan", "V_GVRB");
 			// Indikativ Futur I
-			stamm = "dar";
-			addVF(stamm + "o", "V_GVRB");addVF(stamm + "ost", "V_GVRB");addVF(stamm + "ons", "V_GVRB");	addVF(stamm + "os", "V_GVRB");addVF(stamm + "on", "V_GVRB");
 			// Indikativ futur dubitativ
-			stamm = "da";
-			addVF(stamm + "regia", "V_GVRB");addVF(stamm + "regiast", "V_GVRB");addVF(stamm + "regians", "V_GVRB");addVF(stamm + "regias", "V_GVRB");addVF(stamm + "regian", "V_GVRB");
 			// Konjunktiv Präsens
-			addVF("detta", "V_GVRB");addVF("dettast", "V_GVRB");addVF("dettans", "V_GVRB");addVF("dettas", "V_GVRB");
-			// Konjunktiv Imperfekt
-			stamm = "de";
-			addVF(stamm + "ss", "V_GVRB");addVF(stamm + "ssast", "V_GVRB");addVF(stamm + "ssans", "V_GVRB");addVF(stamm + "ssas", "V_GVRB");addVF(stamm + "ssan", "V_GVRB");
+			addKonjunktivPraesens("dett", VerbClass.ER, "V_GVRB");
+			// Konjunktiv Imperfekt -- alle regelmäßig
 			
 			// dir
 			// infinitiv
@@ -1123,22 +1111,18 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("di", "V_GVRB");addVF("dist", "V_GVRB");addVF("disch", "V_GVRB");addVF("dschains", "V_GVRB");addVF("dschais", "V_GVRB");addVF("dian", "V_GVRB");
 			// Indikativ Imperfekt
-			stamm = "dschaiv";
-			addVF(stamm + "a", "V_GVRB");addVF(stamm + "ast", "V_GVRB");addVF(stamm + "ans", "V_GVRB");addVF(stamm + "as", "V_GVRB");addVF(stamm + "an", "V_GVRB");	
+			stamm = "dsch";
+			addIndikativImperfekt(stamm, VerbClass.ER, "V_GVRB");
 			// Indikativ passo definieu
-			stamm = "dsche";
-			addVF(stamm + "t", "V_GVRB");addVF(stamm + "ttast", "V_GVRB");addVF(stamm + "ttans", "V_GVRB");addVF(stamm + "ttas", "V_GVRB");addVF(stamm + "ttan", "V_GVRB");
+			addIndikativPassoDefinieu(stamm, VerbClass.ER, "V_GVRB");
 			// Indikativ Futur I
-			stamm = "dschar";
-			addVF(stamm + "o", "V_GVRB");addVF(stamm + "ost", "V_GVRB");addVF(stamm + "ons", "V_GVRB");	addVF(stamm + "os", "V_GVRB");addVF(stamm + "on", "V_GVRB");
+			addIndikativFuturI(stamm, VerbClass.ER, "V_GVRB");
 			// Indikativ futur dubitativ
-			stamm = "dscha";
-			addVF(stamm + "regia", "V_GVRB");addVF(stamm + "regiast", "V_GVRB");addVF(stamm + "regians", "V_GVRB");addVF(stamm + "regias", "V_GVRB");addVF(stamm + "regian", "V_GVRB");
+			addIndikativFuturDubitativ(stamm, VerbClass.ER, "V_GVRB");
 			// Konjunktiv Präsens
-			addVF("dia", "V_GVRB");addVF("diast", "V_GVRB");addVF("dians", "V_GVRB");addVF("dias", "V_GVRB");
+			addKonjunktivPraesens("di", VerbClass.ER, "V_GVRB");
 			// Konjunktiv Imperfekt
-			stamm = "dsche";
-			addVF(stamm + "ss", "V_GVRB");addVF(stamm + "ssast", "V_GVRB");addVF(stamm + "ssans", "V_GVRB");addVF(stamm + "ssas", "V_GVRB");addVF(stamm + "ssan", "V_GVRB");
+			addKonjunktivImperfekt(stamm, VerbClass.ER, "V_GVRB");
 			
 			// modale Verben
 			
@@ -1156,22 +1140,12 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("fatsch", "V_MOD");addVF("fest", "V_MOD");addVF("fo", "V_MOD");addVF("fains", "V_MOD");addVF("fais", "V_MOD");addVF("faun", "V_MOD");
 			// Indikativ Imperfekt
-			stamm = "faiv";
-			addVF(stamm + "a", "V_MOD");addVF(stamm + "ast", "V_MOD");addVF(stamm + "ans", "V_MOD");addVF(stamm + "as", "V_MOD");addVF(stamm + "an", "V_MOD");	
 			// Indikativ passo definieu
-			stamm = "fe";
-			addVF(stamm + "t", "V_MOD");addVF(stamm + "ttast", "V_MOD");addVF(stamm + "ttans", "V_MOD");addVF(stamm + "ttas", "V_MOD");addVF(stamm + "ttan", "V_MOD");
 			// Indikativ Futur I
-			stamm = "far";
-			addVF(stamm + "o", "V_MOD");addVF(stamm + "ost", "V_MOD");addVF(stamm + "ons", "V_MOD");	addVF(stamm + "os", "V_MOD");addVF(stamm + "on", "V_MOD");
 			// Indikativ futur dubitativ
-			stamm = "fa";
-			addVF(stamm + "regia", "V_MOD");addVF(stamm + "regiast", "V_MOD");addVF(stamm + "regians", "V_MOD");addVF(stamm + "regias", "V_MOD");addVF(stamm + "regian", "V_MOD");
 			// Konjunktiv Präsens
-			addVF("fatscha", "V_MOD");addVF("fatschast", "V_MOD");addVF("fatschans", "V_MOD");addVF("fatschas", "V_MOD");
-			// Konjunktiv Imperfekt
-			stamm = "fe";
-			addVF(stamm + "ss", "V_MOD");addVF(stamm + "ssast", "V_MOD");addVF(stamm + "ssans", "V_MOD");addVF(stamm + "ssas", "V_MOD");addVF(stamm + "ssan", "V_MOD");
+			addKonjunktivPraesens("fatsch", VerbClass.ER, "V_GVRB");
+			// Konjunktiv Imperfekt -- alle regelmäßig
 					
 			// vulair
 			// infinitiv
@@ -1185,23 +1159,12 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("vögl", "V_MOD");addVF("voust", "V_MOD");addVF("voul", "V_MOD");addVF("vulains", "V_MOD");addVF("vulais", "V_MOD");addVF("vöglian", "V_MOD");
 			// Indikativ Imperfekt
-			stamm = "vulaiv";
-			addVF(stamm + "a", "V_MOD");addVF(stamm + "ast", "V_MOD");addVF(stamm + "ans", "V_MOD");addVF(stamm + "as", "V_MOD");addVF(stamm + "an", "V_MOD");	
 			// Indikativ passo definieu
-			stamm = "vule";
-			addVF(stamm + "t", "V_MOD");addVF(stamm + "ttast", "V_MOD");addVF(stamm + "ttans", "V_MOD");addVF(stamm + "ttas", "V_MOD");addVF(stamm + "ttan", "V_MOD");
 			// Indikativ Futur I
-			stamm = "vular";
-			addVF(stamm + "o", "V_MOD");addVF(stamm + "ost", "V_MOD");addVF(stamm + "ons", "V_MOD");	addVF(stamm + "os", "V_MOD");addVF(stamm + "on", "V_MOD");
 			// Indikativ futur dubitativ
-			stamm = "vula";
-			addVF(stamm + "regia", "V_MOD");addVF(stamm + "regiast", "V_MOD");addVF(stamm + "regians", "V_MOD");addVF(stamm + "regias", "V_MOD");addVF(stamm + "regian", "V_MOD");
 			// Konjunktiv Präsens
-			addVF("vöglia","V_MOD");addVF("vögliast", "V_MOD");addVF("vöglians", "V_MOD");addVF("vöglias", "V_MOD");
-			// Konjunktiv Imperfekt
-			stamm = "vule";
-			addVF(stamm + "ss", "V_MOD");addVF(stamm + "ssast", "V_MOD");addVF(stamm + "ssans", "V_MOD");addVF(stamm + "ssas", "V_MOD");addVF(stamm + "ssan", "V_MOD");
-			
+			addKonjunktivPraesens("vögli", VerbClass.AIR, "V_GVRB");
+			// Konjunktiv Imperfekt -- alle regelmäßig
 			
 			// pudair
 			// infinitiv
@@ -1215,23 +1178,12 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("poss", "V_MOD");addVF("poust", "V_MOD");addVF("po", "V_MOD");addVF("pudains", "V_MOD");addVF("pudais", "V_MOD");addVF("paun", "V_MOD");
 			// Indikativ Imperfekt
-			stamm = "pudaiv";
-			addVF(stamm + "a", "V_MOD");addVF(stamm + "ast", "V_MOD");addVF(stamm + "ans", "V_MOD");addVF(stamm + "as", "V_MOD");addVF(stamm + "an", "V_MOD");	
 			// Indikativ passo definieu
-			stamm = "pude";
-			addVF(stamm + "t", "V_MOD");addVF(stamm + "ttast", "V_MOD");addVF(stamm + "ttans", "V_MOD");addVF(stamm + "ttas", "V_MOD");addVF(stamm + "ttan", "V_MOD");
 			// Indikativ Futur I
-			stamm = "pudar";
-			addVF(stamm + "o", "V_MOD");addVF(stamm + "ost", "V_MOD");addVF(stamm + "ons", "V_MOD");	addVF(stamm + "os", "V_MOD");addVF(stamm + "on", "V_MOD");
 			// Indikativ futur dubitativ
-			stamm = "puda";
-			addVF(stamm + "regia", "V_MOD");addVF(stamm + "regiast", "V_MOD");addVF(stamm + "regians", "V_MOD");addVF(stamm + "regias", "V_MOD");addVF(stamm + "regian", "V_MOD");
 			// Konjunktiv Präsens
-			addVF("possa","V_MOD");addVF("possast", "V_MOD");addVF("possans", "V_MOD");addVF("possas", "V_MOD");
-			// Konjunktiv Imperfekt
-			stamm = "pude";
-			addVF(stamm + "ss", "V_MOD");addVF(stamm + "ssast", "V_MOD");addVF(stamm + "ssans", "V_MOD");addVF(stamm + "ssas", "V_MOD");addVF(stamm + "ssan", "V_MOD");
-			
+			addKonjunktivPraesens("poss", VerbClass.AIR, "V_GVRB");
+			// Konjunktiv Imperfekt -- alle regelmäßig
 			
 			// stuvair
 			stamm = "stuv";
@@ -1246,23 +1198,12 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("stögl", "V_MOD");addVF("stust", "V_MOD");addVF("stu", "V_MOD");addVF("stuains", "V_MOD");addVF("stuvais", "V_MOD");addVF("stöglian", "V_MOD");
 			// Indikativ Imperfekt
-			stamm = "stuvaiv";
-			addVF(stamm + "a", "V_MOD");addVF(stamm + "ast", "V_MOD");addVF(stamm + "ans", "V_MOD");addVF(stamm + "as", "V_MOD");addVF(stamm + "an", "V_MOD");	
 			// Indikativ passo definieu
-			stamm = "stuve";
-			addVF(stamm + "t", "V_MOD");addVF(stamm + "ttast", "V_MOD");addVF(stamm + "ttans", "V_MOD");addVF(stamm + "ttas", "V_MOD");addVF(stamm + "ttan", "V_MOD");
 			// Indikativ Futur I
-			stamm = "stuvar";
-			addVF(stamm + "o", "V_MOD");addVF(stamm + "ost", "V_MOD");addVF(stamm + "ons", "V_MOD");	addVF(stamm + "os", "V_MOD");addVF(stamm + "on", "V_MOD");
 			// Indikativ futur dubitativ
-			stamm = "stuva";
-			addVF(stamm + "regia", "V_MOD");addVF(stamm + "regiast", "V_MOD");addVF(stamm + "regians", "V_MOD");addVF(stamm + "regias", "V_MOD");addVF(stamm + "regian", "V_MOD");
 			// Konjunktiv Präsens
-			addVF("stöglia","V_MOD");addVF("stögliast", "V_MOD");addVF("stöglians", "V_MOD");addVF("stöglias", "V_MOD");
-			// Konjunktiv Imperfekt
-			stamm = "stuve";
-			addVF(stamm + "ss", "V_MOD");addVF(stamm + "ssast", "V_MOD");addVF(stamm + "ssans", "V_MOD");addVF(stamm + "ssas", "V_MOD");addVF(stamm + "ssan", "V_MOD");
-						
+			addKonjunktivPraesens("stögli", VerbClass.AIR, "V_GVRB");
+			// Konjunktiv Imperfekt -- alle regelmäßig
 			
 			// savair
 			stamm = "sav";
@@ -1277,22 +1218,12 @@ public class Puter_VFGenerator {
 			// Indikativ Präsens
 			addVF("se", "V_MOD");addVF("sest", "V_MOD");addVF("so", "V_MOD");addVF(stamm+"ains", "V_MOD");addVF(stamm+"ais", "V_MOD");addVF("saun", "V_MOD");
 			// Indikativ Imperfekt
-			stamm = "savaiv";
-			addVF(stamm + "a", "V_MOD");addVF(stamm + "ast", "V_MOD");addVF(stamm + "ans", "V_MOD");addVF(stamm + "as", "V_MOD");addVF(stamm + "an", "V_MOD");	
 			// Indikativ passo definieu
-			stamm = "save";
-			addVF(stamm + "t", "V_MOD");addVF(stamm + "ttast", "V_MOD");addVF(stamm + "ttans", "V_MOD");addVF(stamm + "ttas", "V_MOD");addVF(stamm + "ttan", "V_MOD");
 			// Indikativ Futur I
-			stamm = "savar";
-			addVF(stamm + "o", "V_MOD");addVF(stamm + "ost", "V_MOD");addVF(stamm + "ons", "V_MOD");	addVF(stamm + "os", "V_MOD");addVF(stamm + "on", "V_MOD");
 			// Indikativ futur dubitativ
-			stamm = "sava";
-			addVF(stamm + "regia", "V_MOD");addVF(stamm + "regiast", "V_MOD");addVF(stamm + "regians", "V_MOD");addVF(stamm + "regias", "V_MOD");addVF(stamm + "regian", "V_MOD");
 			// Konjunktiv Präsens
-			addVF("sapcha","V_MOD");addVF("sapchast", "V_MOD");addVF("sapchans", "V_MOD");addVF("sapchas", "V_MOD");
-			// Konjunktiv Imperfekt
-			stamm = "save";
-			addVF(stamm + "ss", "V_MOD");addVF(stamm + "ssast", "V_MOD");addVF(stamm + "ssans", "V_MOD");addVF(stamm + "ssas", "V_MOD");addVF(stamm + "ssan", "V_MOD");
+			addKonjunktivPraesens("sapch", VerbClass.AIR, "V_GVRB");
+			// Konjunktiv Imperfekt -- alle regelmäßig
 			
 			// dovair
 			// Indikativ Präsens
@@ -1307,60 +1238,60 @@ public class Puter_VFGenerator {
 			addVF("soula", "V_GVRB");addVF("soulast", "V_GVRB");addVF("soulans", "V_GVRB");addVF("soulas", "V_GVRB");addVF("soulan", "V_GVRB");addVF("solaivan", "V_GVRB");
 			
 			
-//			// Verben mit Spezialendung
-//			
-//			//dür
-//			//adür
-//			dür("a");
-//			//ardüer
-//			dür("ar");
-//			//condüer
-//			dür("con");
-//			// dedüer
-//			dür("de");
-//			// introdüer
-//			dür("intro");
-//			// prodüer
-//			dür("pro");
-//			// redüer
-//			dür("re");
-//			// reintrodüer
-//			dür("reintro");
-//			// reprodüer
-//			dür("repro");
-//			// tradüer
-//			dür("tra");
-//			
-//			// drür
-//			// desdrür
-//			drueer("des");
-//			
+			// Verben mit Spezialendung
+			
+			//dür
+			//adür
+			dür("a");
+			//ardüer
+			dür("ar");
+			//condüer
+			dür("con");
+			// dedüer
+			dür("de");
+			// introdüer
+			dür("intro");
+			// prodüer
+			dür("pro");
+			// redüer
+			dür("re");
+			// reintrodüer
+			dür("reintro");
+			// reprodüer
+			dür("repro");
+			// tradüer
+			dür("tra");
+			
+			// drür
+			// desdrür
+			drueer("des");
+			
 		}
-//		
-//		private void dür(String prefix) {
-//			String stamm = "dür";
-//			//infinitiv
-//			addVF(prefix+"dür", "V_GVRB");
-//			//partizip
-//			addPartizip(stamm, VerbClass.ER);
-//			//gerundium
-//			addGerundium(stamm, VerbClass.ER, "V_GVRB");
-//			//Imperativ
-//			addVF(prefix+"via", "V_GVRB");addImperativ(stamm, VerbClass.ER, "V_GVRB");
-//			//Indikativ Präsens
-//			addVF(prefix+"vignt", "V_GVRB");addVF(prefix+"vegn", "V_GVRB");addVF(prefix+"veans", "V_GVRB");addVF(prefix+"vean", "V_GVRB");addVF(stamm+"agn", "V_GVRB");addVF(stamm+"ez", "V_GVRB");addVF(prefix+"vignan", "V_GVRB");addVF(prefix+"vegnan", "V_GVRB");
-//			//Indikativ Imperfekt
-//			addIndikativImperfekt(stamm, VerbClass.ER, "V_GVRB");
-//			//Konjunktiv Präsens
-//			addVF(prefix+"vigni", "V_GVRB");addVF(prefix+"vignias", "V_GVRB");addVF(prefix+"vignas", "V_GVRB");addVF(stamm+"eian", "V_GVRB");addVF(stamm+"eias", "V_GVRB");addVF(stamm+"evan", "V_GVRB");
-//			//Konjunktiv Imperfekt
-//			addKonjunktivImperfekt(stamm, VerbClass.ER, "V_GVRB");
-//		}
-//		
-//		private void drueer(String prefix) {
-//			// 1 Ps Sg Indikativ Präsens
-//			addVF(prefix+"drüj", "V_GVRB");
-//		}
+		
+		private void dür(String prefix) {
+			String stamm = "dür";
+			//infinitiv
+			addVF(prefix+"dür", "V_GVRB");
+			//partizip
+			addPartizip(stamm, VerbClass.ER);
+			//gerundium
+			addGerundium(stamm, VerbClass.ER, "V_GVRB");
+			//Imperativ
+			addVF(prefix+"via", "V_GVRB");addImperativ(stamm, VerbClass.ER, "V_GVRB");
+			//Indikativ Präsens
+			addVF(prefix+"vignt", "V_GVRB");addVF(prefix+"vegn", "V_GVRB");addVF(prefix+"veans", "V_GVRB");addVF(prefix+"vean", "V_GVRB");addVF(stamm+"agn", "V_GVRB");addVF(stamm+"ez", "V_GVRB");addVF(prefix+"vignan", "V_GVRB");addVF(prefix+"vegnan", "V_GVRB");
+			//Indikativ Imperfekt
+			addIndikativImperfekt(stamm, VerbClass.ER, "V_GVRB");
+			//Konjunktiv Präsens
+			addVF(prefix+"vigni", "V_GVRB");addVF(prefix+"vignias", "V_GVRB");addVF(prefix+"vignas", "V_GVRB");addVF(stamm+"eian", "V_GVRB");addVF(stamm+"eias", "V_GVRB");addVF(stamm+"evan", "V_GVRB");
+			//Konjunktiv Imperfekt
+			addKonjunktivImperfekt(stamm, VerbClass.ER, "V_GVRB");
+		}
+		
+		private void drueer(String prefix) {
+			// 1 Ps Sg Indikativ Präsens
+			addVF(prefix+"drüj", "V_GVRB");
+		}
 		
 		private boolean startsWithVocal(String inf) {
 			switch (inf.substring(0, 1)) {
