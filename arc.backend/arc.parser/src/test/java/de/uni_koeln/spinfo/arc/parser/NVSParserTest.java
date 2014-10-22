@@ -35,7 +35,6 @@ public class NVSParserTest {
 	@Test
 	public void testGetLemmas() throws IOException {
 
-		
 		String dbName = "";
 		String collectionName = "";
 
