@@ -25,6 +25,7 @@ public class NVSParser {
 
 		for (DBObject o : lemmasFromMongo) {
 
+			
 			String lemma = (String) o.get("entry");
 			BasicDBObject pos = (BasicDBObject) o.get("pos");
 			String nvs_pos = (String) pos.get("nvs_pos");
