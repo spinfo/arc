@@ -16,7 +16,7 @@ bin/
 .gwt/
 .metadata/
 
-RemoteSystemsTempFiles/
+/RemoteSystemsTempFiles
 
 
 # Intellij
