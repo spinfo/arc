@@ -1,8 +1,10 @@
 package de.uni_koeln.spinfo.arc.annotator;
 
 import com.mongodb.*;
+
 import de.uni_koeln.spinfo.arc.common.DictUtils;
 import de.uni_koeln.spinfo.arc.generator.Sursilvan_VFGenerator;
+
 import org.bson.types.ObjectId;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -26,27 +28,54 @@ public class ARCMapperTest {
 
 	}
 
+
+	// To use with SursilvanTest.java
 	@Test
-	public void testTagIdiomWithChapterInfo() {
+	public void testGetTokensfromXII() throws IOException {
 
-		DBCollection chapter = db.getCollection("chapter");
-		DBCollection language = db.getCollection("language");
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		DB db = mongoClient.getDB("arc");
+		DBCollection collection = db.getCollection("word");
 
-		Map<Long, Long> intervals = new HashMap<>();
+		DBObject rangeXII = new BasicDBObject("word_index", new BasicDBObject(
+				"$gt", 2531717).append("$lt", 2629575));
 
-		intervals.put(61L, 0L);
+		DBCursor cursor = collection.find(rangeXII);
+		List<String> last_forms_tokens = new ArrayList<>();
+		Set<String> last_forms_types = new TreeSet<>();
 
-		mapper.tagIdiomWithChapterInfo(chapter, language, intervals,
-				"sursilvan");
+		for (DBObject obj : cursor) {
+
+			ArrayList<BasicDBObject> mods = (ArrayList<BasicDBObject>) obj
+					.get("modifications");
+
+			BasicDBObject lastMod = mods.get(0);
+
+			String lastForm = (String) lastMod.get("form");
+
+			// lastForm = lastForm.replaceAll("[^\\p{L}]", "");
+
+			last_forms_types.add(lastForm);
+			// last_forms_tokens.add(lastForm);
+
+		}
+
+		DictUtils.printSet(last_forms_types, "../arc.data/testdata/",
+				"XII_types-20140804_nc");
+		// DictUtils.printList(last_forms_tokens, "../arc.data/","XII_tokens");
 
 	}
 
 	@Test
 	public void testGetlastModifications() throws IOException {
-		DBCollection arcCollection = db.getCollection("arc_sursilvan");
+		DBCollection arcCollection = db.getCollection("surtest_pure");
+
+		System.out.println(arcCollection.getStats());
 
 		Map<ObjectId, String> mods = mapper.getlastModifications(arcCollection,
-				"sursilvan");
+				"all");
+
+		System.out.println(mods.size());
 
 		List<String> listmods = new LinkedList<>();
 
@@ -56,8 +85,7 @@ public class ARCMapperTest {
 
 		}
 
-		DictUtils.printList(listmods, "/Users/franciscomondaca/Desktop/",
-				"sursilvan_tokens");
+		DictUtils.printList(listmods, "../arc.data/testdata/", "sursilvan_XII");
 
 	}
 
@@ -106,7 +134,7 @@ public class ARCMapperTest {
 		Map<ObjectId, TreeSet<String>> matchPOS = mapper.matchPOS(lastMods, vf);
 
 		// to TXT
-		DictUtils.printMap(matchPOS, "/Users/franciscomondaca/Desktop/",
+		DictUtils.printMap(matchPOS, "./arc.data/testdata/",
 				"matchPOS_NVS_VFGenerator");
 
 	}
@@ -118,7 +146,7 @@ public class ARCMapperTest {
 		DBCollection collection = db.getCollection("surtest_metadata_copy");
 
 		Map<ObjectId, TreeSet<String>> posMap = mapper
-				.getPOSfromTXT("/Users/franciscomondaca/Desktop/matchPOS.txt");
+				.getPOSfromTXT("./arc.data/testdata/matchPOS.txt");
 
 		// insert POS_Info to the collection
 		mapper.insertPOS(collection, posMap);
@@ -133,8 +161,8 @@ public class ARCMapperTest {
 
 		Map<ObjectId, String> entriesWithoutPOS = mapper
 				.getEntriesWithoutPOS(collection);
-		DictUtils.printMap(entriesWithoutPOS,
-				"/Users/franciscomondaca/Desktop/", "entriesWithoutPOS");
+		DictUtils.printMap(entriesWithoutPOS, "./arc.data/testdata/",
+				"entriesWithoutPOS");
 
 	}
 
@@ -142,14 +170,15 @@ public class ARCMapperTest {
 	@Test
 	public void countGenForms() throws IOException {
 
-		DBCollection arc_collection = db.getCollection("surtest_metadata_copy");
+		// DBCollection arc_collection =
+		// db.getCollection("surtest_metadata_copy");
 		DBCollection nvs_collection = db.getCollection("nvs_antlr4");
 
 		Sursilvan_VFGenerator vfg = new Sursilvan_VFGenerator();
 		Map<String, TreeSet<String>> vf = vfg.generateVollForms(nvs_collection);
 		System.out.println(vf.size());
 
-		DictUtils.printMap(vf, "/Users/franciscomondaca/Desktop/", "vfg");
+		DictUtils.printMap(vf, "./arc.data/testdata/", "vfg");
 
 	}
 
@@ -162,100 +191,39 @@ public class ARCMapperTest {
 		Map<String, Integer> countPOS = DictUtils.countPOS(collection,
 				"nvs_pos");
 
-		DictUtils.printMap(countPOS, "/Users/franciscomondaca/Desktop/",
-				"antlr4_pos");
+		DictUtils.printMap(countPOS, "./arc.data/testdata/", "antlr4_pos");
 
 	}
-
+	
+	@Ignore
 	@Test
-	public void testTagIdiom() {
+	public void testTagIdiomWithChapterInfo() {
 
-		// arc_sursilvan
-		DBCollection arcCollection = db.getCollection("arc_sursilvan_copy");
+		DBCollection chapter = db.getCollection("chapter");
+		DBCollection language = db.getCollection("language");
 
-		Map<String, Map<Integer, Integer>> sursilvan = new HashMap<>();
+		Map<Long, Long> intervals = new HashMap<>();
 
-		Map<Integer, Integer> sursilvan_I = new HashMap<>();
+		intervals.put(61L, 0L);
 
-		sursilvan_I.put(1, 278);
-		sursilvan_I.put(285, 298);
-		sursilvan_I.put(302, 306);
-		sursilvan_I.put(310, 329);
-		sursilvan_I.put(346, 348);
-		sursilvan_I.put(353, 370);
-		sursilvan_I.put(373, 514);
-		sursilvan_I.put(518, 598);
-		sursilvan_I.put(606, 774);
-		sursilvan_I.put(784, 797);
-		sursilvan_I.put(807, 821);
-
-		Map<Integer, Integer> sursilvan_II = new HashMap<Integer, Integer>();
-		sursilvan_II.put(1, 278);
-		sursilvan_II.put(283, 344);
-		sursilvan_II.put(346, 349);
-		sursilvan_II.put(353, 354);
-		sursilvan_II.put(361, 366);
-		sursilvan_II.put(379, 385);
-		sursilvan_II.put(388, 392);
-		sursilvan_II.put(399, 473);
-		sursilvan_II.put(474, 487);
-		sursilvan_II.put(489, 509);
-		// Aufpassen -auch sutselvisch (512-513)-
-		sursilvan_II.put(512, 526);
-		sursilvan_II.put(568, 569);
-		sursilvan_II.put(573, 578);
-		sursilvan_II.put(585, 592);
-		sursilvan_II.put(594, 617);
-		sursilvan_II.put(625, 696);
-
-		// Lieder
-		Map<Integer, Integer> sursilvan_III = new HashMap<Integer, Integer>();
-		sursilvan_III.put(1, 30);
-
-		Map<Integer, Integer> sursilvan_IV = new HashMap<Integer, Integer>();
-		sursilvan_IV.put(17, 426);
-		sursilvan_IV.put(426, 736);
-		sursilvan_IV.put(974, 1019);
-
-		Map<Integer, Integer> sursilvan_XII = new HashMap<Integer, Integer>();
-		sursilvan_XII.put(1, 327);
-
-		Map<Integer, Integer> sursilvan_XIII = new HashMap<Integer, Integer>();
-		sursilvan_XIII.put(18, 111);
-		sursilvan_XIII.put(114, 114);
-		sursilvan_XIII.put(123, 148);
-		sursilvan_XIII.put(150, 157);
-		sursilvan_XIII.put(176, 213);
-		sursilvan_XIII.put(215, 219);
-		sursilvan_XIII.put(222, 225);
-		sursilvan_XIII.put(229, 238);
-		sursilvan_XIII.put(242, 244);
-
-		sursilvan.put("I", sursilvan_I);
-		sursilvan.put("II", sursilvan_II);
-		sursilvan.put("III", sursilvan_III);
-		sursilvan.put("IV", sursilvan_IV);
-		sursilvan.put("XII", sursilvan_XII);
-		sursilvan.put("XIII", sursilvan_XIII);
-
-		mapper.tagIdiomAllEntries(arcCollection, "sursilvan", sursilvan);
-
-		// mapper.tagIdiomPerWord(arcCollection, "sursilvan", "I", sursilvan_I);
+		mapper.tagIdiomWithChapterInfo(chapter, language, intervals,
+				"sursilvan");
 
 	}
 
+	@Ignore
 	@Test
 	public void getDiffWordDiffs() throws IOException {
 
 		DBCollection arc_sursilvan = db.getCollection("arc_sursilvan");
 		DBCollection word = db.getCollection("word");
 
-		File file = new File("/Users/franciscomondaca/Desktop/toCompare.txt");
+		File file = new File("./arc.data/testdata/toCompare.txt");
 		FileReader in = new FileReader(file);
 		BufferedReader br = new BufferedReader(in);
 
 		FileWriter writer = new FileWriter(
-				"/Users/franciscomondaca/Desktop/out.txt");
+				"./arc.data/testdata/sursilvan_diff.txt");
 		BufferedWriter out = new BufferedWriter(writer);
 
 		String l;
@@ -407,21 +375,17 @@ public class ARCMapperTest {
 
 		}
 
-		// if(coll1List.containsAll(coll2List)){
-		// System.out.println("boi");
-		// }
-
 		Collections.sort(coll1List);
 		Collections.sort(coll2List);
 
-		DictUtils.printList(coll1List, "/Users/franciscomondaca/Desktop/",
+		DictUtils.printList(coll1List, "./arc.data/testdata/",
 				"coll1List_sorted");
 
-		DictUtils.printList(coll2List, "/Users/franciscomondaca/Desktop/",
+		DictUtils.printList(coll2List, "./arc.data/testdata/",
 				"coll2List_sorted");
 
 		// coll1List.removeAll(coll2List);
-		// DictUtils.printList(coll1List, "/Users/franciscomondaca/Desktop/",
+		// DictUtils.printList(coll1List, "./arc.data/testdata/",
 		// "diffcoll");
 
 	}

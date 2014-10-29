@@ -31,7 +31,7 @@ public class ARCMapper {
             String lastMod = lm.getValue();
 
             // Remove punctuation from lastMod
-            lastMod = lastMod.replaceAll("\\W", "");
+            lastMod = lastMod.replaceAll("[^\\p{L}\\p{Nd}]", "");
 
             // Iterate through the generated forms
             for (Map.Entry<String, TreeSet<String>> gf : generatedForms
@@ -207,7 +207,7 @@ public class ARCMapper {
             // System.out.println(arc_token);
 
             // Remove punctuation from it
-            String cleaned_token = arc_token.replaceAll("\\W", "");
+            String cleaned_token = arc_token.replaceAll("[^\\p{L}\\p{Nd}]", "");
 
             if (cleaned_token == null) {
                 continue;
