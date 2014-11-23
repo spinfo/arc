@@ -80,7 +80,7 @@ public interface IPosTags {
 
 	};
 
-	public static final String[] POS_SIGNORELLI = { "acad", "acc", "adj",
+	public static final String[] POS_SIGNORELL = { "acad", "acc", "adj",
 			"adm", "adv", "adv pron", "agr", "anat", "ant", "arch", "archeol",
 			"art", "art def", "art indef", "astrol", "astron", "aux", "av",
 			"bibl", "biol", "bot", "caus", "cd", "cf(-->)", "chem", "cid",
