@@ -3,7 +3,7 @@ package de.uni_koeln.spinfo.arc.generator;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import de.uni_koeln.spinfo.arc.tagger.ARCTagger;
+import de.uni_koeln.spinfo.arc.tagger.POSMatcher;
 import de.uni_koeln.spinfo.arc.tagger.SutsilvanTagger;
 import org.junit.Test;
 
@@ -77,10 +77,10 @@ public class SutsilvanTest {
         Map<String, TreeSet<String>> generatedVollForms = gen
                 .generateVollForms(collection);
         //create Tagger
-        ARCTagger tagger = new SutsilvanTagger(generatedVollForms, collection.getFullName());
+        POSMatcher tagger = new SutsilvanTagger(generatedVollForms, collection.getFullName());
         tagger.configure(new Boolean[]{true, true, true, true});
         tagger.testRecall(pathToFile, sutsTokens, 50);
-        Map<String, Set<String>> taggings = tagger.tag(sutsTokens);
+        Map<String, Set<String>> taggings = tagger.match(sutsTokens);
     }
 
 }
