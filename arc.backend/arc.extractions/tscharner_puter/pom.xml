@@ -11,5 +11,7 @@
 
     <artifactId>tscharner_puter</artifactId>
 
-
+    <modules>
+        <module>tscharner_puter.antlr4</module>
+    </modules>
 </project>

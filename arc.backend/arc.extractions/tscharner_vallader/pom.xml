@@ -11,5 +11,8 @@
 
     <artifactId>tscharner_vallader</artifactId>
 
+    <modules>
+        <module>tscharner_vallader.antlr4</module>
+    </modules>
 
 </project>
