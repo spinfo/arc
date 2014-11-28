@@ -47,9 +47,8 @@ public abstract class POSMatcher {
     private Map<String, TreeSet<String>> fullForms = new TreeMap<String, TreeSet<String>>();
     private String collectionName = null;
     boolean tagAdverbs, tagInfinitives, tagNames, tagIndImperfect;
-    boolean hasDot;
-    boolean dotInPreviousAndCurrent;
-    //boolean startOfSentence;
+    boolean currentDot;
+    boolean previousDot;
     int distanceToDot;
 
     /**
@@ -76,12 +75,9 @@ public abstract class POSMatcher {
      */
     public Map<String, Set<String>> match(List<String> tokens) {
         Map<String, Set<String>> matches = new LinkedHashMap<>();
-        this.hasDot = false;
-        this.dotInPreviousAndCurrent = false;
-        //this.startOfSentence = false;
-        distanceToDot = 0;
+        this.currentDot = false;
+        this.previousDot = false;
         for (String nextToken : tokens) {
-            //nextToken = prepareToken(nextToken);
             if (nextToken == null) continue;
             Set<String> tags = getPOS(nextToken);
             if (tags != null) {
@@ -97,7 +93,11 @@ public abstract class POSMatcher {
 
         token = prepareToken(token);
 
-        if (token == null) return null;
+        if (token == null) {
+            updateDots();
+            return null;
+        }
+
 
         Set<String> posSet = new TreeSet<String>();
 
@@ -109,12 +109,12 @@ public abstract class POSMatcher {
 
             if (checkIfOneLetterAndNoun(token, posSet)) {
 
-                checkIf();
+                updateDots();
                 return null;
 
             }
 
-            checkIf();
+            updateDots();
 
             return posSet;
 
@@ -135,13 +135,13 @@ public abstract class POSMatcher {
 
                 if (checkIfOneLetterAndNoun(toLowerCase, posSet)) {
 
-                    checkIf();
+                    updateDots();
 
                     return null;
 
                 }
 
-                checkIf();
+                updateDots();
 
                 return posSet;
 
@@ -157,64 +157,41 @@ public abstract class POSMatcher {
 
                     //If there is only one letter and wasn't already tagged || if it's a roman numeral
                     if (token.length() == 1 || token.matches("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")) {
-
+                        updateDots();
                         return null;
 
                     }
 
 
-                    if (hasDot) {
+                    if (currentDot && !previousDot) {
 
+                        posSet.add("NN_P" + " " + "current");
+                        currentDot = false;
+                        previousDot = true;
+                        return posSet;
 
-                        //In this token?
+                    }
 
-                        if (distanceToDot == 0) {
+                    if (currentDot && previousDot) {
 
-                            posSet.add("NN_P_DOT");
-                            //dotInPreviousAndCurrent= true;
-                            distanceToDot = 1;
-                            return posSet;
+                        posSet.add("NN" + " " + "current and previous");
+                        currentDot = false;
+                        previousDot = true;
+                        return posSet;
 
-                        }
+                    }
+                    if (!currentDot && previousDot) {
 
-                        // In the previous token
-                        else if (distanceToDot == 1) {
+                        posSet.add("NN" + " " + "previous");
+                        previousDot = false;
+                        return posSet;
 
-                            posSet.add("NN_1_DOT");
+                    }
 
-                            if (dotInPreviousAndCurrent) {
-                                dotInPreviousAndCurrent = false;
-                                distanceToDot = 0;
-                            } else {
-                                hasDot = false;
-                                distanceToDot = 0;
-                            }
+                    if (!currentDot && !previousDot) {
 
-
-                            return posSet;
-
-                        }
-
-
-                    } else if (!hasDot) {
-
-                        //In this token?
-                        if (distanceToDot == 0) {
-                            posSet.add("NN_P_NO");
-                            return posSet;
-
-                        }
-
-                        // In the previous token
-                        else if (distanceToDot == 1) {
-                            posSet.add("NN_NO");
-                            distanceToDot = 0;
-                            hasDot = false;
-                            return posSet;
-
-                        }
-
-
+                        posSet.add("NN_P" + " " + "nothing");
+                        return posSet;
                     }
 
 
@@ -226,12 +203,15 @@ public abstract class POSMatcher {
 
 
         //If lowercase and not found
-        else {
+        else
+
+        {
 
 
             if (tagNames) {
 
                 posSet.add("NN_3");
+                updateDots();
                 return posSet;
 
 
@@ -243,18 +223,21 @@ public abstract class POSMatcher {
                         || token.endsWith("er")) {
 
                     posSet.add("V_GVRB");
+                    updateDots();
                     return posSet;
                 }
             }
             if (tagAdverbs) {
                 if (isAdverb(token)) {
                     posSet.add("ADV");
+                    updateDots();
                     return posSet;
                 }
             }
             if (tagIndImperfect) {
                 if (isIndImperfect(token)) {
                     posSet.add("V_GVRB");
+                    updateDots();
                     return posSet;
                 }
             }
@@ -269,16 +252,18 @@ public abstract class POSMatcher {
     private String prepareToken(String token) {
 
         //If there is actually no token
-        if (token.length() < 1)
+        if (token.length() < 1) {
+            updateDots();
             return null;
-
+        }
         //Remove all but chars
         token = removeEverythingButChars(token);
 
         //If there is no token left
-        if (token.length() < 1)
+        if (token.length() < 1) {
+            updateDots();
             return null;
-
+        }
 
         return token;
     }
@@ -293,30 +278,11 @@ public abstract class POSMatcher {
 
         if (m.find()) {
 
-            hasDot = true;
-
-            //If there was also a dot in the previous token
-            if (distanceToDot == 1) {
-
-                distanceToDot = 1;
-                dotInPreviousAndCurrent = true;
-
-
-            } else {
-                distanceToDot = 0;
-            }
+            currentDot = true;
 
         } else {
 
-            //If it was found in the previous token
-//            if (hasDot) {
-//                hasDot = true;
-//                distanceToDot = 1;
-//            } else {
-//                hasDot = false;
-//                distanceToDot = 0;
-//            }
-
+            currentDot = false;
         }
 
         //Remove everything but letters
@@ -330,26 +296,19 @@ public abstract class POSMatcher {
     }
 
 
-    void checkIf() {
-        if (hasDot) {
+    void updateDots() {
 
-            //In this token
-            if (distanceToDot == 0) {
+        if (currentDot) {
 
-                distanceToDot = 1;
+            currentDot = false;
+            previousDot = true;
 
-
-            }
-            // In the previous one
-            else if (distanceToDot == 1) {
-
-                distanceToDot = 0;
-                hasDot = false;
-
-            }
-
+        } else {
+            currentDot = false;
+            previousDot = false;
 
         }
+
 
     }
 
@@ -397,7 +356,7 @@ public abstract class POSMatcher {
         Map<String, Integer> missedTypes = new HashMap<String, Integer>();
         Map<String, Integer> allMissedTypes = new HashMap<String, Integer>();
 
-        hasDot = false;
+        currentDot = false;
 
         for (String nextToken : tokens) {
             nextToken = prepareToken(nextToken);

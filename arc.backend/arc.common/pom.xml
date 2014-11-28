@@ -17,7 +17,7 @@
 
 	<build>
 
-		<testSourceDirectory>/src/test/java</testSourceDirectory>
+		<!--<testSourceDirectory>/src/test/java</testSourceDirectory>-->
 		<sourceDirectory>/src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
