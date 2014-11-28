@@ -187,30 +187,26 @@ public class SursilvanTest {
     public void testRemoveEverythingButChars() {
 
 
-        String token = "sfklvjdf v-csdcs.";
+        String token = "Rhätorom.";
 
         Pattern p = Pattern.compile("\\p{P}$");
         Matcher m = p.matcher(token);
 
 
-//        if (m.find()) {
-//            startOfSentence = true;
+        if (m.find()) {
+            System.out.println("test");
+
+        }
+
+//        //Remove everything but letters
+//        token = token.replaceAll("\\P{L}", "");
 //
-//        }
-
-        //Remove everything but letters
-        token = token.replaceAll("\\P{L}", "");
-
-        // Remove whitespaces on the borders
-        token = token.replaceAll("^\\s+|\\s+$", "");
+//        // Remove whitespaces on the borders
+//        token = token.replaceAll("^\\s+|\\s+$", "");
 
 
-       // if (token.equals("")) {
 
-//            System.out.println("yep");
-//            System.out.println(token.length());
-        //}
-        System.out.println(token);
+     //   System.out.println(token);
 
 
     }

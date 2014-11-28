@@ -2,11 +2,7 @@ package de.uni_koeln.spinfo.arc.parser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.mongodb.BasicDBObject;
@@ -27,18 +23,19 @@ public class NVSParser {
 
 			String lemma = (String) o.get("entry");
 			BasicDBObject pos = (BasicDBObject) o.get("pos");
-			String nvs_pos = (String) pos.get("nvs_pos");
+			String required_pos = (String) pos.get("eagles_pos");
 
 			Set<String> pos_set;
 
 			if (lemmas.get(lemma) == null) {
 				pos_set = new CopyOnWriteArraySet<String>();
-				pos_set.add(nvs_pos);
+				//pos_set = new HashSet<>();
+				pos_set.add(required_pos);
 				lemmas.put(lemma, pos_set);
 
 			} else {
 				pos_set = lemmas.get(lemma);
-				pos_set.add(nvs_pos);
+				pos_set.add(required_pos);
 				lemmas.put(lemma, pos_set);
 
 			}

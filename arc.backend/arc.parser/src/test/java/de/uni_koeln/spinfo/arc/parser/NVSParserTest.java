@@ -36,18 +36,18 @@ public class NVSParserTest {
 	public void testGetLemmas() throws IOException {
 
 		
-		String dbName = "";
-		String collectionName = "";
+		String dbName = "arc";
+		String collectionName = "nvs_20140812";
 
 		DB db = mongoClient.getDB(dbName);
 		DBCollection collection = db.getCollection(collectionName);
 
 		Map<String, Set<String>> set = parser.getLemmas(collection);
 
-		parser.replaceStrings(set);
+		//parser.replaceStrings(set);
 
-		String outputPath = "";
-		String fileName = "";
+		String outputPath = "/Users/franciscomondaca/Desktop/";
+		String fileName = "nvs-20141124_oca";
 
 		DictUtils.printMap(set, outputPath, fileName);
 

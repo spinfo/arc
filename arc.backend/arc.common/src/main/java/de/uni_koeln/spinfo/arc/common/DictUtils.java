@@ -4,6 +4,8 @@ import com.mongodb.*;
 
 import java.io.*;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -200,6 +202,18 @@ public class DictUtils {
 			result.put(entry.getKey(), entry.getValue());
 		}
 		return result;
+	}
+
+
+	public static String getISO8601StringForCurrentDate() {
+		Date now = new Date();
+		return getISO8601StringForDate(now);
+	}
+
+	private static String getISO8601StringForDate(Date date) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.GERMANY);
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
+		return dateFormat.format(date);
 	}
 
 }
