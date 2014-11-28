@@ -3,7 +3,7 @@ package de.uni_koeln.spinfo.arc.tagger;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class SutsilvanTagger extends ARCTagger {
+public class SutsilvanTagger extends POSMatcher {
 
 
 	public SutsilvanTagger(Map<String, TreeSet<String>> fullForms,

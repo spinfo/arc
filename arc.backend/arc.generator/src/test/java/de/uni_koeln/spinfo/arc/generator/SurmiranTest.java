@@ -3,7 +3,7 @@ package de.uni_koeln.spinfo.arc.generator;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import de.uni_koeln.spinfo.arc.tagger.ARCTagger;
+import de.uni_koeln.spinfo.arc.tagger.POSMatcher;
 import de.uni_koeln.spinfo.arc.tagger.SurmiranTagger;
 import org.junit.Test;
 
@@ -80,10 +80,10 @@ public class SurmiranTest {
         Map<String, TreeSet<String>> generatedVollForms = gen
                 .generateVollForms(collection);
         //create Tagger
-        ARCTagger tagger = new SurmiranTagger(generatedVollForms, collection.getFullName());
+        POSMatcher tagger = new SurmiranTagger(generatedVollForms, collection.getFullName());
         tagger.configure(new Boolean[]{true, true, true, true});
         tagger.testRecall(pathToFile, surmTokens, 50);
-        Map<String, Set<String>> taggings = tagger.tag(surmTokens);
+        Map<String, Set<String>> taggings = tagger.match(surmTokens);
 
     }
 }

@@ -8,7 +8,7 @@ import java.util.TreeSet;
  * @author geduldia
  *
  */
-public class SurmiranTagger extends ARCTagger {
+public class SurmiranTagger extends POSMatcher {
 
 
 	public SurmiranTagger(Map<String, TreeSet<String>> fullForms,

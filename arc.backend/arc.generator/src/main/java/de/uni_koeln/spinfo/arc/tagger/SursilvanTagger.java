@@ -1,10 +1,9 @@
 package de.uni_koeln.spinfo.arc.tagger;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 
-public class SursilvanTagger extends ARCTagger {
+public class SursilvanTagger extends POSMatcher {
 
 	
 	
