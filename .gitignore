@@ -24,4 +24,4 @@ bin/
 *.iml
 *.iws
 arc.backend/arc.extractions/data
-
+arc.backend/arc.data
