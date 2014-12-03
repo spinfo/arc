@@ -4,9 +4,10 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import de.uni_koeln.spinfo.arc.common.DictUtils;
+import de.uni_koeln.spinfo.arc.common.FileUtils;
 import de.uni_koeln.spinfo.arc.tagger.POSMatcher;
 import de.uni_koeln.spinfo.arc.tagger.SursilvanTagger;
-import de.uni_koeln.spinfo.arc.tagger.TokenWithPOS;
+import de.uni_koeln.spinfo.arc.tagger.Token;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,8 +15,6 @@ import org.junit.Test;
 import java.io.*;
 import java.net.UnknownHostException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author geduldia
@@ -39,7 +38,7 @@ public class SursilvanTest {
 
 
     String date = DictUtils.getISO8601StringForCurrentDate();
-    private static String pathToTokensFromDB = "../../arc.data/output/words_2014-12-01T14:45:24Z";
+    private static String pathToTokensFromDB = "../../arc.data/output/words_2014-12-02T14:42:04Z";
     private static MongoClient mongoClient;
     private static DBCollection nvs_collection;
     private static DB db;
@@ -52,7 +51,7 @@ public class SursilvanTest {
 
         mongoClient = new MongoClient("localhost", 27017);
         db = mongoClient.getDB("arc");
-        nvs_collection = db.getCollection("nvs_20140812");
+        nvs_collection = db.getCollection("nvs_20141203");
 
     }
 
@@ -83,7 +82,7 @@ public class SursilvanTest {
 
         MongoClient mongoClient = new MongoClient("localhost", 27017);
         DB db = mongoClient.getDB("arc");
-        DBCollection collection = db.getCollection("nvs_20140812");
+        DBCollection collection = db.getCollection("nvs_20141203");
         // Surselvian tokens to list
 
         String pathToFile = "../arc.data/input/20141127_sursilvan_tokens_list.txt";
@@ -118,92 +117,27 @@ public class SursilvanTest {
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-
-        // Get Fullforms from Sursilvan-Generator
-//        Sursilvan_VFGenerator gen = new Sursilvan_VFGenerator();
-//        Map<String, TreeSet<String>> generatedVollForms = gen
-//                .generateFullforms(collection);
-
-        Map<String, TreeSet<String>> fullForms = readFullForms(outputPath + "fullforms_2014-12-01T14:04:20Z");
+        Map<String, TreeSet<String>> fullForms = readFullForms(outputPath + "fullforms_2014-12-03T15:17:03Z");
 
 
         POSMatcher matcher = new SursilvanTagger(fullForms, nvs_collection.getFullName());
         matcher.configure(new Boolean[]{true, true, true, true});
 
-        ArrayList<TokenWithPOS> matches = matcher.matchTokensWithPOS(readTokensFromFile(pathToTokensFromDB));
+        ArrayList<Token> matches = matcher.matchTokensWithPOS(FileUtils.getListOfTokens(pathToTokensFromDB));
         DictUtils.printList(matches, "../../arc.data/output/", "wordsWithPOS_" + date);
-
+        //FileUtils.writeList(matches, "matchedWords_");
     }
 
-
-    @Ignore
-    @Test
-    public void testRegex() {
-
-        String s = "XI[üüücscdsd";
-
-
-        s = s.replaceAll("[IVXLCDM]", "");
-
-
-        System.out.println(s);
-
-    }
-
-    @Ignore
-    @Test
-    public void testStrings() {
-
-
-        String s = "DANİEL";
-        String k = "DANİEL";
-
-        String regex_rn = "^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$";
-        String regex_fp = "[\\p{Punct}]";
-
-
-        Pattern p = Pattern.compile("[.!?]$");
-        Matcher m = p.matcher(k);
-
-
-        if (m.find()) {
-
-
-            //k = k.replaceAll("\\p{P}", "");
-
-            System.out.println("String: " + k);
-
-
-        }
-
-
-    }
 
     @Ignore
     @Test
     public void getFullForms() throws Exception {
 
         Map<String, TreeSet<String>> fullForms = generatefullForms();
-
         writeFullforms(fullForms);
 
 
     }
-
-
-    private static List<TokenWithPOS> readTokensFromFile(String file) throws Exception {
-
-        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
-
-        List<TokenWithPOS> tokens = (List<TokenWithPOS>) inputStream.readObject();
-
-        inputStream.close();
-
-        return tokens;
-
-
-    }
-
 
     private static Map<String, TreeSet<String>> generatefullForms() throws UnknownHostException {
 

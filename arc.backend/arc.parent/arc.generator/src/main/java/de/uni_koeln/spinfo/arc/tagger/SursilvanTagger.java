@@ -11,8 +11,13 @@ public class SursilvanTagger extends POSMatcher {
 		super(fullForms, collectionName);
 	}
 
+	public SursilvanTagger() {
+		super();
+		//super(fullForms, collectionName);
+	}
+
 	@Override
-	boolean isIndImperfect(String token) {
+	public boolean isIndImperfect(String token) {
 		if (token.endsWith("avel") || token.endsWith("avas")
 				|| token.endsWith("ava") || token.endsWith("avan")
 				|| token.endsWith("evel") || token.endsWith("evas")
@@ -25,7 +30,7 @@ public class SursilvanTagger extends POSMatcher {
 
 
 	@Override
-	boolean isAdverb(String token) {
+	public boolean isAdverb(String token) {
 		if(token.endsWith("mein")){
 			return true;
 		}

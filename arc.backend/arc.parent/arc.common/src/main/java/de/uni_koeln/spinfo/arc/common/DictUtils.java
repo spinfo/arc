@@ -12,6 +12,9 @@ import java.util.regex.Pattern;
 
 public class DictUtils {
 
+	public static String outputPath = "../../arc.data/output/";
+	public static String inputPath = "../../arc.data/input/";
+
 	public static Map<String, Integer> countPOS(DBCollection collection,
 			String dict_pos) {
 

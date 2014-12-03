@@ -6,13 +6,16 @@ import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
+import de.spinfo.arc.persistance.util.PosChecker;
 import de.uni_koeln.spinfo.arc.common.DictUtils;
-import de.uni_koeln.spinfo.arc.tagger.TokenWithPOS;
+import de.uni_koeln.spinfo.arc.tagger.Token;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -69,8 +72,10 @@ public class TestGettingWordsByAspecificLanguage {
 					 */
 //					posSet.add("NN");
 //					posSet.add("CONJ_S");
-//					for (String string : posSet) { PosChecker.checkIfValid(string); }
-//					wordUpdater.pushPosTaggerOptionsAsStrings(word.getIndex(), posSet);
+                        for (String string : posSet) {
+                            PosChecker.checkIfValid(string);
+                        }
+                        wordUpdater.pushPosTaggerOptionsAsStrings(word.getIndex(), posSet);
                     }
                 }
 
@@ -92,47 +97,13 @@ public class TestGettingWordsByAspecificLanguage {
 
         List<WordImpl> gw = getWordsByLanguage(sursilvan);
 
-        List<TokenWithPOS> tokens = getListOfWords(gw);
+        //List<Token> tokens = getListOfTokens(gw);
 
-        tokensToFile(tokens);
 
+        DictUtils.printList(gw, outputPath, "words_sursilvan_raw_20141203");
+
+        //FileUtils.writeList(tokens, "words_");
     }
-
-
-    private static List<TokenWithPOS> getListOfWords(List<WordImpl> words) throws Exception {
-
-        List<TokenWithPOS> tokens = new ArrayList<>();
-
-        for (WordImpl word : words) {
-
-            TokenWithPOS tokenWithPOS = new TokenWithPOS();
-            tokenWithPOS.setIndex(word.getIndex());
-            tokenWithPOS.setToken(word.getAllFormsAnnotations().get(0).getForm());
-
-
-            tokens.add(tokenWithPOS);
-
-
-        }
-
-
-        return tokens;
-
-
-    }
-
-
-    private static void tokensToFile(List<TokenWithPOS> tokens) throws Exception {
-
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + "words_" + DictUtils.getISO8601StringForCurrentDate()));
-
-        outputStream.writeObject(tokens);
-
-        outputStream.close();
-
-
-    }
-
 
 
     /**
@@ -149,15 +120,38 @@ public class TestGettingWordsByAspecificLanguage {
             List<LanguageRange> languageRanges = workingUnit.getLanguages();
             for (LanguageRange languageRange : languageRanges) {
                 if (language.equals(languageRange.getTitle())) {
-                    System.out.println(workingUnit.getTitle());
-                    System.err.println("found range with title: " + languageRange.getTitle());
+
+                    System.out.println(workingUnit.getTitle() + "\t" + languageRange.getStart() + "\t" + languageRange.getEnd() + "\t" + languageRange.getTitle());
                     List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(languageRange);
-                    System.err.println("With num words in this range: " + wordsOfLang.size());
                     toReturn.addAll(wordsOfLang);
                 }
             }
         }
         return toReturn;
     }
+
+
+    private static List<Token> getListOfTokens(List<WordImpl> words) throws Exception {
+
+        List<Token> tokens = new ArrayList<>();
+
+        for (WordImpl word : words) {
+
+            Token token = new Token();
+            token.setIndex(word.getIndex());
+            token.setToken(word.getFirstAnnotation().getForm());
+
+
+            tokens.add(token);
+
+
+        }
+
+
+        return tokens;
+
+
+    }
+
 
 }

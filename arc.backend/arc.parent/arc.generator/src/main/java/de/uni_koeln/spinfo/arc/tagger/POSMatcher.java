@@ -28,6 +28,7 @@ public abstract class POSMatcher implements Serializable {
         this.collectionName = collectionName;
     }
 
+
     /**
      * Klassenvariablen:
      * - VollFormen-Liste
@@ -44,11 +45,15 @@ public abstract class POSMatcher implements Serializable {
      * Die Boolean-Werte werden über die Methode configure() festgelegt
      */
     private Map<String, TreeSet<String>> fullForms = new TreeMap<String, TreeSet<String>>();
-    private ArrayList<TokenWithPOS> tokens = new ArrayList<>();
+    private ArrayList<Token> tokens = new ArrayList<>();
     private String collectionName = null;
     boolean tagAdverbs, tagInfinitives, tagNames, tagIndImperfect;
     boolean currentDot;
     boolean previousDot;
+
+    public POSMatcher() {
+
+    }
 
 
     /**
@@ -89,15 +94,15 @@ public abstract class POSMatcher implements Serializable {
     }
 
 
-    public ArrayList<TokenWithPOS> matchTokensWithPOS(List<TokenWithPOS> tokens) {
-        ArrayList<TokenWithPOS> matches = new ArrayList<>();
+    public ArrayList<Token> matchTokensWithPOS(List<Token> tokens) {
+        ArrayList<Token> matches = new ArrayList<>();
         this.currentDot = false;
         this.previousDot = false;
-        for (TokenWithPOS nextToken : tokens) {
+        for (Token nextToken : tokens) {
             if (nextToken == null) continue;
             Set<String> tags = getPOS(nextToken.getToken());
             if (tags != null) {
-                TokenWithPOS token = new TokenWithPOS();
+                Token token = new Token();
                 token.setToken(nextToken.getToken());
                 token.setPos(tags);
                 token.setIndex(nextToken.getIndex());
@@ -156,13 +161,11 @@ public abstract class POSMatcher implements Serializable {
                 if (checkIfOneLetterAndNoun(toLowerCase, posSet)) {
 
                     updateDots();
-
                     return null;
 
                 }
 
                 updateDots();
-
                 return posSet;
 
 
@@ -185,7 +188,7 @@ public abstract class POSMatcher implements Serializable {
 
                     if (currentDot && !previousDot) {
 
-                        posSet.add("NN_P" + " " + "current");
+                        posSet.add("NN_P");
                         currentDot = false;
                         previousDot = true;
                         return posSet;
@@ -194,7 +197,7 @@ public abstract class POSMatcher implements Serializable {
 
                     if (currentDot && previousDot) {
 
-                        posSet.add("NN" + " " + "current and previous");
+                        posSet.add("NN");
                         currentDot = false;
                         previousDot = true;
                         return posSet;
@@ -202,7 +205,7 @@ public abstract class POSMatcher implements Serializable {
                     }
                     if (!currentDot && previousDot) {
 
-                        posSet.add("NN" + " " + "previous");
+                        posSet.add("NN");
                         previousDot = false;
                         return posSet;
 
@@ -210,7 +213,7 @@ public abstract class POSMatcher implements Serializable {
 
                     if (!currentDot && !previousDot) {
 
-                        posSet.add("NN_P" + " " + "nothing");
+                        posSet.add("NN_P");
                         return posSet;
                     }
 
@@ -227,40 +230,25 @@ public abstract class POSMatcher implements Serializable {
 
         {
 
+            if (token.endsWith("ir") || token.endsWith("ar")
+                    || token.endsWith("er")) {
+                posSet.add("V_GVRB");
 
-            if (tagNames) {
+            } else if (isAdverb(token)) {
+                posSet.add("ADV");
 
-                posSet.add("NN_3");
-                updateDots();
-                return posSet;
+            } else if
+                    (isIndImperfect(token)) {
+                posSet.add("V_GVRB");
 
+            } else {
 
+                posSet.add("NN");
             }
 
 
-            if (tagInfinitives) {
-                if (token.endsWith("ir") || token.endsWith("ar")
-                        || token.endsWith("er")) {
-
-                    posSet.add("V_GVRB");
-                    updateDots();
-                    return posSet;
-                }
-            }
-            if (tagAdverbs) {
-                if (isAdverb(token)) {
-                    posSet.add("ADV");
-                    updateDots();
-                    return posSet;
-                }
-            }
-            if (tagIndImperfect) {
-                if (isIndImperfect(token)) {
-                    posSet.add("V_GVRB");
-                    updateDots();
-                    return posSet;
-                }
-            }
+            updateDots();
+            return posSet;
 
         }
 
@@ -304,6 +292,9 @@ public abstract class POSMatcher implements Serializable {
 
             currentDot = false;
         }
+
+
+
 
         //Remove everything but letters
         token = token.replaceAll("\\P{L}", "");

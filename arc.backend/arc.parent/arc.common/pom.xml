@@ -15,10 +15,22 @@
 	</parent>
 
 
-	<build>
+	<dependencies>
+		<dependency>
+			<groupId>de.uni-koeln.spinfo.arc</groupId>
+			<artifactId>arc.generator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.uni-koeln.spinfo.arc</groupId>
+			<artifactId>arc.m.annotations</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 
-		<!--<testSourceDirectory>/src/test/java</testSourceDirectory>-->
-		<sourceDirectory>/src/main/java</sourceDirectory>
+	<build>
+		<!--<testSourceDirectory>src/test/java</testSourceDirectory>-->
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

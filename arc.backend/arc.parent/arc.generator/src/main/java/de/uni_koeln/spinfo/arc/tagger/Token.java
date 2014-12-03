@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Created by franciscomondaca on 28/11/14.
  */
-public class TokenWithPOS implements Serializable {
+public class Token implements Serializable {
 
 
     private static final long serialVersionUID = 7526472295622776147L;

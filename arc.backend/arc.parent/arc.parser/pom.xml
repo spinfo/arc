@@ -24,8 +24,8 @@
 
 	<build>
 
-		<testSourceDirectory>/src/test/java</testSourceDirectory>
-		<sourceDirectory>/src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,7 +1,6 @@
 package de.uni_koeln.spinfo.antlr.nvs.common;
 
 import com.mongodb.*;
-import de.uni_koeln.spinfo.arc.common.IPosTags;
 
 import java.io.*;
 import java.net.UnknownHostException;

@@ -82,6 +82,12 @@ public class WordImpl extends HasAnnotationsImpl implements Word, Serializable {
 		List<FormAnnotation> forms = getAllFormsAnnotations();
 		return forms.get(forms.size()-1);
 	}
+
+
+	public FormAnnotation getFirstAnnotation() {
+		List<FormAnnotation> forms = getAllFormsAnnotations();
+		return forms.get(0);
+	}
 	
 	@Override
 	public List<RectangleAnnotation> getAllRectangleAnnotations() {
@@ -175,5 +181,18 @@ public class WordImpl extends HasAnnotationsImpl implements Word, Serializable {
 	public long getIndex() {
 		return index;
 	}
+
+
+	public String toString(){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getFirstAnnotation().getForm());
+		buffer.append("\t");
+		buffer.append(getIndex());
+
+		return buffer.toString();
+
+	}
+
+
 
 }
