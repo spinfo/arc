@@ -36,18 +36,18 @@ public interface PosAnnotation extends Annotation {
         ADV,
         // Interjections
         INT,
-        //Particles
-        PART,
         // Numbers
         C_NUM,
         // Pronouns
         PRON_PER,
         PRON_REL,
-        PRON_DIM,
+        PRON_DEM,
         PRON_IND,
         PRON_IES,
         PRON_POS,
         PRON_REF,
+        //Particles
+        PART,
         // Symbols
         NULL,
         // PunctuationMarks
