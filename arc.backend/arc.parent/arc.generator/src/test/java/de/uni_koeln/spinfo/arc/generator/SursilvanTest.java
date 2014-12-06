@@ -37,7 +37,7 @@ public class SursilvanTest {
 
 
     String date = FileUtils.getISO8601StringForCurrentDate();
-    private static String pathToTokensFromDB = "../../arc.data/output/words_2014-12-05T22:13:54Z";
+    private static String pathToTokensFromDB = "../../arc.data/output/words_2014-12-06T09:53:17Z";
     private static MongoClient mongoClient;
     private static DBCollection nvs_collection;
     private static DB db;
@@ -116,7 +116,7 @@ public class SursilvanTest {
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = readFullForms(outputPath + "fullforms_2014-12-05T23:50:59Z");
+        Map<String, TreeSet<String>> fullForms = readFullForms(outputPath + "fullforms_2014-12-06T09:47:47Z");
 
 
         POSMatcher matcher = new SursilvanMatcher(fullForms, nvs_collection.getFullName());

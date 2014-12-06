@@ -34,43 +34,41 @@ public class TestEditingPos {
         wordQueries = new WordQueries();
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void testNewPos() {
 
         Word w = wordQueries.getWordAt(1);
 
 //		Set<>
-        PosChecker.checkIfValid("NN");
-        wordUpdater.pushPosTaggerOption(w.getIndex(), "NN");
+        //PosChecker.checkIfValid("PART");
+       // wordUpdater.pushPosTaggerOption(w.getIndex(), "PART");
 
-//        wordUpdater.pushPos(
-//                w.getIndex(),
-//                new PosAnnotationImpl(new Date(), 11, "test", PosAnnotation.PosTags.PRON_REF)
-//        );
-        wordUpdater.pushForm(
+        wordUpdater.pushPos(
                 w.getIndex(),
-                new FormAnnotationImpl(new Date(), 11, "test", "new Form")
-        );
+                new PosAnnotationImpl(new Date(), 0, "test", PosAnnotation.PosTags.valueOf("PART")));
+
+//        wordUpdater.pushForm(
+//                w.getIndex(),
+//                new FormAnnotationImpl(new Date(), 11, "test", "new Form")
+//        );
 
         WordImpl wRetr = wordQueries.getWordAt(w.getIndex());
-        System.out.println(wRetr.getTaggerPosOptions());
+//        System.out.println(wRetr.getTaggerPosOptions());
         System.out.println(wRetr.getLastPosAnnotation().getPos());
 //		assrtEquals("bla", );
     }
 
-
+    @Ignore
     @Test
-    public void testAddPOSAlternatives() throws Exception {
-        List<Token> tokens = FileUtils.getListOfTokens("matchedWords_2014-12-05T23:52:11Z");
+    public void testWriteOnePOSFromAlternatives() throws Exception {
+
+        List<Token> tokens = FileUtils.getListOfTokens("matchedWords_2014-12-06T09:55:50Z");
         for (Token token : tokens) {
 
             long index = token.getIndex();
             Set<String> posSet = token.getPos();
             Iterator<String> iterator = posSet.iterator();
-
-            //Add all the options from the matching
-            wordUpdater.pushPosTaggerOptionsAsStrings(index, posSet);
 
             // Avoid 'NOT_TAGGED'
 
@@ -81,19 +79,30 @@ public class TestEditingPos {
 
                 for (String s : posSet) {
 
+                    //If there are more options than NN
                     if (!s.equals("NN")) {
                         wordUpdater.pushPos(index, new PosAnnotationImpl(new Date(), 0, "matcher", PosAnnotation.PosTags.valueOf(s)));
                         break;
                     }
                 }
-
-
             }
-
-
         }
 
+    }
 
+    @Ignore
+    @Test
+    public void testAddPOSAlternatives() throws Exception {
+        List<Token> tokens = FileUtils.getListOfTokens("matchedWords_2014-12-06T09:55:50Z");
+        for (Token token : tokens) {
+
+            long index = token.getIndex();
+            Set<String> posSet = token.getPos();
+            Iterator<String> iterator = posSet.iterator();
+
+            //Add all the options from the matching
+            wordUpdater.pushPosTaggerOptionsAsStrings(index, posSet);
+        }
     }
 
 
