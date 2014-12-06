@@ -4,7 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import de.uni_koeln.spinfo.arc.common.DictUtils;
+import de.uni_koeln.spinfo.antlr.nvs.common.DictUtils;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
