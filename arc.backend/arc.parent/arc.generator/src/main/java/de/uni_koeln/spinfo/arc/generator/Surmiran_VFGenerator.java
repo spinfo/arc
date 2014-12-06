@@ -73,15 +73,15 @@ public class Surmiran_VFGenerator {
 	
 	private void addAdjectives() {
 		//Demonstrativ
-		addVF("chel", "ADJ_DIM");
-		addVF("chella", "ADJ_DIM");
-		addVF("chels", "ADJ_DIM");
-		addVF("chellas", "ADJ_DIM");
-		addVF("chest", "ADJ_DIM");
-		addVF("chesta", "ADJ_DIM");
-		addVF("chests", "ADJ_DIM");
-		addVF("chestas", "ADJ_DIM");
-		addVF("glez", "ADJ_DIM");
+		addVF("chel", "ADJ_DEM");
+		addVF("chella", "ADJ_DEM");
+		addVF("chels", "ADJ_DEM");
+		addVF("chellas", "ADJ_DEM");
+		addVF("chest", "ADJ_DEM");
+		addVF("chesta", "ADJ_DEM");
+		addVF("chests", "ADJ_DEM");
+		addVF("chestas", "ADJ_DEM");
+		addVF("glez", "ADJ_DEM");
 		//interrogativ
 		addVF("cant", "ADJ_IES");
 		addVF("tge", "ADJ_IES");
@@ -280,24 +280,24 @@ public class Surmiran_VFGenerator {
 		addVF("sasezs", "PRON_PER");
 		addVF("sasezzas", "PRON_PER");
 		//Demonstrativpronomen
-		addVF("chel", "PRON_DIM");
-		addVF("chels", "PRON_DIM");
-		addVF("chella", "PRON_DIM");
-		addVF("chellas", "PRON_DIM");
-		addVF("chegl", "PRON_DIM");
-		addVF("tschel", "PRON_DIM");
-		addVF("tschels", "PRON_DIM");
-		addVF("tschella", "PRON_DIM");
-		addVF("tschellas", "PRON_DIM");
-		addVF("tals", "PRON_DIM");
-		addVF("talas", "PRON_DIM");
-		addVF("lez", "PRON_DIM");
-		addVF("lezza", "PRON_DIM");
-		addVF("ezs", "PRON_DIM");
-		addVF("ezzas", "PRON_DIM");
-		addVF("glez", "PRON_DIM");
-		addVF("chesta", "PRON_DIM");
-		addVF("chest", "PRON_DIM");
+		addVF("chel", "PRON_DEM");
+		addVF("chels", "PRON_DEM");
+		addVF("chella", "PRON_DEM");
+		addVF("chellas", "PRON_DEM");
+		addVF("chegl", "PRON_DEM");
+		addVF("tschel", "PRON_DEM");
+		addVF("tschels", "PRON_DEM");
+		addVF("tschella", "PRON_DEM");
+		addVF("tschellas", "PRON_DEM");
+		addVF("tals", "PRON_DEM");
+		addVF("talas", "PRON_DEM");
+		addVF("lez", "PRON_DEM");
+		addVF("lezza", "PRON_DEM");
+		addVF("ezs", "PRON_DEM");
+		addVF("ezzas", "PRON_DEM");
+		addVF("glez", "PRON_DEM");
+		addVF("chesta", "PRON_DEM");
+		addVF("chest", "PRON_DEM");
 		
 		//Relativpronomen
 		addVF("tgi", "PRON_REL");

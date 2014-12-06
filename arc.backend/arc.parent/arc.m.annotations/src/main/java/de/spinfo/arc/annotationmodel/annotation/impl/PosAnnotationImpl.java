@@ -10,7 +10,7 @@ public class PosAnnotationImpl extends AnnotationImpl implements PosAnnotation, 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	PosTags posTag; 
+	PosTags posTag;
 	
 	/**
 	 * empty Constructor for GWT - don't use otherwise!

@@ -23,6 +23,7 @@
 
     <modules>
         <module>nvs.antlr4</module>
+        <module>nvs.parser</module>
     </modules>
 
 

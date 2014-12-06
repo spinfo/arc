@@ -30,6 +30,12 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>de.uni_koeln.spinfo.antlr4</groupId>
+            <version>1.0-SNAPSHOT</version>
+            <artifactId>antlr4.common</artifactId>
+        </dependency>
+
     </dependencies>
 
 

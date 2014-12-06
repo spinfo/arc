@@ -529,40 +529,40 @@ public class Vallader_VFGenerator {
         addVF("ziccal", "PRON_IND");    // ün ziccal
 
         //demonstativ
-        addVF("quist", "PRON_DIM");
-        addVF("quista", "PRON_DIM");
-        addVF("quel", "PRON_DIM");
-        addVF("quella", "PRON_DIM");
-        addVF("tschel", "PRON_DIM");
-        addVF("tschella", "PRON_DIM");
-        addVF("quai", "PRON_DIM");
-        addVF("tschai", "PRON_DIM");
-        addVF("medem", "PRON_DIM");
-        addVF("medemma", "PRON_DIM");
-        addVF("listess", "PRON_DIM");
-        addVF("listessa", "PRON_DIM");
-        addVF("oter", "PRON_DIM");
-        addVF("l'otra", "PRON_DIM");
-        addVF("simil", "PRON_DIM");
-        addVF("simla", "PRON_DIM");
-        addVF("tal", "PRON_DIM");
-        addVF("tala", "PRON_DIM");
-        addVF("quists", "PRON_DIM");
-        addVF("quistas", "PRON_DIM");
-        addVF("quels", "PRON_DIM");
-        addVF("quellas", "PRON_DIM");
-        addVF("tschels", "PRON_DIM");
-        addVF("tschellas", "PRON_DIM");
-        addVF("medems", "PRON_DIM");
-        addVF("medemmas", "PRON_DIM");
-        addVF("listess", "PRON_DIM");
-        addVF("listessas", "PRON_DIM");
-        addVF("oters", "PRON_DIM");
-        addVF("otras", "PRON_DIM");
-        addVF("simils", "PRON_DIM");
-        addVF("simlas", "PRON_DIM");
-        addVF("tals", "PRON_DIM");
-        addVF("talas", "PRON_DIM");
+        addVF("quist", "PRON_DEM");
+        addVF("quista", "PRON_DEM");
+        addVF("quel", "PRON_DEM");
+        addVF("quella", "PRON_DEM");
+        addVF("tschel", "PRON_DEM");
+        addVF("tschella", "PRON_DEM");
+        addVF("quai", "PRON_DEM");
+        addVF("tschai", "PRON_DEM");
+        addVF("medem", "PRON_DEM");
+        addVF("medemma", "PRON_DEM");
+        addVF("listess", "PRON_DEM");
+        addVF("listessa", "PRON_DEM");
+        addVF("oter", "PRON_DEM");
+        addVF("l'otra", "PRON_DEM");
+        addVF("simil", "PRON_DEM");
+        addVF("simla", "PRON_DEM");
+        addVF("tal", "PRON_DEM");
+        addVF("tala", "PRON_DEM");
+        addVF("quists", "PRON_DEM");
+        addVF("quistas", "PRON_DEM");
+        addVF("quels", "PRON_DEM");
+        addVF("quellas", "PRON_DEM");
+        addVF("tschels", "PRON_DEM");
+        addVF("tschellas", "PRON_DEM");
+        addVF("medems", "PRON_DEM");
+        addVF("medemmas", "PRON_DEM");
+        addVF("listess", "PRON_DEM");
+        addVF("listessas", "PRON_DEM");
+        addVF("oters", "PRON_DEM");
+        addVF("otras", "PRON_DEM");
+        addVF("simils", "PRON_DEM");
+        addVF("simlas", "PRON_DEM");
+        addVF("tals", "PRON_DEM");
+        addVF("talas", "PRON_DEM");
 
 
         //interrogativ

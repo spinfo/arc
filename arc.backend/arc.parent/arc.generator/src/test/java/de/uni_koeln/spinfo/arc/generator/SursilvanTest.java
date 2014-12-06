@@ -3,11 +3,10 @@ package de.uni_koeln.spinfo.arc.generator;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import de.uni_koeln.spinfo.arc.common.DictUtils;
 import de.uni_koeln.spinfo.arc.common.FileUtils;
-import de.uni_koeln.spinfo.arc.tagger.POSMatcher;
-import de.uni_koeln.spinfo.arc.tagger.SursilvanTagger;
-import de.uni_koeln.spinfo.arc.tagger.Token;
+import de.uni_koeln.spinfo.arc.matcher.POSMatcher;
+import de.uni_koeln.spinfo.arc.matcher.SursilvanMatcher;
+import de.uni_koeln.spinfo.arc.matcher.Token;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,8 +36,8 @@ public class SursilvanTest {
      */
 
 
-    String date = DictUtils.getISO8601StringForCurrentDate();
-    private static String pathToTokensFromDB = "../../arc.data/output/words_2014-12-02T14:42:04Z";
+    String date = FileUtils.getISO8601StringForCurrentDate();
+    private static String pathToTokensFromDB = "../../arc.data/output/words_2014-12-05T22:13:54Z";
     private static MongoClient mongoClient;
     private static DBCollection nvs_collection;
     private static DB db;
@@ -102,30 +101,30 @@ public class SursilvanTest {
                 .generateFullforms(collection);
 
 
-        POSMatcher matcher = new SursilvanTagger(generatedVollForms, collection.getFullName());
+        POSMatcher matcher = new SursilvanMatcher(generatedVollForms, collection.getFullName());
         matcher.configure(new Boolean[]{true, true, true, true});
 
 
         Map<String, Set<String>> matches = matcher.match(sursTokens);
-        DictUtils.printMap(matches, "../arc.data/output/", "matches_" + date);
+        FileUtils.printMap(matches, "../arc.data/output/", "matches_" + date);
 
 
     }
 
 
-    //@Ignore
+    @Ignore
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = readFullForms(outputPath + "fullforms_2014-12-03T15:17:03Z");
+        Map<String, TreeSet<String>> fullForms = readFullForms(outputPath + "fullforms_2014-12-05T23:50:59Z");
 
 
-        POSMatcher matcher = new SursilvanTagger(fullForms, nvs_collection.getFullName());
+        POSMatcher matcher = new SursilvanMatcher(fullForms, nvs_collection.getFullName());
         matcher.configure(new Boolean[]{true, true, true, true});
 
         ArrayList<Token> matches = matcher.matchTokensWithPOS(FileUtils.getListOfTokens(pathToTokensFromDB));
-        DictUtils.printList(matches, "../../arc.data/output/", "wordsWithPOS_" + date);
-        //FileUtils.writeList(matches, "matchedWords_");
+        //DictUtils.printList(matches, "../../arc.data/output/", "matchedWords_" + date);
+        FileUtils.writeList(matches, "matchedWords_");
     }
 
 
@@ -135,6 +134,7 @@ public class SursilvanTest {
 
         Map<String, TreeSet<String>> fullForms = generatefullForms();
         writeFullforms(fullForms);
+        //DictUtils.printMap(fullForms, "../../arc.data/output/", "fullForms" + date);
 
 
     }
@@ -165,7 +165,7 @@ public class SursilvanTest {
 
     private static <K, V> void writeFullforms(Map<K, V> fullForms) throws IOException {
 
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + "fullforms_" + DictUtils.getISO8601StringForCurrentDate()));
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + "fullforms_" + FileUtils.getISO8601StringForCurrentDate()));
 
         outputStream.writeObject(fullForms);
 

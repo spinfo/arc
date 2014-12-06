@@ -98,27 +98,27 @@ public class Sursilvan_VFGenerator {
 
     private void addAdjectives() {
         //demonstrative
-        addVF("quest", "ADJ_DIM");
-        addVF("questa", "ADJ_DIM");
-        addVF("quests", "ADJ_DIM");
-        addVF("questas", "ADJ_DIM");
-        addVF("quei", "ADJ_DIM");
-        addVF("quel", "ADJ_DIM");
-        addVF("quella", "ADJ_DIM");
-        addVF("quels", "ADJ_DIM");
-        addVF("quellas", "ADJ_DIM");
-        addVF("tal", "ADJ_DIM");
-        addVF("tala", "ADJ_DIM");
-        addVF("tanien", "ADJ_DIM");
-        addVF("tanienta", "ADJ_DIM");
-        addVF("gliez", "ADJ_DIM");
-        addVF("lezza", "ADJ_DIM");
-        addVF("tschei", "ADJ_DIM");
-        addVF("tschella", "ADJ_DIM");
-        addVF("mintga", "ADJ_DIM");
-        addVF("scadin", "ADJ_DIM");
-        addVF("scadina", "ADJ_DIM");
-        addVF("tanienta", "ADJ_DIM");
+        addVF("quest", "ADJ_DEM");
+        addVF("questa", "ADJ_DEM");
+        addVF("quests", "ADJ_DEM");
+        addVF("questas", "ADJ_DEM");
+        addVF("quei", "ADJ_DEM");
+        addVF("quel", "ADJ_DEM");
+        addVF("quella", "ADJ_DEM");
+        addVF("quels", "ADJ_DEM");
+        addVF("quellas", "ADJ_DEM");
+        addVF("tal", "ADJ_DEM");
+        addVF("tala", "ADJ_DEM");
+        addVF("tanien", "ADJ_DEM");
+        addVF("tanienta", "ADJ_DEM");
+        addVF("gliez", "ADJ_DEM");
+        addVF("lezza", "ADJ_DEM");
+        addVF("tschei", "ADJ_DEM");
+        addVF("tschella", "ADJ_DEM");
+        addVF("mintga", "ADJ_DEM");
+        addVF("scadin", "ADJ_DEM");
+        addVF("scadina", "ADJ_DEM");
+        addVF("tanienta", "ADJ_DEM");
 
         //indefinite
         addVF("cert", "ADJ_IND");
@@ -349,6 +349,7 @@ public class Sursilvan_VFGenerator {
         addVF("sche", "CONJ_S");
         addVF("schebein", "CONJ_S");
         addVF("schebi", "CONJ_S");
+        addVF("schibein", "CONJ_S");
         addVF("schebuc", "CONJ_S");
         addVF("schegie", "CONJ_S");
         addVF("schemo", "CONJ_S");
@@ -500,6 +501,7 @@ public class Sursilvan_VFGenerator {
         addVF("nunimporta", "PREP");
 
         addVF("o", "PREP");
+        addVF("ò", "PREP");
         addVF("or", "PREP");
         addVF("odem", "PREP");
         addVF("on", "PREP");
@@ -1054,32 +1056,32 @@ public class Sursilvan_VFGenerator {
         addVF("nvossas", "PRON_POS");
 
         // Demonstrativpronomen
-        addVF("custi", "PRON_DIM");
-        addVF("quest", "PRON_DIM");
-        addVF("questa", "PRON_DIM");
-        addVF("quests", "PRON_DIM");
-        addVF("questas", "PRON_DIM");
-        addVF("quei", "PRON_DIM");
-        addVF("quel", "PRON_DIM");
-        addVF("quella", "PRON_DIM");
-        addVF("quels", "PRON_DIM");
-        addVF("quellas", "PRON_DIM");
-        addVF("tal", "PRON_DIM");
-        addVF("tschei", "PRON_DIM");
-        addVF("tschella", "PRON_DIM");
-        addVF("tschels", "PRON_DIM");
-        addVF("tschel", "PRON_DIM");
-        addVF("tschellas", "PRON_DIM");
-        addVF("gliez", "PRON_DIM");
-        addVF("lez", "PRON_DIM");
-        addVF("lezza", "PRON_DIM");
-        addVF("lezs", "PRON_DIM");
-        addVF("lezzas", "PRON_DIM");
-        addVF("sias", "PRON_DIM");
-        addVF("nos", "PRON_DIM");
-        addVF("nossas", "PRON_DIM");
-        addVF("vos", "PRON_DIM");
-        addVF("nvossas", "PRON_DIM");
+        addVF("custi", "PRON_DEM");
+        addVF("quest", "PRON_DEM");
+        addVF("questa", "PRON_DEM");
+        addVF("quests", "PRON_DEM");
+        addVF("questas", "PRON_DEM");
+        addVF("quei", "PRON_DEM");
+        addVF("quel", "PRON_DEM");
+        addVF("quella", "PRON_DEM");
+        addVF("quels", "PRON_DEM");
+        addVF("quellas", "PRON_DEM");
+        addVF("tal", "PRON_DEM");
+        addVF("tschei", "PRON_DEM");
+        addVF("tschella", "PRON_DEM");
+        addVF("tschels", "PRON_DEM");
+        addVF("tschel", "PRON_DEM");
+        addVF("tschellas", "PRON_DEM");
+        addVF("gliez", "PRON_DEM");
+        addVF("lez", "PRON_DEM");
+        addVF("lezza", "PRON_DEM");
+        addVF("lezs", "PRON_DEM");
+        addVF("lezzas", "PRON_DEM");
+        addVF("sias", "PRON_DEM");
+        addVF("nos", "PRON_DEM");
+        addVF("nossas", "PRON_DEM");
+        addVF("vos", "PRON_DEM");
+        addVF("nvossas", "PRON_DEM");
 
         // Relativpronomen
         addVF("che", "PRON_REL");

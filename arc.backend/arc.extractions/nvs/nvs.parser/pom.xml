@@ -1,33 +1,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.uni-koeln.spinfo.arc</groupId>
-    <artifactId>arc.parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+
+    <artifactId>nvs.parser</artifactId>
     <packaging>pom</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <parent>
+        <groupId>de.uni_koeln.spinfo.antlr4</groupId>
+        <artifactId>nvs</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
 
     <dependencies>
-
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <groupId>de.uni_koeln.spinfo.antlr4</groupId>
+            <version>1.0-SNAPSHOT</version>
+            <artifactId>antlr4.common</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>2.11.4</version>
         </dependency>
-
     </dependencies>
 
+
     <build>
+
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -38,13 +41,9 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
 
-    <modules>
-        <module>arc.common</module>
-        <module>arc.generator</module>
-
-    </modules>
 </project>

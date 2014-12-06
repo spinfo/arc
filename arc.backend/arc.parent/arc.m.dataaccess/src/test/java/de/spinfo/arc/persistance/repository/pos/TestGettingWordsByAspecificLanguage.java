@@ -7,8 +7,8 @@ import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
 import de.spinfo.arc.persistance.util.PosChecker;
-import de.uni_koeln.spinfo.arc.common.DictUtils;
-import de.uni_koeln.spinfo.arc.tagger.Token;
+import de.uni_koeln.spinfo.arc.common.FileUtils;
+import de.uni_koeln.spinfo.arc.matcher.Token;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -88,7 +88,7 @@ public class TestGettingWordsByAspecificLanguage {
                 wordSize, getWordsByLanguage(LANGUAGE_TO_LOOK_FOR).size());
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void testWordstoFile() throws Exception {
 
@@ -97,12 +97,12 @@ public class TestGettingWordsByAspecificLanguage {
 
         List<WordImpl> gw = getWordsByLanguage(sursilvan);
 
-        //List<Token> tokens = getListOfTokens(gw);
+        List<Token> tokens = getListOfTokens(gw);
 
 
-        DictUtils.printList(gw, outputPath, "words_sursilvan_raw_20141203");
+        //DictUtils.printList(gw, outputPath, "words_sursilvan_20141203");
 
-        //FileUtils.writeList(tokens, "words_");
+        FileUtils.writeList(tokens, "words_");
     }
 
 

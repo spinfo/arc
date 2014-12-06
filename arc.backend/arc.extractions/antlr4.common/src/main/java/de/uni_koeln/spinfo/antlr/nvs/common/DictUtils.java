@@ -7,13 +7,14 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.text.CollationKey;
-import java.text.Collator;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DictUtils {
+
+    public static String outputPath = "../../arc.data/output/";
+    public static String inputPath = "../../arc.data/input/";
 
     private DictUtils() {
         throw new AssertionError();
@@ -677,8 +678,6 @@ public class DictUtils {
 
     public static void removeUnclosedParenthesis(String nvs_0_200, String output_path, String nvs_0_200_pp) {
     }
-
-
 
 
 }

@@ -71,23 +71,23 @@ public class Sutsilvan_VFGenerator {
 
 	private void addAdjectives() {
 		//Demonstrative
-		addVF("tschel", "ADJ_DIM");
-		addVF("tschella", "ADJ_DIM");
-		addVF("tschels", "ADJ_DIM");
-		addVF("tschellas", "ADJ_DIM");
-		addVF("quest", "ADJ_DIM");
-		addVF("questa", "ADJ_DIM");
-		addVF("quests", "ADJ_DIM");
-		addVF("questas", "ADJ_DIM");
-		addVF("quel", "ADJ_DIM");
-		addVF("quella", "ADJ_DIM");
-		addVF("quels", "ADJ_DIM");
-		addVF("quellas", "ADJ_DIM");
-		addVF("tal", "ADJ_DIM");
-		addVF("tala", "ADJ_DIM");
-		addVF("tanien", "ADJ_DIM");
-		addVF("tanienta", "ADJ_DIM");
-		addVF("gliez", "ADJ_DIM");
+		addVF("tschel", "ADJ_DEM");
+		addVF("tschella", "ADJ_DEM");
+		addVF("tschels", "ADJ_DEM");
+		addVF("tschellas", "ADJ_DEM");
+		addVF("quest", "ADJ_DEM");
+		addVF("questa", "ADJ_DEM");
+		addVF("quests", "ADJ_DEM");
+		addVF("questas", "ADJ_DEM");
+		addVF("quel", "ADJ_DEM");
+		addVF("quella", "ADJ_DEM");
+		addVF("quels", "ADJ_DEM");
+		addVF("quellas", "ADJ_DEM");
+		addVF("tal", "ADJ_DEM");
+		addVF("tala", "ADJ_DEM");
+		addVF("tanien", "ADJ_DEM");
+		addVF("tanienta", "ADJ_DEM");
+		addVF("gliez", "ADJ_DEM");
 		
 		//Indefinite
 		addVF("varsaquànts", "ADJ_IND");
@@ -216,25 +216,25 @@ public class Sutsilvan_VFGenerator {
 		addVF("", "PRON_IND");
 		
 		//demonstativ
-		addVF("gliez", "PRON_DIM");
-		addVF("igl", "PRON_DIM");
-		addVF("lez", "PRON_DIM");
-		addVF("leza", "PRON_DIM");
-		addVF("lasezas", "PRON_DIM");
-		addVF("iglsezs", "PRON_DIM");
-		addVF("madem", "PRON_DIM");
-		addVF("que", "PRON_DIM");
-		addVF("quegl", "PRON_DIM");
-		addVF("quel", "PRON_DIM");
-		addVF("quest", "PRON_DIM");
-		addVF("questa", "PRON_DIM");
-		addVF("sasez", "PRON_DIM");
-		addVF("sez", "PRON_DIM");
-		addVF("tal", "PRON_DIM");
-		addVF("tschegl", "PRON_DIM");
-		addVF("tschel", "PRON_DIM");
-		addVF("tschella", "PRON_DIM");
-		addVF("gliez", "PRON_DIM");
+		addVF("gliez", "PRON_DEM");
+		addVF("igl", "PRON_DEM");
+		addVF("lez", "PRON_DEM");
+		addVF("leza", "PRON_DEM");
+		addVF("lasezas", "PRON_DEM");
+		addVF("iglsezs", "PRON_DEM");
+		addVF("madem", "PRON_DEM");
+		addVF("que", "PRON_DEM");
+		addVF("quegl", "PRON_DEM");
+		addVF("quel", "PRON_DEM");
+		addVF("quest", "PRON_DEM");
+		addVF("questa", "PRON_DEM");
+		addVF("sasez", "PRON_DEM");
+		addVF("sez", "PRON_DEM");
+		addVF("tal", "PRON_DEM");
+		addVF("tschegl", "PRON_DEM");
+		addVF("tschel", "PRON_DEM");
+		addVF("tschella", "PRON_DEM");
+		addVF("gliez", "PRON_DEM");
 		
 		//interrogativ
 		addVF("qual", "PRON_IES");

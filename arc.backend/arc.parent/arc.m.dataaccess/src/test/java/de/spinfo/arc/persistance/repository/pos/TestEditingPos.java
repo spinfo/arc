@@ -13,7 +13,7 @@ import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
 import de.spinfo.arc.persistance.util.PosChecker;
 import de.uni_koeln.spinfo.arc.common.FileUtils;
-import de.uni_koeln.spinfo.arc.tagger.Token;
+import de.uni_koeln.spinfo.arc.matcher.Token;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -44,10 +44,10 @@ public class TestEditingPos {
         PosChecker.checkIfValid("NN");
         wordUpdater.pushPosTaggerOption(w.getIndex(), "NN");
 
-        wordUpdater.pushPos(
-                w.getIndex(),
-                new PosAnnotationImpl(new Date(), 11, "test", PosAnnotation.PosTags.PRON_REF)
-        );
+//        wordUpdater.pushPos(
+//                w.getIndex(),
+//                new PosAnnotationImpl(new Date(), 11, "test", PosAnnotation.PosTags.PRON_REF)
+//        );
         wordUpdater.pushForm(
                 w.getIndex(),
                 new FormAnnotationImpl(new Date(), 11, "test", "new Form")
@@ -61,23 +61,41 @@ public class TestEditingPos {
 
 
     @Test
-
     public void testAddPOSAlternatives() throws Exception {
-
-
-        List<Token> tokens = FileUtils.getListOfTokens("matchedWords_2014-12-03T15:18:23Z");
-
-
+        List<Token> tokens = FileUtils.getListOfTokens("matchedWords_2014-12-05T23:52:11Z");
         for (Token token : tokens) {
 
             long index = token.getIndex();
             Set<String> posSet = token.getPos();
+            Iterator<String> iterator = posSet.iterator();
 
+            //Add all the options from the matching
             wordUpdater.pushPosTaggerOptionsAsStrings(index, posSet);
+
+            // Avoid 'NOT_TAGGED'
+
+            if (posSet.size() == 1) {
+                wordUpdater.pushPos(index, new PosAnnotationImpl(new Date(), 0, "matcher", PosAnnotation.PosTags.valueOf(iterator.next())));
+
+            } else {
+
+                for (String s : posSet) {
+
+                    if (!s.equals("NN")) {
+                        wordUpdater.pushPos(index, new PosAnnotationImpl(new Date(), 0, "matcher", PosAnnotation.PosTags.valueOf(s)));
+                        break;
+                    }
+                }
+
+
+            }
+
 
         }
 
+
     }
+
 
     @Ignore
     @Test
@@ -166,7 +184,7 @@ public class TestEditingPos {
                 String posOptionToAdd_3 = "CONJ_S";
                 /*(1) Appending to exisitng pos-options */
                 wordUpdater.pushPosTaggerOption(word.getIndex(), PosChecker.checkIfValid(posOptionToAdd_1));
-				/*(2) Setting the options with a Set<String>*/
+                /*(2) Setting the options with a Set<String>*/
                 Set<String> posOptionsSet = new HashSet<>();
                 posOptionsSet.add(posOptionToAdd_2);
                 posOptionsSet.add(posOptionToAdd_3);

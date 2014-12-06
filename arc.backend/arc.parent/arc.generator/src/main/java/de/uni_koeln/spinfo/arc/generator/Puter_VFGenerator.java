@@ -547,32 +547,32 @@ public class Puter_VFGenerator {
 
 			
 			//demonstativ
-			addVF("quist", "PRON_DIM");
-			addVF("quaist", "PRON_DIM");
-			addVF("quista", "PRON_DIM");
-			addVF("quists", "PRON_DIM");
-			addVF("quistas", "PRON_DIM");
-			addVF("que", "PRON_DIM");
-			addVF("quel", "PRON_DIM");
-			addVF("quella", "PRON_DIM");
-			addVF("quels", "PRON_DIM");
-			addVF("quellas", "PRON_DIM");
-			addVF("medem", "PRON_DIM");
-			addVF("medemma", "PRON_DIM");
-			addVF("medems", "PRON_DIM");
-			addVF("medemmas", "PRON_DIM");
-			addVF("listess", "PRON_DIM");
-			addVF("listessa", "PRON_DIM");
-			addVF("listessas", "PRON_DIM");
+			addVF("quist", "PRON_DEM");
+			addVF("quaist", "PRON_DEM");
+			addVF("quista", "PRON_DEM");
+			addVF("quists", "PRON_DEM");
+			addVF("quistas", "PRON_DEM");
+			addVF("que", "PRON_DEM");
+			addVF("quel", "PRON_DEM");
+			addVF("quella", "PRON_DEM");
+			addVF("quels", "PRON_DEM");
+			addVF("quellas", "PRON_DEM");
+			addVF("medem", "PRON_DEM");
+			addVF("medemma", "PRON_DEM");
+			addVF("medems", "PRON_DEM");
+			addVF("medemmas", "PRON_DEM");
+			addVF("listess", "PRON_DEM");
+			addVF("listessa", "PRON_DEM");
+			addVF("listessas", "PRON_DEM");
 
-			addVF("simil", "PRON_DIM");
-			addVF("simla", "PRON_DIM");
-			addVF("simils", "PRON_DIM");
-			addVF("similas", "PRON_DIM");
-			addVF("tel", "PRON_DIM");
-			addVF("tela", "PRON_DIM");
-			addVF("tels", "PRON_DIM");
-			addVF("telas", "PRON_DIM");
+			addVF("simil", "PRON_DEM");
+			addVF("simla", "PRON_DEM");
+			addVF("simils", "PRON_DEM");
+			addVF("similas", "PRON_DEM");
+			addVF("tel", "PRON_DEM");
+			addVF("tela", "PRON_DEM");
+			addVF("tels", "PRON_DEM");
+			addVF("telas", "PRON_DEM");
 
 
 			

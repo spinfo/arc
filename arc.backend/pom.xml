@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.uni-koeln.spinfo.arc</groupId>
-    <artifactId>arc.parent</artifactId>
+    <artifactId>arc.backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -10,22 +10,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-
-    <dependencies>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>2.11.4</version>
-        </dependency>
-
-    </dependencies>
+    <modules>
+        <module>arc.extractions</module>
+        <module>arc.parent</module>
+    </modules>
 
     <build>
         <plugins>
@@ -42,9 +30,4 @@
     </build>
 
 
-    <modules>
-        <module>arc.common</module>
-        <module>arc.generator</module>
-
-    </modules>
 </project>
