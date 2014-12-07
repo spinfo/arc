@@ -4,6 +4,7 @@
     <groupId>de.uni-koeln.spinfo.arc</groupId>
     <artifactId>arc.m.annotations</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>de.uni-koeln.spinfo.arc</groupId>

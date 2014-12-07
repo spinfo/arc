@@ -44,10 +44,9 @@ public class NVSParserTest {
 
         //parser.replaceStrings(set);
 
-        String outputPath = "/Users/franciscomondaca/Desktop/";
         String fileName = "nvs-20141124_oca";
 
-        DictUtils.printMap(set, outputPath, fileName);
+        DictUtils.printMap(set, "../" + DictUtils.outputPath, fileName);
 
     }
 
@@ -77,7 +76,7 @@ public class NVSParserTest {
         DB db = mongoClient.getDB("arc");
         DBCollection nvs = db.getCollection("nvs_20140812");
         List<String> lemmasOneKPS = parser.getLemmasOnlyWithKPS(nvs);
-        DictUtils.printList(lemmasOneKPS, "/Users/franciscomondaca/Desktop/", "lemmasKPS");
+        DictUtils.printList(lemmasOneKPS, "../" + DictUtils.outputPath, "lemmasKPS");
 
 
     }
@@ -92,7 +91,7 @@ public class NVSParserTest {
 
         String sCurrentLine;
 
-        br = new BufferedReader(new FileReader(DictUtils.outputPath + "lemmasKPS.txt"));
+        br = new BufferedReader(new FileReader("../" + DictUtils.outputPath + "lemmasKPS.txt"));
 
         while ((sCurrentLine = br.readLine()) != null) {
 

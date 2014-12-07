@@ -25,11 +25,11 @@ public class ProcessNVS_Test {
 
     @Test
     public void testCleanNVSFromTXT() throws IOException {
-        List<String> list = processor.cleanNVSFromTXT("/Users/franciscomondaca/spinfo/repositories/antlr4/nvs/nvs.singleline/input_data/decurtins-20131201_20140805_20140805.txt");
+        List<String> list = processor.cleanNVSFromTXT("../nvs.singleline/input_data/decurtins-20131201_20140805_20140805.txt");
 
         DictUtils.printList(list, ProcessNVS.output_data_path, "decurtins-20131201_20140805_20140805_20140806");
 
-        List<String> withTags = DictUtils.addTags("/Users/franciscomondaca/spinfo/repositories/antlr4/nvs/nvs.singleline/output_data/decurtins-20131201_20140805_20140805_20140806.txt");
+        List<String> withTags = DictUtils.addTags("../nvs.singleline/output_data/decurtins-20131201_20140805_20140805_20140806.txt");
 
         DictUtils.printList(withTags, ProcessNVS.output_data_path, "decurtins-20131201_20140805_20140805_20140806_tags");
 
@@ -41,7 +41,7 @@ public class ProcessNVS_Test {
     public void testParsePeer() throws IOException {
 
 
-        //processor.parseNVS("/Users/franciscomondaca/spinfo/local_projects/antlr/test/nvs.wholeentry/input_data/raw_cleaned.txt", "nvs_raw_parsed");
+        //processor.parseNVS("../antlr/test/nvs.wholeentry/input_data/raw_cleaned.txt", "nvs_raw_parsed");
         processor.parseNVS("../antlr4.parent/nvs.singleline/input_data/peer_tags.txt", "peer_parsed", processor.output_data_path);
 
     }
@@ -224,7 +224,7 @@ public class ProcessNVS_Test {
 
         ArrayList<String> lines = new ArrayList<String>();
 
-        lines = (ArrayList<String>) DictUtils.joinLines("/Users/franciscomondaca/spinfo/local_projects/antlr/test/nvs.singleline/output_data/chopped_lists", lines);
+        lines = (ArrayList<String>) DictUtils.joinLines("../antlr/test/nvs.singleline/output_data/chopped_lists", lines);
 
 
         Collections.sort(lines);

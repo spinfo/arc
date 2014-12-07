@@ -11,8 +11,8 @@
     </properties>
 
     <modules>
-        <module>arc.extractions</module>
         <module>arc.tagging</module>
+        <module>arc.extractions</module>
     </modules>
 
     <build>
