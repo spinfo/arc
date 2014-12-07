@@ -6,6 +6,14 @@
     <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <parent>
+        <groupId>de.uni-koeln.spinfo.arc</groupId>
+        <artifactId>arc.parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+
     <url>http://maven.apache.org</url>
 
     <properties>

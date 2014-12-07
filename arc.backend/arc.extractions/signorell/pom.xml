@@ -6,13 +6,13 @@
 
     <groupId>de.uni_koeln.spinfo.antlr4</groupId>
     <artifactId>signorell</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
 
 
     <parent>
         <groupId>de.uni_koeln.spinfo.antlr4</groupId>
-        <artifactId>extractions</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <artifactId>arc.extractions</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

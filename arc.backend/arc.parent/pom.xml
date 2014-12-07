@@ -10,6 +10,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <parent>
+        <groupId>de.uni-koeln.spinfo.arc</groupId>
+        <artifactId>arc.backend</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modules>
+        <module>arc.common</module>
+        <module>arc.generator</module>
+        <module>arc.m.annotations</module>
+        <module>arc.m.dataaccess</module>
+    </modules>
 
     <dependencies>
 
@@ -42,9 +55,4 @@
     </build>
 
 
-    <modules>
-        <module>arc.common</module>
-        <module>arc.generator</module>
-
-    </modules>
 </project>
