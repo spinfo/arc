@@ -1,0 +1,131 @@
+@CHARSET "ISO-8859-1";
+
+@font-face {
+	font-family: mobilman;
+	src: url('fonts/mobilman.ttf');
+}
+
+@font-face {
+	font-family: standard_2;
+	src: url('fonts/stan0756.ttf');
+}
+
+@font-face {
+	font-family: standard;
+	src: url('fonts/stan0753.ttf');
+}
+
+@font-face {
+	font-family: copy;
+	src: url('fonts/copy1056.ttf');
+}
+
+@font-face {
+	font-family: minecraft;
+	src: url('fonts/minecraft.ttf');
+}
+
+/* @external .gwt-Label; */
+/* .gwt-Label { */
+/* 	font-family: standard_2, Arial; */
+/* 	font-size: 12px; */
+/* 	color: #fff600; */
+/* } */
+.eastPanel {
+/* 		background: linear-gradient(#000000, #606060); Standard syntax */
+/* 	background: #202020; */
+	background: #ffffff;
+}
+
+.westPanel {
+/* 		background: linear-gradient(#000000, #606060); Standard syntax */
+/* 	background: #202020; */
+	background: #ffffff;
+	
+}
+
+.northPanel {
+	background: -webkit-linear-gradient(#F0FAFF, #E0F5FF);
+	/* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#F0FAFF, 	#E0F5FF);
+	/* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#F0FAFF, 	#E0F5FF);
+	/* For Firefox 3.6 to 15 */
+	background: linear-gradient(#F0FAFF, 	#E0F5FF);
+	
+	border-style: solid;
+	border-width: 0px 0px 1px 0px;
+	border-color: grey;
+}
+
+.southPanel {
+/* 		background: linear-gradient( #606060, #202020); Standard syntax */
+/* 	background: #202020; */
+	background: #ffffff;
+}
+
+.centerPanel {
+	background: #ffffff;
+/* 	background: #303030; */
+/* 	background: -webkit-linear-gradient(#000000, #363636); */
+/* 	/* For Safari 5.1 to 6.0 */ */
+/* 	background: -o-linear-gradient(#000000, #363636); */
+/* 	/* For Opera 11.1 to 12.0 */ */
+/* 	background: -moz-linear-gradient(#000000, #363636); */
+/* 	/* For Firefox 3.6 to 15 */ */
+/* 	background: linear-gradient(#202020, #606060); Standard syntax */
+}
+
+.BGColorGradient {
+	background: -webkit-linear-gradient(#000000, #363636);
+	/* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(#000000, #363636);
+	/* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(#000000, #363636);
+	/* For Firefox 3.6 to 15 */
+	background: linear-gradient(#000000, #363636); /* Standard syntax */
+}
+
+.padding {
+	padding-left: 5px;
+}
+
+.YellowBorderNorth {
+	border-style: solid;
+	border-width: 0px 0px 2px 0px;
+	border-color: #625f00;
+	size: 
+		
+}
+
+.YellowBorderEast {
+	border-style: solid;
+	border-width: 0px 0px 0px 1px;
+	border-color: #625f00;
+}
+
+.YellowBorderSouth {
+	border-style: solid;
+	border-width: 1px 0px 0px 0px;
+	border-color: #625f00;
+}
+
+.YellowBorderWest {
+	border-style: solid;
+	border-width: 0px 1px 0px 0px;
+	border-color: #625f00;
+}
+.logoText {
+	font-size: 30px;
+/* 	font-weight: bold; */
+}
+.headerText {
+	font-size: 18px;
+/* 	font-weight: bold; */
+}
+.YellowText { /* 	font-family: copy; */
+/* 	font-family: standard_2, Arial; */
+	font-size: 10px;
+	color: #fff600;
+/* 	padding: 5px; */
+}
