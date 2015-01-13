@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module rename-to='arc_editor'>
+
+	<inherits name='com.google.gwt.user.User' />
+
+	<inherits name='com.google.gwt.user.theme.clean.Clean' />
+	<!-- <inherits name="com.google.gwt.junit.JUnit"/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
+
+	<inherits name='com.googlecode.gchart.GChart' />
+
+	<inherits name='de.uni_koeln.spinfo.arc.Annotation_Model' />
+	<inherits name='de.uni_koeln.spinfo.arc.ARC_Page_Browser' />
+
+	<entry-point class='de.uni_koeln.spinfo.arc.editor.client.ARC_Editor' />
+
+	<source path='client' />
+	<source path='shared' />
+
+</module>
