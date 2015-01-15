@@ -10,12 +10,19 @@
 	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
 	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
 
+	<inherits name='org.gwtbootstrap3.GwtBootstrap3' />
+
 	<inherits name='com.googlecode.gchart.GChart' />
 
 	<inherits name='de.uni_koeln.spinfo.arc.Annotation_Model' />
 	<inherits name='de.uni_koeln.spinfo.arc.ARC_Page_Browser' />
 
 	<entry-point class='de.uni_koeln.spinfo.arc.editor.client.ARC_Editor' />
+
+	<!-- Super Dev Mode -->
+	<add-linker name="xsiframe" />
+	<set-configuration-property name="devModeRedirectEnabled" value="true" />
+	<set-configuration-property name="gwt.superdevmode" value="on" />
 
 	<source path='client' />
 	<source path='shared' />

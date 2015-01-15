@@ -25,6 +25,7 @@
 		<jetty.default.port>8080</jetty.default.port>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty.version>9.2.6.v20141205</jetty.version>
+		<gwtBootstrap3.version>0.8.1</gwtBootstrap3.version>
 		<org.slf4j.version>1.7.9</org.slf4j.version>
 		<ch.qos.logback.version>1.1.2</ch.qos.logback.version>
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
@@ -33,6 +34,18 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.gwtbootstrap3</groupId>
+			<artifactId>gwtbootstrap3</artifactId>
+			<version>${gwtBootstrap3.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.gwtbootstrap3</groupId>
+			<artifactId>gwtbootstrap3-extras</artifactId>
+			<version>${gwtBootstrap3.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>com.googlecode.gchart</groupId>
@@ -154,13 +167,13 @@
 			<version>2.5</version>
 		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.sun</groupId> -->
-<!-- 			<artifactId>tools</artifactId> -->
-<!-- 			<version>1.7.0</version> -->
-<!-- 			<scope>system</scope> -->
-<!-- 			<systemPath>${java.home}/../lib/tools.jar</systemPath> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.sun</groupId> -->
+		<!-- <artifactId>tools</artifactId> -->
+		<!-- <version>1.7.0</version> -->
+		<!-- <scope>system</scope> -->
+		<!-- <systemPath>${java.home}/../lib/tools.jar</systemPath> -->
+		<!-- </dependency> -->
 
 	</dependencies>
 
@@ -294,19 +307,19 @@
 				<configuration>
 					<!-- <packagingExcludes>WEB-INF/web.xml</packagingExcludes> -->
 					<warName>root</warName>
-<!-- 					<webResources> -->
-<!-- 						<resource> -->
-<!-- 							<directory>src/main/resources</directory> -->
-<!-- 							<filtering>true</filtering> -->
-<!-- 						</resource> -->
-<!-- 						<resource> -->
-<!-- 							<directory>src/main/webapp</directory> -->
-<!-- 							<includes> -->
-<!-- 								<include>**/*.jsp</include> -->
-<!-- 							</includes> -->
-<!-- 							<filtering>true</filtering> -->
-<!-- 						</resource> -->
-<!-- 					</webResources> -->
+					<!-- <webResources> -->
+					<!-- <resource> -->
+					<!-- <directory>src/main/resources</directory> -->
+					<!-- <filtering>true</filtering> -->
+					<!-- </resource> -->
+					<!-- <resource> -->
+					<!-- <directory>src/main/webapp</directory> -->
+					<!-- <includes> -->
+					<!-- <include>**/*.jsp</include> -->
+					<!-- </includes> -->
+					<!-- <filtering>true</filtering> -->
+					<!-- </resource> -->
+					<!-- </webResources> -->
 				</configuration>
 			</plugin>
 
