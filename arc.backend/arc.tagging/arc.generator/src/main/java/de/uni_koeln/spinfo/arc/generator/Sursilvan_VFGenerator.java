@@ -86,6 +86,7 @@ public class Sursilvan_VFGenerator {
         addIrregularVerbs();
         addIrregularSubstantives();
         addIrregularAdjectives();
+        addModalVerbs();
         addPräpositions();
         addConjunctions();
         addNumbers();
@@ -618,7 +619,7 @@ public class Sursilvan_VFGenerator {
     private void addParticles() {
 
         //co
-        addVF("co","ADV");
+        addVF("co", "ADV");
         addVF("cò", "ADV");
 
         //Gradaprikel
@@ -1589,44 +1590,6 @@ public class Sursilvan_VFGenerator {
         // konditional präsens indirekt
         addKonditionalIndirekt("sch", VerbClass.IR, "V_GVRB");
 
-        //DUER
-        stamm = "du";
-        //infinitiv
-        addVF("duer", "V_GVRB");
-        // partizip perfekt
-        addVF(stamm + "iu", "V_PP");
-        // gerundium
-        addGerundium(stamm, VerbClass.ER, "V_GVRB");
-        // indikativ präsens
-        addVF(stamm + "ei", "V_GVRB");
-        addVF(stamm + "eis", "V_GVRB");
-        addVF(stamm + "ein", "V_GVRB");
-        addVF("dei", "V_GVRB");
-        addVF("deis", "V_GVRB");
-        addVF("dein", "V_GVRB");
-        // indikativ imperfekt
-        addIndikativImperfekt("du", VerbClass.ER, "V_GVRB");
-        addIndikativImperfekt("d", VerbClass.ER, "V_GVRB");
-        // konjunktiv präsens
-        addVF(stamm + "eigi", "V_GVRB");
-        addVF(stamm + "eigies", "V_GVRB");
-        addVF(stamm + "eigien", "V_GVRB");
-        addVF("deigi", "V_GVRB");
-        addVF("deigies", "V_GVRB");
-        addVF("deies", "V_GVRB");
-        addVF("dei", "V_GVRB");
-        addVF("deigien", "V_GVRB");
-        addVF("deien", "V_GVRB");
-        // Konjunktiv imperfekt
-        addKonjunktivImperfekt(stamm, VerbClass.ER, "V_GVRB");
-        addKonjunktivImperfekt("d", VerbClass.ER, "V_GVRB");
-        // konditional präsens direkt
-        addKonditionalDirekt(stamm, VerbClass.ER, "V_GVRB");
-        addKonditionalDirekt("d", VerbClass.ER, "V_GVRB");
-        // konditional präsens indirekt
-        addKonditionalIndirekt(stamm, VerbClass.ER, "V_GVRB");
-        addKonditionalIndirekt("d", VerbClass.ER, "V_GVRB");
-
         //FAR
         //infinitiv
         addVF("far", "V_GVRB");
@@ -1801,34 +1764,6 @@ public class Sursilvan_VFGenerator {
         addKonditionalDirekt("prui", VerbClass.IR, "V_GVRB");
         // konditional präsens indirekt
         addKonditionalIndirekt("prui", VerbClass.IR, "V_GVRB");
-
-        //Puder
-        //infinitiv
-        addVF("puder", "V_MOD");
-        // partizip perfekt
-        addVF("pudiu", "V_MOD");
-        // gerundium
-        addGerundium("pud", VerbClass.ER, "V_MOD");
-        // indikativ präsens
-        addVF("pos", "V_MOD");
-        addVF("po", "V_MOD");
-        addVF("pudein", "V_MOD");
-        addVF("pudeis", "V_MOD");
-        addVF("pon", "V_MOD");
-        // indikativ imperfekt
-        addIndikativImperfekt("pud", VerbClass.ER, "V_MOD");
-        // konjunktiv präsens
-        addVF("possi", "V_MOD");
-        addVF("possies", "V_MOD");
-        addVF("pudeien", "V_MOD");
-        addVF("pudeies", "V_MOD");
-        addVF("possien", "V_MOD");
-        // konjunktiv imperfekt
-        addKonjunktivImperfekt("pud", VerbClass.ER, "V_MOD");
-        // konditional präsens direkt
-        addKonditionalDirekt("pud", VerbClass.ER, "V_MOD");
-        // konditional präsens indirekt
-        addKonditionalIndirekt("pud", VerbClass.ER, "V_MOD");
 
         //RIR
         //infinitiv
@@ -2108,35 +2043,6 @@ public class Sursilvan_VFGenerator {
         addKonditionalIndirekt("st", VerbClass.AR, "V_GVRB");
         addKonditionalIndirekt("st", VerbClass.ER, "V_GVRB");
 
-        //STUER
-        //infinitiv
-        addVF("stuer", "V_MOD");
-        // partizp perfekt
-        addVF("stuiu", "V_MOD");
-        // gerundium
-        addGerundium("stu", VerbClass.ER, "V_GVRB");
-        // indikativ präsens
-        addVF("stoi", "V_MOD");
-        addVF("sto", "V_MOD");
-        addVF("stos", "V_MOD");
-        addVF("stuein", "V_MOD");
-        addVF("stueis", "V_MOD");
-        addVF("ston", "V_MOD");
-        // indikativ imperfekt
-        addIndikativImperfekt("stu", VerbClass.ER, "V_GVRB");
-        // konjunktiv präsens
-        addVF("stoppi", "V_MOD");
-        addVF("stoppies", "V_MOD");
-        addVF("stueien", "V_MOD");
-        addVF("stueies", "V_MOD");
-        addVF("stoppien", "V_MOD");
-        // Konjunktiv imperfekt
-        addKonjunktivImperfekt("stu", VerbClass.ER, "V_GVRB");
-        // Konditional präsnes direkt
-        addKonditionalDirekt("stu", VerbClass.ER, "V_GVRB");
-        // konditional präsens indirekt
-        addKonditionalIndirekt("stu", VerbClass.ER, "V_GVRB");
-
         //TRER
         //infinitiv
         addVF("trer", "V_GVRB");
@@ -2177,7 +2083,40 @@ public class Sursilvan_VFGenerator {
         // konditional präsens indirekt
         addKonditionalIndirekt("targ", VerbClass.ER, "V_GVRB");
 
-        //VULER
+    }
+
+
+    private void addModalVerbs() {
+        //Puder: Können
+        //infinitiv
+        addVF("puder", "V_MOD");
+        // partizip perfekt
+        addVF("pudiu", "V_MOD");
+        // gerundium
+        addGerundium("pud", VerbClass.ER, "V_MOD");
+        // indikativ präsens
+        addVF("pos", "V_MOD");
+        addVF("po", "V_MOD");
+        addVF("pudein", "V_MOD");
+        addVF("pudeis", "V_MOD");
+        addVF("pon", "V_MOD");
+        // indikativ imperfekt
+        addIndikativImperfekt("pud", VerbClass.ER, "V_MOD");
+        // konjunktiv präsens
+        addVF("possi", "V_MOD");
+        addVF("possies", "V_MOD");
+        addVF("pudeien", "V_MOD");
+        addVF("pudeies", "V_MOD");
+        addVF("possien", "V_MOD");
+        // konjunktiv imperfekt
+        addKonjunktivImperfekt("pud", VerbClass.ER, "V_MOD");
+        // konditional präsens direkt
+        addKonditionalDirekt("pud", VerbClass.ER, "V_MOD");
+        // konditional präsens indirekt
+        addKonditionalIndirekt("pud", VerbClass.ER, "V_MOD");
+
+
+        //Vuler : Wollen
         //infinitiv
         addVF("vuler", "V_MOD");
         // partizp perfekt
@@ -2215,6 +2154,104 @@ public class Sursilvan_VFGenerator {
         // konditional präsens indirekt
         addKonditionalIndirekt("vul", VerbClass.ER, "V_MOD");
         addKonditionalDirekt("l", VerbClass.ER, "V_MOD");
+
+
+        //Stuer : Müssen
+        //infinitiv
+        addVF("stuer", "V_MOD");
+        // partizip perfekt
+        addVF("stuiu", "V_MOD");
+        // gerundium
+        addGerundium("stu", VerbClass.ER, "V_MOD");
+        // indikativ präsens
+        addVF("stoi", "V_MOD");
+        addVF("stos", "V_MOD");
+        addVF("sto", "V_MOD");
+        addVF("stuein", "V_MOD");
+        addVF("stueis", "V_MOD");
+        addVF("ston", "V_MOD");
+        // indikativ imperfekt
+        addIndikativImperfekt("stu", VerbClass.ER, "V_MOD");
+        // konjunktiv präsens
+        addVF("stoppi", "V_MOD");
+        addVF("stoppies", "V_MOD");
+        addVF("stueien", "V_MOD");
+        addVF("stueies", "V_MOD");
+        addVF("stoppien", "V_MOD");
+        // konjunktiv imperfekt
+        addKonjunktivImperfekt("stu", VerbClass.ER, "V_MOD");
+        // konditional präsens direkt
+        addKonditionalDirekt("stu", VerbClass.ER, "V_MOD");
+        // konditional präsens indirekt
+        addKonditionalIndirekt("stu", VerbClass.ER, "V_MOD");
+
+
+        //Duer : Sollen
+        //infinitiv
+        addVF("duer", "V_MOD");
+        // partizip perfekt
+        addVF("duiu", "V_MOD");
+        // gerundium
+        addGerundium("du", VerbClass.ER, "V_MOD");
+        // indikativ präsens
+        addVF("duei", "V_MOD");
+        addVF("dueis", "V_MOD");
+        addVF("duein", "V_MOD");
+        addVF("dueis", "V_MOD");
+        addVF("duein", "V_MOD");
+        // indikativ imperfekt
+        addIndikativImperfekt("du", VerbClass.ER, "V_MOD");
+        addIndikativImperfekt("d", VerbClass.ER, "V_GVRB");
+
+        // konjunktiv präsens
+        addVF("dueigi", "V_MOD");
+        addVF("dueigies", "V_MOD");
+        addVF("dueigien", "V_MOD");
+        addVF("dueigies", "V_MOD");
+        addVF("dueigien", "V_MOD");
+        // konjunktiv imperfekt
+        addKonjunktivImperfekt("du", VerbClass.ER, "V_MOD");
+        addKonjunktivImperfekt("d", VerbClass.ER, "V_GVRB");
+
+        // konditional präsens direkt
+        addKonditionalDirekt("du", VerbClass.ER, "V_MOD");
+        addKonditionalDirekt("d", VerbClass.ER, "V_GVRB");
+
+        // konditional präsens indirekt
+        addKonditionalIndirekt("du", VerbClass.ER, "V_MOD");
+        addKonditionalIndirekt("d", VerbClass.ER, "V_GVRB");
+
+        //Astgar : Dürfen
+        //infinitiv
+        addVF("astgar", "V_MOD");
+        // partizip perfekt
+        addVF("astgau", "V_MOD");
+        // gerundium
+        addGerundium("astg", VerbClass.AR, "V_MOD");
+        // indikativ präsens
+        addVF("astgel", "V_MOD");
+        addVF("astgas", "V_MOD");
+        addVF("astga", "V_MOD");
+        addVF("astgein", "V_MOD");
+        addVF("astgeis", "V_MOD");
+        addVF("astgan", "V_MOD");
+        // indikativ imperfekt
+        addIndikativImperfekt("astg", VerbClass.AR, "V_MOD");
+        // konjunktiv präsens
+        addVF("astgi", "V_MOD");
+        addVF("astgies", "V_MOD");
+        addVF("astgeien", "V_MOD");
+        addVF("astgeies", "V_MOD");
+        addVF("astgien", "V_MOD");
+        // konjunktiv imperfekt
+        addKonjunktivImperfekt("astg", VerbClass.AR, "V_MOD");
+        // konditional präsens direkt
+        addKonditionalDirekt("astg", VerbClass.AR, "V_MOD");
+        // konditional präsens indirekt
+        addKonditionalIndirekt("astg", VerbClass.AR, "V_MOD");
+
+
     }
+
 
 }

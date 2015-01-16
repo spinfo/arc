@@ -35,7 +35,7 @@ public class TestEditingPos {
         wordQueries = new WordQueries();
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void testNewPos() {
 
