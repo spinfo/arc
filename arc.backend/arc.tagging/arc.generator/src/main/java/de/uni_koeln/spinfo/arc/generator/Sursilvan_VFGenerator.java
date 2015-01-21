@@ -88,6 +88,8 @@ public class Sursilvan_VFGenerator {
         addIrregularAdjectives();
         addModalVerbs();
         addPräpositions();
+        addPrepositionsArt();
+        addPrepositionsPron();
         addConjunctions();
         addNumbers();
         addPronouns();
@@ -387,10 +389,6 @@ public class Sursilvan_VFGenerator {
         addVF("à", "PREP");
         addVF("ad", "PREP");
 
-        addVF("al", "PREP_A");
-        addVF("als", "PREP_A");
-        addVF("alla", "PREP_A");
-        addVF("allas", "PREP_A");
 
         addVF("adual", "PREP");
         addVF("amiez", "PREP");
@@ -399,22 +397,10 @@ public class Sursilvan_VFGenerator {
         addVF("atraviers", "PREP");
         addVF("avon", "PREP");
         addVF("da", "PREP");
-        addVF("dil", "PREP_A");
-        addVF("del", "PREP_A");
-        addVF("digl", "PREP_A");
-        addVF("dalla", "PREP_A");
-        addVF("della", "PREP_A");
-        addVF("dils", "PREP_A");
-        addVF("dels", "PREP_A");
-        addVF("dallas", "PREP_A");
-        addVF("dellas", "PREP_A");
+
 
         addVF("cun", "PREP");
-        addVF("cul", "PREP_A");
-        addVF("cugl", "PREP_A");
-        addVF("culla", "PREP_A");
-        addVF("culs", "PREP_A");
-        addVF("cullas", "PREP_A");
+
         addVF("concernent", "PREP");
         addVF("cunter", "PREP");
         addVF("cuntrari", "PREP");
@@ -438,11 +424,7 @@ public class Sursilvan_VFGenerator {
         addVF("denter", "PREP");
 
         addVF("en", "PREP");
-        addVF("el", "PREP_A");
-        addVF("egl", "PREP_A");
-        addVF("ella", "PREP_A");
-        addVF("els", "PREP_A");
-        addVF("ellas", "PREP_A");
+
         addVF("eifer", "PREP");
         addVF("empei", "PREP");
         addVF("empéi", "PREP");
@@ -536,12 +518,6 @@ public class Sursilvan_VFGenerator {
         addVF("pervia", "PREP");
         addVF("puncto", "PREP");
         addVF("per", "PREP");
-        addVF("pil", "PREP_A");
-        addVF("pigl", "PREP_A");
-        addVF("pella", "PREP_A");
-        addVF("pils", "PREP_A");
-        addVF("pellas", "PREP_A");
-
 
         addVF("resalvont", "PREP");
         addVF("reservau", "PREP");
@@ -561,58 +537,108 @@ public class Sursilvan_VFGenerator {
         addVF("sut", "PREP");
         addVF("si", "PREP");
         addVF("sin", "PREP");
-        addVF("sil", "PREP_A");
-        addVF("sigl", "PREP_A");
-        addVF("silla", "PREP_A");
-        addVF("sils", "PREP_A");
-        addVF("sillas", "PREP_A");
-        addVF("spel", "PREP_A");
-        addVF("spegel", "PREP_A");
-        addVF("spella", "PREP_A");
-        addVF("spels", "PREP_A");
-        addVF("spellas", "PREP_A");
-        addVF("sul", "PREP_A");
-        addVF("sugl", "PREP_A");
-        addVF("sulla", "PREP_A");
-        addVF("suls", "PREP_A");
-        addVF("sullas", "PREP_A");
-        addVF("sutta", "PREP_A");
 
         addVF("tier", "PREP");
-        addVF("tiel", "PREP_A");
-        addVF("tiegl", "PREP_A");
-        addVF("tiella", "PREP_A");
-        addVF("tiels", "PREP_A");
-        addVF("tiellas", "PREP_A");
         addVF("tenor", "PREP");
         addVF("tenter", "PREP");
         addVF("tiers", "PREP");
-        addVF("tochen", "PREP_A");
         addVF("tras", "PREP");
-        addVF("trenter", "PREP_A");
 
         addVF("ultra", "PREP");
-        addVF("vi", "PREP_A");
         addVF("via", "PREP");
-        addVF("viaden", "PREP_A");
         addVF("viadora", "PREP");
-        addVF("viado", "PREP_A");
         addVF("viagiu", "PREP");
-        addVF("viasi", "PREP_A");
         addVF("vid", "PREP");
-        addVF("vida", "PREP_A");
         addVF("vidad", "PREP");
-        addVF("videifer", "PREP_A");
         addVF("videm", "PREP");
-        addVF("vivart", "PREP_A");
         addVF("vieifer", "PREP");
-        addVF("viers", "PREP_A");
         addVF("visavi", "PREP");
-        addVF("visum", "PREP_A");
         addVF("vitier", "PREP");
         addVF("vin", "PREP");
 
 
+    }
+
+
+    private void addPrepositionsArt() {
+        addVF("al", "PREP_ART");
+        addVF("als", "PREP_ART");
+        addVF("alla", "PREP_ART");
+        addVF("allas", "PREP_ART");
+
+        addVF("dil", "PREP_ART");
+        addVF("del", "PREP_ART");
+        addVF("digl", "PREP_ART");
+        addVF("dalla", "PREP_ART");
+        addVF("della", "PREP_ART");
+        addVF("dils", "PREP_ART");
+        addVF("dels", "PREP_ART");
+        addVF("dallas", "PREP_ART");
+        addVF("dellas", "PREP_ART");
+
+        addVF("cul", "PREP_ART");
+        addVF("cugl", "PREP_ART");
+        addVF("culla", "PREP_ART");
+        addVF("culs", "PREP_ART");
+        addVF("cullas", "PREP_ART");
+
+        addVF("el", "PREP_ART");
+        addVF("egl", "PREP_ART");
+        addVF("ella", "PREP_ART");
+        addVF("els", "PREP_ART");
+        addVF("ellas", "PREP_ART");
+
+        addVF("pil", "PREP_ART");
+        addVF("pigl", "PREP_ART");
+        addVF("pella", "PREP_ART");
+        addVF("pils", "PREP_ART");
+        addVF("pellas", "PREP_ART");
+
+        addVF("sil", "PREP_ART");
+        addVF("sigl", "PREP_ART");
+        addVF("silla", "PREP_ART");
+        addVF("sils", "PREP_ART");
+        addVF("sillas", "PREP_ART");
+        addVF("spel", "PREP_ART");
+        addVF("spegel", "PREP_ART");
+        addVF("spella", "PREP_ART");
+        addVF("spels", "PREP_ART");
+        addVF("spellas", "PREP_ART");
+
+        addVF("sul", "PREP_ART");
+        addVF("sugl", "PREP_ART");
+        addVF("sulla", "PREP_ART");
+        addVF("suls", "PREP_ART");
+        addVF("sullas", "PREP_ART");
+        addVF("sutta", "PREP_ART");
+
+        addVF("tiel", "PREP_ART");
+        addVF("tiegl", "PREP_ART");
+        addVF("tiella", "PREP_ART");
+        addVF("tiels", "PREP_ART");
+        addVF("tiellas", "PREP_ART");
+
+        addVF("tochen", "PREP_ART");
+        addVF("trenter", "PREP_ART");
+        addVF("vi", "PREP_ART");
+        addVF("viaden", "PREP_ART");
+
+        addVF("viado", "PREP_ART");
+        addVF("viasi", "PREP_ART");
+        addVF("vida", "PREP_ART");
+        addVF("videifer", "PREP_ART");
+        addVF("vivart", "PREP_ART");
+        addVF("viers", "PREP_ART");
+        addVF("visum", "PREP_ART");
+
+    }
+
+    private void addPrepositionsPron() {
+
+        addVF("dam", "PREP_PRON");
+        addVF("dans", "PREP_PRON");
+        addVF("am", "PREP_PRON");
+        addVF("ans", "PREP_PRON");
     }
 
 

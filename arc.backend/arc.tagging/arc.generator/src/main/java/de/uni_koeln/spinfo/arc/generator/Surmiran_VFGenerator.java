@@ -349,22 +349,22 @@ public class Surmiran_VFGenerator {
 	}
 
 	private void addPräp_Art() {
-		addVF("digl", "PREP_A");
-		addVF("digls", "PREP_A");
-		addVF("dalla", "PREP_A");
-		addVF("dallas", "PREP_A");
-		addVF("agl", "PREP_A");
-		addVF("agls", "PREP_A");
-		addVF("alla", "PREP_A");
-		addVF("allas", "PREP_A");
-		addVF("segl", "PREP_A");
-		addVF("segls", "PREP_A");
-		addVF("cugl", "PREP_A");
-		addVF("cugls", "PREP_A");
-		addVF("pigl", "PREP_A");
-		addVF("pigls", "PREP_A");
-		addVF("tigl", "PREP_A");
-		addVF("tigls", "PREP_A");		
+		addVF("digl", "PREP_ART");
+		addVF("digls", "PREP_ART");
+		addVF("dalla", "PREP_ART");
+		addVF("dallas", "PREP_ART");
+		addVF("agl", "PREP_ART");
+		addVF("agls", "PREP_ART");
+		addVF("alla", "PREP_ART");
+		addVF("allas", "PREP_ART");
+		addVF("segl", "PREP_ART");
+		addVF("segls", "PREP_ART");
+		addVF("cugl", "PREP_ART");
+		addVF("cugls", "PREP_ART");
+		addVF("pigl", "PREP_ART");
+		addVF("pigls", "PREP_ART");
+		addVF("tigl", "PREP_ART");
+		addVF("tigls", "PREP_ART");
 	}
 
 	private void generateAdjectiveForms(String entry) {

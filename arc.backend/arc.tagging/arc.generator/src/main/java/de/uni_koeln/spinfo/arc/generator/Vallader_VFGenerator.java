@@ -448,28 +448,28 @@ public class Vallader_VFGenerator {
     }
 
     private void addPrep_Art() {
-        addVF("al", "PREP_A");
-        addVF("als", "PREP_A");
-        addVF("dal", "PREP_A");
-        addVF("dals", "PREP_A");
-        addVF("cul", "PREP_A");
-        addVF("culs", "PREP_A");
-        addVF("i'l", "PREP_A");
-        addVF("i'ls", "PREP_A");
-        addVF("pel", "PREP_A");
-        addVF("pels", "PREP_A");
+        addVF("al", "PREP_ART");
+        addVF("als", "PREP_ART");
+        addVF("dal", "PREP_ART");
+        addVF("dals", "PREP_ART");
+        addVF("cul", "PREP_ART");
+        addVF("culs", "PREP_ART");
+        addVF("i'l", "PREP_ART");
+        addVF("i'ls", "PREP_ART");
+        addVF("pel", "PREP_ART");
+        addVF("pels", "PREP_ART");
 
-        addVF("sül", "PREP_A");
-        addVF("süls", "PREP_A");
-        addVF("prols", "PREP_A");
-        addVF("illa", "PREP_A");
-        addVF("illas", "PREP_A");
-        addVF("culla", "PREP_A");
-        addVF("cullas", "PREP_A");
-        addVF("pella", "PREP_A");
-        addVF("pellas", "PREP_A");
-        addVF("sülla", "PREP_A");
-        addVF("süllas", "PREP_A");
+        addVF("sül", "PREP_ART");
+        addVF("süls", "PREP_ART");
+        addVF("prols", "PREP_ART");
+        addVF("illa", "PREP_ART");
+        addVF("illas", "PREP_ART");
+        addVF("culla", "PREP_ART");
+        addVF("cullas", "PREP_ART");
+        addVF("pella", "PREP_ART");
+        addVF("pellas", "PREP_ART");
+        addVF("sülla", "PREP_ART");
+        addVF("süllas", "PREP_ART");
     }
 
     private void addPronouns() {

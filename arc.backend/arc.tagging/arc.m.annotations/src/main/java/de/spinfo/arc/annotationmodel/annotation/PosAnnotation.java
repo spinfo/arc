@@ -21,7 +21,9 @@ public interface PosAnnotation extends Annotation {
         // Prepositions
         PREP,
         // Prepositions fusioned with Articles
-        PREP_A,
+        PREP_ART,
+        // Prepositions fusioned with Pronouns
+        PREP_PRON,
         //Adjectives
         ADJ,
         ADJ_DEM,
