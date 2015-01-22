@@ -110,19 +110,19 @@ public class SursilvanTest {
     }
 
 
-    @Ignore
+    //@Ignore
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = readFullForms(FileUtils.outputPath + "fullforms_2014-12-06T09:47:47Z");
+        Map<String, TreeSet<String>> fullForms = readFullForms(FileUtils.outputPath + "fullforms_2015-01-21T14:11:53Z");
 
 
         POSMatcher matcher = new SursilvanMatcher(fullForms, nvs_collection.getFullName());
         matcher.configure(new Boolean[]{true, true, true, true});
 
         ArrayList<Token> matches = matcher.matchTokensWithPOS(getListOfTokens(pathToTokensFromDB));
-        //DictUtils.printList(matches, "../../arc.data/output/", "matchedWords_" + date);
-        FileUtils.writeList(matches, "matchedWords_");
+        //FileUtils.writeList(matches, "matchedWords_");
+        FileUtils.printList(matches, FileUtils.outputPath, "matchedWords_");
     }
 
 
@@ -132,11 +132,26 @@ public class SursilvanTest {
 
         Map<String, TreeSet<String>> fullForms = generatefullForms();
         writeFullforms(fullForms);
-        //DictUtils.printMap(fullForms, "../../arc.data/output/", "fullForms" + date);
+        FileUtils.printMap(fullForms, "../../arc.data/output/", "fullForms" + date);
 
 
     }
 
+
+    @Ignore
+    @Test
+    public void testRegex() {
+
+
+        String token = "cdscc'!";
+
+        //token = token.replaceAll("\\P{L}", "");
+
+        token = token.replaceAll("(?!')(\\P{L})", "");
+
+        System.out.println(token);
+
+    }
 
     private static Map<String, TreeSet<String>> generatefullForms() throws UnknownHostException {
 

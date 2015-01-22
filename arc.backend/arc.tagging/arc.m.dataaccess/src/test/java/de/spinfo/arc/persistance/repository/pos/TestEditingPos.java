@@ -35,30 +35,6 @@ public class TestEditingPos {
         wordQueries = new WordQueries();
     }
 
-    @Ignore
-    @Test
-    public void testNewPos() {
-
-        Word w = wordQueries.getWordAt(1);
-
-//		Set<>
-        PosChecker.checkIfValid("PART");
-        // wordUpdater.pushPosTaggerOption(w.getIndex(), "PART");
-
-        wordUpdater.pushPos(
-                w.getIndex(),
-                new PosAnnotationImpl(new Date(), 0, "test", PosAnnotation.PosTags.valueOf("PART")));
-
-//        wordUpdater.pushForm(
-//                w.getIndex(),
-//                new FormAnnotationImpl(new Date(), 11, "test", "new Form")
-//        );
-
-        WordImpl wRetr = wordQueries.getWordAt(w.getIndex());
-//        System.out.println(wRetr.getTaggerPosOptions());
-        System.out.println(wRetr.getLastPosAnnotation().getPos());
-//		assrtEquals("bla", );
-    }
 
     @Ignore
     @Test

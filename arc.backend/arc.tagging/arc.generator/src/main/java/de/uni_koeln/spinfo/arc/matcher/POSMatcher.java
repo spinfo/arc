@@ -296,8 +296,8 @@ public abstract class POSMatcher implements Serializable {
 
 
 
-        //Remove everything but letters
-        token = token.replaceAll("\\P{L}", "");
+        //Remove everything but letters and apostrophes
+        token = token.replaceAll("(?!')(\\P{L})", "");
 
         // Remove whitespaces on the borders
         token = token.replaceAll("^\\s+|\\s+$", "");

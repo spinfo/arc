@@ -32,7 +32,7 @@ public class FileUtils {
     public static <K, V> File printMap(Map<K, V> map, String destPath,
                                        String fileName) throws IOException {
 
-        File file = new File(destPath + fileName + ".txt");
+        File file = new File(destPath + fileName + getISO8601StringForCurrentDate() + ".txt");
         Writer out = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(file), "UTF8"));
 
@@ -50,7 +50,7 @@ public class FileUtils {
     public static <T> File printSet(Set<T> set, String destPath, String filename)
             throws IOException {
 
-        File file = new File(destPath + filename + ".txt");
+        File file = new File(destPath + filename + getISO8601StringForCurrentDate() + ".txt");
 
         Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(file), "UTF8"));
@@ -69,7 +69,7 @@ public class FileUtils {
     public static <T> File printList(List<T> list, String destPath,
                                      String filename) throws IOException {
 
-        File file = new File(destPath + filename + ".txt");
+        File file = new File(destPath + filename + getISO8601StringForCurrentDate() + ".txt");
 
         Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(file), "UTF8"));
