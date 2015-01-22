@@ -5,6 +5,9 @@
 *.war
 *.ear
 
+!gchart-2.2.jar
+!components-1.1.0.jar
+
 logs/
 target/
 exports/
