@@ -100,6 +100,7 @@ public abstract class POSMatcher implements Serializable {
         this.previousDot = false;
         for (Token nextToken : tokens) {
             if (nextToken == null) continue;
+            //System.out.println(nextToken.getToken());
             Set<String> tags = getPOS(nextToken.getToken());
             if (tags != null) {
                 Token token = new Token();
@@ -114,39 +115,79 @@ public abstract class POSMatcher implements Serializable {
 
     }
 
+    private Set<String> checkIfRomanNumeralorAmpersand(String token) {
 
-    public Set<String> getPOS(String token) {
+        Set<String> posSet;
 
-        token = prepareToken(token);
+        // Remove whitespaces on the borders
+        token = token.replaceAll("^\\s+|\\s+$", "");
 
-        if (token == null) {
+        if (token.equals("&")) {
             updateDots();
-            return null;
+            posSet = new TreeSet<>();
+            posSet.add("CONJ_C");
+            posSet.add("CONJ_S");
+            return posSet;
         }
 
 
-        Set<String> posSet = new TreeSet<String>();
+        token = removeEverythingButChars(token);
 
+        if (token.isEmpty()) {
+            updateDots();
+            return null;
+
+        }
+
+
+        if (token.matches("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")) {
+
+            updateDots();
+            posSet = new TreeSet<>();
+            posSet.add("C_NUM");
+            posSet.add("ADJ_NUM");
+            posSet.add("NULL");
+            return posSet;
+
+        }
+
+
+        return null;
+    }
+
+
+    private Set<String> checkDB(String token) {
+
+        Set<String> pos;
 
         //Base case
         if (fullForms.containsKey(token)) {
 
-            posSet = fullForms.get(token);
+            pos = fullForms.get(token);
 
-            if (checkIfOneLetterAndNoun(token, posSet)) {
-
+            if (checkIfOneLetterAndNoun(token, pos)) {
                 updateDots();
                 return null;
 
             }
 
             updateDots();
-            return posSet;
+            return pos;
 
 
         }
+
+
+        if (token.isEmpty()) {
+            updateDots();
+            return null;
+
+        }
+
+
         //If the token starts with uppercase
-        else if (Character.isUpperCase(token.charAt(0))) {
+
+        if (Character.isUpperCase(token.charAt(0))) {
 
 
             // Go lower case
@@ -156,9 +197,9 @@ public abstract class POSMatcher implements Serializable {
 
             if (fullForms.containsKey(toLowerCase)) {
 
-                posSet = fullForms.get(toLowerCase);
+                pos = fullForms.get(toLowerCase);
 
-                if (checkIfOneLetterAndNoun(toLowerCase, posSet)) {
+                if (checkIfOneLetterAndNoun(toLowerCase, pos)) {
 
                     updateDots();
                     return null;
@@ -166,20 +207,125 @@ public abstract class POSMatcher implements Serializable {
                 }
 
                 updateDots();
-                return posSet;
+                return pos;
 
 
             }
 
-            // if it's uppercase and was not found in the db
-            else {
+
+        }
 
 
-                if (tagNames) {
+        return null;
+    }
 
 
-                    //If there is only one letter  || if it's a roman numeral
-                    if (token.length() <= 1 || token.matches("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")) {
+    private Set<String> checkIfNumber(String token) {
+
+        Set<String> posSet;
+
+        token = token.replaceAll("[\\p{Punct}]", "");
+
+        if (token.matches("[0-9]+")) {
+
+            posSet = new TreeSet<>();
+            posSet.add("C_NUM");
+            posSet.add("NULL");
+            updateDots();
+            return posSet;
+
+
+        }
+
+        return null;
+
+    }
+
+
+    public void checkIfEOS(String token) {
+
+        Pattern p = Pattern.compile("[.!?]$");
+        Matcher m = p.matcher(token);
+
+
+        if (m.find()) {
+
+            currentDot = true;
+
+        } else {
+
+            currentDot = false;
+        }
+
+
+    }
+
+    public Set<String> getPOS(String token) {
+
+        Set<String> posSet;
+
+        //Check if there is a EOS
+        checkIfEOS(token);
+
+
+        posSet = checkIfNumber(token);
+
+        if (posSet != null) {
+
+            return posSet;
+        }
+
+
+        posSet = checkIfRomanNumeralorAmpersand(token);
+
+        if (posSet != null) {
+
+            return posSet;
+        }
+
+
+        //Check in the DB
+        posSet = checkDB(token);
+
+        if (posSet != null) {
+
+            return posSet;
+
+
+        } else {
+
+            //Remove punctuation and digits
+            token = prepareToken(token);
+
+            if (token == null) {
+                updateDots();
+                return null;
+            }
+
+            //Check again if it's in the DB
+            posSet = checkDB(token);
+
+
+            if (posSet != null) {
+
+                return posSet;
+
+
+            } else {
+
+                posSet = new TreeSet<>();
+
+                if (token.isEmpty()) {
+                    updateDots();
+                    return null;
+
+                }
+
+                //Uppercase?
+                if (Character.isUpperCase(token.charAt(0))) {
+
+                    //If there is only one letter
+                    if (token.length() <= 1) {
                         updateDots();
                         return null;
 
@@ -218,38 +364,36 @@ public abstract class POSMatcher implements Serializable {
                     }
 
 
+                } else
+
+                //Lowercase?
+
+                {
+                    if (token.endsWith("ir") || token.endsWith("ar")
+                            || token.endsWith("er")) {
+                        posSet.add("V_GVRB");
+
+                    } else if (isAdverb(token)) {
+                        posSet.add("ADV");
+
+                    } else if
+                            (isIndImperfect(token)) {
+                        posSet.add("V_GVRB");
+
+                    } else {
+
+                        posSet.add("NN");
+                    }
+
+
+                    updateDots();
+
+                    return posSet;
+
+
                 }
+
             }
-
-
-        }
-
-
-        //If lowercase and not found
-        else
-
-        {
-
-            if (token.endsWith("ir") || token.endsWith("ar")
-                    || token.endsWith("er")) {
-                posSet.add("V_GVRB");
-
-            } else if (isAdverb(token)) {
-                posSet.add("ADV");
-
-            } else if
-                    (isIndImperfect(token)) {
-                posSet.add("V_GVRB");
-
-            } else {
-
-                posSet.add("NN");
-            }
-
-
-            updateDots();
-            return posSet;
-
         }
 
 
@@ -280,24 +424,8 @@ public abstract class POSMatcher implements Serializable {
     private String removeEverythingButChars(String token) {
 
 
-        Pattern p = Pattern.compile("[.!?]$");
-        Matcher m = p.matcher(token);
-
-
-        if (m.find()) {
-
-            currentDot = true;
-
-        } else {
-
-            currentDot = false;
-        }
-
-
-
-
-        //Remove everything but letters and apostrophes
-        token = token.replaceAll("(?!')(\\P{L})", "");
+        //Remove everything but letters
+        token = token.replaceAll("[\\P{L}]", "");
 
         // Remove whitespaces on the borders
         token = token.replaceAll("^\\s+|\\s+$", "");
@@ -587,6 +715,14 @@ public abstract class POSMatcher implements Serializable {
 
     private boolean checkIfOneLetterAndNoun(String s, Set<String> pos) {
         if (s.length() == 1 && pos.size() == 1 && pos.contains("NN")) {
+            return true;
+        }
+        return false;
+    }
+
+
+    private boolean checkIfOneLetter(String s) {
+        if (s.length() > 0) {
             return true;
         }
         return false;

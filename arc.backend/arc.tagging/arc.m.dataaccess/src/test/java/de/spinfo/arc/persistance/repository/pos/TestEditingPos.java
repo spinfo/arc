@@ -36,11 +36,27 @@ public class TestEditingPos {
     }
 
 
+
     @Ignore
+    @Test
+    public void testAddPOSAlternatives() throws Exception {
+        List<Token> tokens = getListOfTokens("matchedWords_2015-02-03T22:50:01Z");
+        for (Token token : tokens) {
+
+            long index = token.getIndex();
+            Set<String> posSet = token.getPos();
+
+            //Add all the options from the matching
+            wordUpdater.pushPosTaggerOptionsAsStrings(index, posSet);
+        }
+    }
+
+
+    //@Ignore
     @Test
     public void testWriteOnePOSFromAlternatives() throws Exception {
 
-        List<Token> tokens = getListOfTokens("matchedWords_2014-12-06T09:55:50Z");
+        List<Token> tokens = getListOfTokens("matchedWords_2015-02-03T22:50:01Z");
         for (Token token : tokens) {
 
             long index = token.getIndex();
@@ -67,19 +83,6 @@ public class TestEditingPos {
 
     }
 
-    @Ignore
-    @Test
-    public void testAddPOSAlternatives() throws Exception {
-        List<Token> tokens = getListOfTokens("matchedWords_2014-12-06T09:55:50Z");
-        for (Token token : tokens) {
-
-            long index = token.getIndex();
-            Set<String> posSet = token.getPos();
-
-            //Add all the options from the matching
-            wordUpdater.pushPosTaggerOptionsAsStrings(index, posSet);
-        }
-    }
 
 
     @Ignore

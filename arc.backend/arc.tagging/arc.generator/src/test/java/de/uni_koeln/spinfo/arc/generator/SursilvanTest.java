@@ -48,7 +48,7 @@ public class SursilvanTest {
 
         mongoClient = new MongoClient("localhost", 27017);
         db = mongoClient.getDB("arc");
-        nvs_collection = db.getCollection("nvs_20141203");
+        nvs_collection = db.getCollection("nvs_20150203");
 
     }
 
@@ -114,14 +114,14 @@ public class SursilvanTest {
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = readFullForms(FileUtils.outputPath + "fullforms_2015-01-21T14:11:53Z");
+        Map<String, TreeSet<String>> fullForms = readFullForms("fullforms_2015-02-03T19:54:07Z");
 
 
         POSMatcher matcher = new SursilvanMatcher(fullForms, nvs_collection.getFullName());
         matcher.configure(new Boolean[]{true, true, true, true});
 
         ArrayList<Token> matches = matcher.matchTokensWithPOS(getListOfTokens(pathToTokensFromDB));
-        //FileUtils.writeList(matches, "matchedWords_");
+        FileUtils.writeList(matches, "matchedWords_");
         FileUtils.printList(matches, FileUtils.outputPath, "matchedWords_");
     }
 
@@ -137,19 +137,60 @@ public class SursilvanTest {
 
     }
 
+    //@Ignore
+    @Test
+    public void testGetPOS() throws Exception {
+
+        Map<String, TreeSet<String>> fullForms = readFullForms("fullforms_2015-01-22T14:41:27Z");
+
+        POSMatcher matcher = new SursilvanMatcher(fullForms, nvs_collection.getFullName());
+        matcher.configure(new Boolean[]{true, true, true, true});
+
+        String s = "&";
+
+        Set<String> set = matcher.getPOS(s);
+
+        for (String f : set) {
+
+            System.out.println(f);
+
+
+        }
+
+
+    }
+
+    ;
+
+
+    @Test
+    public void reg() {
+
+        String token = "E2323.";
+
+        token = token.replaceAll("[\\p{Punct}]", "");
+
+        System.out.println(token);
+
+    }
+
 
     @Ignore
     @Test
     public void testRegex() {
 
 
-        String token = "cdscc'!";
+        String token = "I";
 
         //token = token.replaceAll("\\P{L}", "");
 
-        token = token.replaceAll("(?!')(\\P{L})", "");
+        //token = token.replaceAll("(?!')(\\P{L})", "");
 
-        System.out.println(token);
+
+        if (token.matches("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"))
+
+            System.out.println(token);
+
 
     }
 

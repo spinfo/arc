@@ -196,6 +196,7 @@ public class Sursilvan_VFGenerator {
     }
 
     private void addConjunctions() {
+        addVF("&", "CONJ_C");
         addVF("e", "CONJ_C");
         addVF("è", "CONJ_C");
         addVF("et", "CONJ_C");
@@ -295,6 +296,7 @@ public class Sursilvan_VFGenerator {
         addVF("ditg", "CONJ_S");
         addVF("duer", "CONJ_S");
         addVF("duront", "CONJ_S");
+        addVF("&", "CONJ_S");
         addVF("e", "CONJ_S");
         addVF("et", "CONJ_S");
         addVF("è", "CONJ_S");
