@@ -7,7 +7,7 @@
 	<repositories>
 		<repository>
 			<id>in-project</id>
-			<name>In Project Repository</name>
+			<name>arc.page.browser</name>
 			<url>file://${project.basedir}/libs</url>
 		</repository>
 	</repositories>
@@ -40,19 +40,18 @@
 			<scope>provided</scope>
 		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.googlecode.gwt-charts</groupId> -->
-<!-- 			<artifactId>gwt-charts</artifactId> -->
-<!-- 			<version>0.9.9</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>com.googlecode.gwt-charts</groupId> -->
+		<!-- <artifactId>gwt-charts</artifactId> -->
+		<!-- <version>0.9.9</version> -->
+		<!-- </dependency> -->
 
 		<dependency>
 			<groupId>org.cafesip</groupId>
 			<artifactId>components</artifactId>
 			<version>1.1.0</version>
-			<scope>compile</scope>
-			<!-- <scope>system</scope> -->
-			<!-- <systemPath>/libs/cafesip/components/1.1.0/components-1.1.0.jar</systemPath> -->
+			<scope>system</scope>
+			<systemPath>/libs/cafesip/components/1.1.0/components-1.1.0.jar</systemPath>
 		</dependency>
 
 	</dependencies>
