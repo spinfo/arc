@@ -1,19 +1,19 @@
 package de.spinfo.arc.persistance.repository.pos;
 
-
+import de.spinfo.arc.annotationmodel.annotatable.Word;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes;
+import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
+import de.spinfo.arc.annotationmodel.annotation.PageRange;
+import de.spinfo.arc.annotationmodel.annotation.PosAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.impl.PosAnnotationImpl;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
 import de.spinfo.arc.persistance.util.PosChecker;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.Word;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.Annotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.ChapterRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.PosAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.impl.PosAnnotationImpl;
-import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
+import de.uni_koeln.spinfo.arc.matcher.Token;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -22,8 +22,8 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.*;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestEditingPos {
 
@@ -52,7 +52,7 @@ public class TestEditingPos {
     }
 
 
-    @Ignore
+    //@Ignore
     @Test
     public void testWriteOnePOSFromAlternatives() throws Exception {
 
@@ -83,18 +83,6 @@ public class TestEditingPos {
 
     }
 
-    @Test
-    public void testUpSinglePOS() {
-
-
-    }
-
-    @Test
-    public void testGetPageForIndex() {
-
-
-
-    }
 
 
     @Ignore
@@ -122,7 +110,7 @@ public class TestEditingPos {
         /*.. and the second one is unsing the Enum-Key for the annotation map */
         assertEquals("Is correct amount of Chapters available by map access",
                 153,
-                retrievedWu.getAnnotationsOfType(Annotation.AnnotationTypes.CHAPTER_RANGE).size());
+                retrievedWu.getAnnotationsOfType(AnnotationTypes.CHAPTER_RANGE).size());
 
 		/* The following to ways of retrieving language ranges are equal.
          * the first one is using the convenience method of the working unit type
@@ -214,7 +202,6 @@ public class TestEditingPos {
 
 
     }
-
 
     //Temporary solution in order top avoid mutual dependence in maven
     private static List<Token> getListOfTokens(String fileName) throws Exception {

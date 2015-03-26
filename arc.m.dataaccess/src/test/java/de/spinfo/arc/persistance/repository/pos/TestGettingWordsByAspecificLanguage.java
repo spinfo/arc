@@ -1,21 +1,22 @@
 package de.spinfo.arc.persistance.repository.pos;
 
-
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
 import de.spinfo.arc.data.Entry;
 import de.spinfo.arc.data.IOMongo;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
 import de.spinfo.arc.persistance.util.PosChecker;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
+import de.uni_koeln.spinfo.arc.matcher.Token;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +30,7 @@ public class TestGettingWordsByAspecificLanguage {
     static WordUpdater wordUpdater = new WordUpdater();
 
 
-    //@Ignore
+    @Ignore
     @Test
     public void getGoldenTokens() throws IOException {
 
@@ -42,7 +43,7 @@ public class TestGettingWordsByAspecificLanguage {
     }
 
     @Test
-    public void testGetTokens() throws Exception {
+    public void testGetTokens() throws Exception{
 
         Map<Integer, String> getTokens = ioMongo.getTokens("golden2015-03-24T14:41:09Z");
 
@@ -51,10 +52,38 @@ public class TestGettingWordsByAspecificLanguage {
 
     }
 
+
+    private void printNotTagged(WordImpl word) {
+
+        StringBuffer buffer = new StringBuffer();
+
+        if (word.getLastPosAnnotation() != null) {
+
+            if (word.getLastPosAnnotation().getPos().toString().equals("NULL") || word.getLastPosAnnotation().getPos().toString().equals("NOT_TAGGED")) {
+
+                if (word.getLastPosAnnotation().getUserId().toString().equals("lutzf")) {
+
+                    buffer.append(word.getIndex());
+                    buffer.append("\t");
+                    buffer.append(word.getLastFormAnnotation().getForm());
+                    buffer.append("\t");
+                    buffer.append(word.getLastPosAnnotation().getPos());
+                    buffer.append("\t");
+                    buffer.append(word.getLastPosAnnotation().getUserId());
+
+                    System.out.println(buffer.toString());
+                }
+            }
+        }
+
+    }
+
+
+
     @Test
     public void testGetPageNumberInWU() {
 
-        ioMongo.getPageNumberInWU("Band II", 359930);
+        ioMongo.getPageNumberInWU("Band II", 361275);
 
 
     }
@@ -172,7 +201,7 @@ public class TestGettingWordsByAspecificLanguage {
 
             Token token = new Token();
             token.setIndex(word.getIndex());
-            token.setToken(word.getLastFormAnnotation().getForm());
+            token.setToken(word.getFirstAnnotation().getForm());
 
 
             tokens.add(token);
@@ -185,6 +214,8 @@ public class TestGettingWordsByAspecificLanguage {
 
 
     }
+
+
 
 
 }

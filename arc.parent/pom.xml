@@ -21,6 +21,8 @@
         <module>../arc.ext.vallader.antlr4</module>
         <module>../arc.be.tagger</module>
         <module>../arc.be.generator</module>
+        <module>../arc.m.dataaccess</module>
+        <module>../arc.m.annotations</module>
     </modules>
 
     <properties>

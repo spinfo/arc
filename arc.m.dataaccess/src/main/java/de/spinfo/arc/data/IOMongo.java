@@ -1,12 +1,11 @@
 package de.spinfo.arc.data;
 
-
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
+import de.spinfo.arc.annotationmodel.annotation.PageRange;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.PageRange;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
 
 import java.io.*;
@@ -19,6 +18,37 @@ public class IOMongo {
 
     static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
     static WordQueries wordQueries = new WordQueries();
+
+
+    public long getPageNumberInWU(String Wu, long index) {
+
+        WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
+
+        List<PageRange> pageRange = workingUnit.getPages();
+
+        List<Range> ranges = new ArrayList<>();
+
+        for (PageRange pr : pageRange) {
+
+
+            Range range = new Range(pr.getStart(), pr.getEnd());
+            ranges.add(range);
+        }
+
+
+        for (Range range : ranges) {
+
+            if (index > range.getStart() && index < range.getEnd()) {
+
+                System.out.println(ranges.indexOf(range));
+            }
+
+
+        }
+
+        return 0;
+    }
+
 
 
     public List<Entry> getSursilvanGoldenEntries() {
@@ -188,62 +218,6 @@ public class IOMongo {
 
     }
 
-
-    public long getPageNumberInWU(String Wu, long index) {
-
-        WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
-
-        List<PageRange> pageRange = workingUnit.getPages();
-
-        List<Range> ranges = new ArrayList<>();
-
-        for (PageRange pr : pageRange) {
-
-
-            Range range = new Range(pr.getStart(), pr.getEnd());
-            ranges.add(range);
-        }
-
-
-        for (Range range : ranges) {
-
-            if (index > range.getStart() && index < range.getEnd()) {
-
-                System.out.println(ranges.indexOf(range));
-            }
-
-
-        }
-
-        return 0;
-    }
-
-
-    private void printNotTagged(WordImpl word) {
-
-        StringBuffer buffer = new StringBuffer();
-
-        if (word.getLastPosAnnotation() != null) {
-
-            if (word.getLastPosAnnotation().getPos().toString().equals("NULL") || word.getLastPosAnnotation().getPos().toString().equals("NOT_TAGGED")) {
-
-                if (word.getLastPosAnnotation().getUserId().toString().equals("lutzf")) {
-
-                    buffer.append(word.getIndex());
-                    buffer.append("\t");
-                    buffer.append(word.getLastFormAnnotation().getForm());
-                    buffer.append("\t");
-                    buffer.append(word.getLastPosAnnotation().getPos());
-                    buffer.append("\t");
-                    buffer.append(word.getLastPosAnnotation().getUserId());
-
-                    System.out.println(buffer.toString());
-                }
-            }
-        }
-
-    }
-
     //Temporary solution in order top avoid mutual dependence in maven
     private static List<Entry> readEntries(String fileName) throws Exception {
 
@@ -257,5 +231,6 @@ public class IOMongo {
 
 
     }
+
 
 }
