@@ -14,8 +14,14 @@
         <relativePath>../arc.parent</relativePath>
     </parent>
 
-    <dependencies>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.3</version>
+        </dependency>
         <dependency>
             <groupId>de.uni-koeln.spinfo.arc</groupId>
             <artifactId>arc.utils</artifactId>

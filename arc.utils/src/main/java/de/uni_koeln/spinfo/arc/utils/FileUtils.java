@@ -18,6 +18,30 @@ public class FileUtils {
     public static String outputPath = "../arc.data/output/";
     public static String inputPath = "../arc.data/input/";
 
+    public static <K,V> void writeMap(Map<K,V> matchedWords, String fileName) throws IOException {
+
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + fileName + getISO8601StringForCurrentDate()));
+
+        outputStream.writeObject(matchedWords);
+
+        outputStream.close();
+
+    }
+
+
+    private static Map<Long, Integer> getMap(String fileName) throws Exception {
+
+        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FileUtils.outputPath + fileName));
+
+        Map<Long, Integer> tokens = (Map<Long, Integer>) inputStream.readObject();
+
+        inputStream.close();
+
+        return tokens;
+
+
+    }
+
     public static <T> void writeList(List<T> matchedWords, String fileName) throws IOException {
 
         ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + fileName + getISO8601StringForCurrentDate()));
@@ -27,6 +51,7 @@ public class FileUtils {
         outputStream.close();
 
     }
+
 
 
     public static <K, V> File printMap(Map<K, V> map, String destPath,
