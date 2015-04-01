@@ -1,117 +1,149 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>de.uni_koeln.spinfo.arc</groupId>
-    <artifactId>parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.uni_koeln.spinfo.arc</groupId>
+	<artifactId>parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-    <modules>
-        <module>../arc.annotation.model</module>
-        <module>../arc.dto</module>
-        <module>../arc.data.access</module>
-        <module>../arc.page.browser</module>
-        <module>../arc.utils</module>
-        <module>../arc.ext.eichenhofer.antlr4</module>
-        <module>../arc.ext.eichenhofer.pdfbox</module>
-        <module>../arc.ext.nvs.antlr4</module>
-        <module>../arc.ext.nvs.parser</module>
-        <module>../arc.ext.puter.antlr4</module>
-        <module>../arc.ext.signorell.antlr4</module>
-        <module>../arc.ext.vallader.antlr4</module>
-        <module>../arc.be.tagger</module>
-        <module>../arc.be.generator</module>
-        <module>../arc.dataaccess</module>
-        <module>../arc.annotations</module>
-    </modules>
+	<modules>
+		<!-- <module>../arc.annotation.model</module> -->
+		<!-- <module>../arc.data.access</module> -->
+		<module>../arc.annotations</module>
+		<module>../arc.be.generator</module>
+		<module>../arc.be.tagger</module>
+		<module>../arc.utils</module>
+		<module>../arc.dto</module>
+		<module>../arc.dataaccess</module>
+		<module>../arc.page.browser</module>
+		<!-- <module>../arc.ext.eichenhofer.antlr4</module> -->
+		<!-- <module>../arc.ext.eichenhofer.pdfbox</module> -->
+		<!-- <module>../arc.ext.nvs.antlr4</module> -->
+		<!-- <module>../arc.ext.nvs.parser</module> -->
+		<!-- <module>../arc.ext.puter.antlr4</module> -->
+		<!-- <module>../arc.ext.signorell.antlr4</module> -->
+		<!-- <module>../arc.ext.vallader.antlr4</module> -->
+	</modules>
 
-    <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.springframework.version>4.1.4.RELEASE</org.springframework.version>
-        <org.springframework.data.version>1.6.1.RELEASE</org.springframework.data.version>
-        <com.google.gwt.version>2.7.0</com.google.gwt.version>
-    </properties>
+	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<org.springframework.version>4.1.4.RELEASE</org.springframework.version>
+		<org.springframework.data.version>1.6.1.RELEASE</org.springframework.data.version>
+		<com.google.gwt.version>2.7.0</com.google.gwt.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>1.7.5</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>${org.springframework.data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${org.springframework.data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.12.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4-runtime</artifactId>
+			<version>4.5</version>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <!-- Ensure that the GWT compiler will find modules which are defined in
-            src/main/java (instead of src/main/resources) -->
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.gwt.xml</include>
-                </includes>
-            </resource>
-        </resources>
-
-        <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12.2</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.13</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- <plugin> -->
-            <!-- <groupId>org.apache.maven.plugins</groupId> -->
-            <!-- <artifactId>maven-jar-plugin</artifactId> -->
-            <!-- <version>2.2</version> -->
-            <!-- <executions> -->
-            <!-- <execution> -->
-            <!-- <goals> -->
-            <!-- <goal>test-jar</goal> -->
-            <!-- </goals> -->
-            <!-- </execution> -->
-            <!-- </executions> -->
-            <!-- </plugin> -->
-
-        </plugins>
-
-    </build>
-
+	<build>
+		<!-- Ensure that the GWT compiler will find modules which are defined in 
+			src/main/java (instead of src/main/resources) -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.gwt.xml</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.13</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
