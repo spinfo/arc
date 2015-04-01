@@ -21,6 +21,7 @@ bin/
 .svn
 .gwt/
 .metadata/
+.recommenders/
 
 /RemoteSystemsTempFiles
 
