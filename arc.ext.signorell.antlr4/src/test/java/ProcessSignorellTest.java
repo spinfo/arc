@@ -1,11 +1,13 @@
-import de.uni_koeln.spinfo.antlr.nvs.common.DictUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import de.uni_koeln.spinfo.arc.antlr.signorell.ProcessSignorell;
+import de.uni_koeln.spinfo.arc.utils.DictUtils;
 
 /**
  * Created by franciscomondaca on 6/12/14.

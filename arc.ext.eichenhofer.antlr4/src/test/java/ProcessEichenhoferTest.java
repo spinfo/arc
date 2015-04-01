@@ -1,6 +1,8 @@
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uni_koeln.spinfo.antlr.eichenhofer.ProcessEichenhofer;
+
 import java.io.IOException;
 
 /**

@@ -1,9 +1,11 @@
-import de.uni_koeln.spinfo.antlr.nvs.common.DictUtils;
+import java.io.IOException;
+import java.util.List;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.util.List;
+import de.uni_koeln.spinfo.antlr.eichenhofer.Tarantino;
+import de.uni_koeln.spinfo.arc.utils.DictUtils;
 
 /**
  * Created by franciscomondaca on 7/16/14.

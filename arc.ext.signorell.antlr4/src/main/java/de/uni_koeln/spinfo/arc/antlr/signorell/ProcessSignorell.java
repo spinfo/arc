@@ -1,4 +1,10 @@
-import de.uni_koeln.spinfo.antlr.nvs.common.DictUtils;
+package de.uni_koeln.spinfo.arc.antlr.signorell;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -6,11 +12,7 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import de.uni_koeln.spinfo.arc.utils.DictUtils;
 
 /**
  * Created by franciscomondaca on 6/12/14.
