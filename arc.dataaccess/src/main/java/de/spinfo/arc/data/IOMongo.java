@@ -106,6 +106,29 @@ public class IOMongo {
                 continue;
             }
 
+
+            if (form.startsWith("„")) {
+                String first = form.substring(0, 1);
+                form = form.substring(1, form.length());
+
+                ForStand az = new ForStand();
+                az.setIndex(i);
+                az.setForm(first);
+                az.setPOS("P_OTH");
+                list.add(az);
+                i++;
+
+
+                ForStand forStand = new ForStand();
+                forStand.setIndex(i);
+                forStand.setForm(form);
+                forStand.setPOS(e.getPos());
+
+                list.add(forStand);
+                i++;
+
+            }
+
             if (form.endsWith(".") || form.endsWith("?") || form.endsWith("!")) {
                 String last = form.substring(form.length() - 1);
                 form = form.substring(0, form.length() - 1);
@@ -129,7 +152,7 @@ public class IOMongo {
                 list.add(eos);
                 i++;
 
-            } else if (form.endsWith(",")) {
+            } else if (form.endsWith(",") || form.endsWith(";") || form.endsWith(":")) {
                 String last = form.substring(form.length() - 1);
                 form = form.substring(0, form.length() - 1);
 
@@ -152,31 +175,86 @@ public class IOMongo {
                 i++;
 
 
-            } else if (form.endsWith(".“") || form.endsWith("?“") || form.endsWith("!“")) {
-
-                int p = form.length() - 2;
-                String penultimate = String.valueOf(form.charAt(p));
-
-                form = form.substring(0, form.length() - 2);
-
-                ForStand forStand = new ForStand();
-                forStand.setIndex(i);
-                forStand.setForm(form);
-                forStand.setPOS(e.getPos());
-                list.add(forStand);
-                map.put(e.getIndex(), i);
-
-                i++;
+            } else if (form.endsWith("“")) {
 
 
-                ForStand eos = new ForStand();
-                eos.setIndex(i);
-                eos.setForm(penultimate);
-                eos.setPOS("P_EOS");
+                // If we have a punctiation char in the penultimate position
+                if (!Character.isAlphabetic(form.length() - 2)) {
+                    form = form.substring(0, form.length() - 2);
+                    System.out.println(form);
+                    String penultimate = String.valueOf(form.length() - 2);
+                    String last = form.substring(form.length() - 1);
 
-                list.add(eos);
+                    ForStand forStand = new ForStand();
+                    forStand.setIndex(i);
+                    forStand.setForm(form);
+                    forStand.setPOS(e.getPos());
+                    list.add(forStand);
+                    map.put(e.getIndex(), i);
 
-                i++;
+                    i++;
+
+
+                    if (penultimate.equals("!") || penultimate.equals("?") || penultimate.equals(".")) {
+
+                        ForStand eos = new ForStand();
+                        eos.setIndex(i);
+                        eos.setForm(penultimate);
+                        eos.setPOS("P_EOS");
+
+                        list.add(eos);
+
+                        i++;
+
+
+                    } else {
+
+                        ForStand oth = new ForStand();
+                        oth.setIndex(i);
+                        oth.setForm(penultimate);
+                        oth.setPOS("P_OTH");
+
+                        list.add(oth);
+
+                        i++;
+
+                    }
+
+
+                    //Add '“'
+                    ForStand ls = new ForStand();
+                    ls.setIndex(i);
+                    ls.setForm(last);
+                    ls.setPOS("P_OTH");
+
+                    list.add(ls);
+
+                    i++;
+
+
+                } else {
+                    form = form.substring(0, form.length() - 2);
+                    String last = form.substring(form.length() - 1);
+                    ForStand forStand = new ForStand();
+                    forStand.setIndex(i);
+                    forStand.setForm(form);
+                    forStand.setPOS(e.getPos());
+                    list.add(forStand);
+                    map.put(e.getIndex(), i);
+
+                    i++;
+
+
+                    ForStand ls = new ForStand();
+                    ls.setIndex(i);
+                    ls.setForm(last);
+                    ls.setPOS("P_OTH");
+
+                    list.add(ls);
+
+                    i++;
+
+                }
 
 
             } else {
@@ -189,6 +267,10 @@ public class IOMongo {
                 map.put(e.getIndex(), i);
 
                 i++;
+
+
+
+
             }
 
 
@@ -279,16 +361,16 @@ public class IOMongo {
 
                 //if (word.getLastPosAnnotation().getUserId().toString().equals("lutzf") ||word.getLastPosAnnotation().getUserId().toString().equals("rivald")) {
 
-                    buffer.append(word.getIndex());
-                    buffer.append("\t");
-                    buffer.append(word.getLastFormAnnotation().getForm());
-                    buffer.append("\t");
-                    buffer.append(word.getLastPosAnnotation().getPos());
-                    buffer.append("\t");
-                    buffer.append(word.getLastPosAnnotation().getUserId());
+                buffer.append(word.getIndex());
+                buffer.append("\t");
+                buffer.append(word.getLastFormAnnotation().getForm());
+                buffer.append("\t");
+                buffer.append(word.getLastPosAnnotation().getPos());
+                buffer.append("\t");
+                buffer.append(word.getLastPosAnnotation().getUserId());
 
-                    System.out.println(buffer.toString());
-               // }
+                System.out.println(buffer.toString());
+                // }
             }
         }
 

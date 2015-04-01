@@ -46,7 +46,7 @@ public class TestGettingWordsByAspecificLanguage {
     @Test
     public void testGetTokens() throws Exception {
 
-        List<ForStand> getTokens = ioMongo.getTokens("golden2015-03-31T14:49:34Z");
+        List<ForStand> getTokens = ioMongo.getTokens("golden2015-04-01T12:44:58Z");
 
         FileUtils.printList(getTokens, FileUtils.outputPath, "test_list_");
 

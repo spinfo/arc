@@ -1,4 +1,4 @@
-import de.uni_koeln.spinfo.antlr.nvs.common.DictUtils;
+import de.uni_koeln.spinfo.arc.utils.DictUtils;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
