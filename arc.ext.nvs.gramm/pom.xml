@@ -7,6 +7,17 @@
     <version>0.0.1-SNAPSHOT</version>
     <artifactId>arc.ext.nvs.gramm</artifactId>
     <packaging>jar</packaging>
+
+
+    <parent>
+        <groupId>de.uni_koeln.spinfo.arc</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../arc.parent</relativePath>
+    </parent>
+
+
+
     <properties>
         <antlr.version>4.5</antlr.version>
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -16,13 +27,6 @@
     </properties>
 
 
-    <dependencies>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>${antlr.version}</version>
-        </dependency>
-    </dependencies>
 
 
     <build>

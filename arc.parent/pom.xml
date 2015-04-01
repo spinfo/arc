@@ -16,11 +16,17 @@
         <module>../arc.page.browser</module>
         <module>../arc.ext.eichenhofer.proc</module>
         <module>../arc.ext.eichenhofer.pdfbox</module>
+        <module>../arc.ext.eichenhofer.gramm</module>
         <module>../arc.ext.nvs.proc</module>
         <module>../arc.ext.nvs.parser</module>
+        <module>../arc.ext.nvs.gramm</module>
         <module>../arc.ext.puter.proc</module>
+        <module>../arc.ext.puter.gramm</module>
         <module>../arc.ext.signorell.proc</module>
+        <module>../arc.ext.signorell.gramm</module>
         <module>../arc.ext.vallader.proc</module>
+        <module>../arc.ext.vallader.gramm</module>
+
     </modules>
 
     <properties>
