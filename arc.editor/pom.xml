@@ -7,10 +7,14 @@
 	<packaging>war</packaging>
 
 	<repositories>
+<!-- 		<repository> -->
+<!-- 			<id>in-project</id> -->
+<!-- 			<name>In Project Repository</name> -->
+<!-- 			<url>file://${project.basedir}/libs</url> -->
+<!-- 		</repository> -->
 		<repository>
-			<id>in-project</id>
-			<name>In Project Repository</name>
-			<url>file://${project.basedir}/libs</url>
+			<id>spinfo-nexus</id>
+			<url>http://tesla.spinfo.uni-koeln.de:8081/nexus/content/groups/public</url>
 		</repository>
 		<repository>
 			<id>jboss-nexus</id>

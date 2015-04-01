@@ -5,10 +5,14 @@
 	<packaging>jar</packaging>
 
 	<repositories>
-		<repository>
-			<id>in-project</id>
-			<name>In Project Repository</name>
-			<url>file://${project.basedir}/libs</url>
+<!-- 		<repository> -->
+<!-- 			<id>in-project</id> -->
+<!-- 			<name>In Project Repository</name> -->
+<!-- 			<url>file://${project.basedir}/libs</url> -->
+<!-- 		</repository> -->
+	<repository>
+			<id>spinfo-nexus</id>
+			<url>http://tesla.spinfo.uni-koeln.de:8081/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
 
