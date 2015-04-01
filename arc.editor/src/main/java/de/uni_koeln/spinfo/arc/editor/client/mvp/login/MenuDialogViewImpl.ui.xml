@@ -63,25 +63,20 @@
 		}
 	</ui:style>
 	<g:ScrollPanel>
+					
+					<g:VerticalPanel width="100%" height="100%" >
+										<g:HorizontalPanel ui:field="horizontalHeaderPanel"  width="100%" height="100%" addStyleNames="{style.title}">
+						<g:Label ui:field="headerLabel" addStyleNames="{style.title}">
+								Sprachliche Informationsverarbeitung | Institut für Linguistik | Universität zu Köln
+						</g:Label>
+					</g:HorizontalPanel >	
+							<g:Label  addStyleNames="{style.title2}"> 
+								http://www.spinfo.phil-fak.uni-koeln.de/forschung-arc.html
+							 </g:Label>
 
-		<g:VerticalPanel width="100%" height="100%">
-			<g:HorizontalPanel ui:field="horizontalHeaderPanel"
-				width="100%" height="100%" addStyleNames="{style.title}">
-				<g:Label ui:field="headerLabel" addStyleNames="{style.title}">
-					Sprachliche Informationsverarbeitung | Institut für Linguistik | Universität zu Köln | Leitug: Prof. Dr. Jürgen Rolshoven
-				</g:Label>
-			</g:HorizontalPanel>
-			<g:HorizontalPanel>
-				<g:Label ui:field="contentLabel" addStyleNames="{style.title2}">Projektbeschreibung: </g:Label>
-				<g:Anchor href="http://www.spinfo.phil-fak.uni-koeln.de/forschung-arc.html">http://www.spinfo.phil-fak.uni-koeln.de/forschung-arc.html</g:Anchor>
-			</g:HorizontalPanel>
-			<g:Label addStyleNames="{style.title3}"> Projektmitarbeiter: </g:Label>
-			<g:Label addStyleNames="{style.title3}"> Dr. Jürgen Hermes, Claes Neuefeind, Mihail Atanassov, Francisco Mondaca, David Rival, Alena Geduldig</g:Label>
-			<g:Label addStyleNames="{style.title3}">2015</g:Label>
-			<g:VerticalPanel horizontalAlignment="ALIGN_CENTER"
-				ui:field="verticalContentPanel" width="100%" height="100%">
-				<g:Button ui:field="cancel" addStyleNames="{style.title3}">Schließen</g:Button>
-			</g:VerticalPanel>
-		</g:VerticalPanel>
-	</g:ScrollPanel>
+								<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" ui:field="verticalContentPanel" width="100%" height="100%" >
+								<g:Button ui:field="cancel" addStyleNames="{style.title3}">cancel</g:Button>
+								</g:VerticalPanel>
+						</g:VerticalPanel>
+					</g:ScrollPanel>
 </ui:UiBinder> 
