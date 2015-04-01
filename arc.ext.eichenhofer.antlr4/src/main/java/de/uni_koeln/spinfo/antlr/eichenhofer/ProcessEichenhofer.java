@@ -1,17 +1,17 @@
-import de.uni_koeln.spinfo.antlr.eichenhofer.EichenhoferBaseListener;
-import de.uni_koeln.spinfo.antlr.eichenhofer.EichenhoferLexer;
-import de.uni_koeln.spinfo.antlr.eichenhofer.EichenhoferParser;
-import de.uni_koeln.spinfo.antlr.nvs.common.DictUtils;
+package de.uni_koeln.spinfo.antlr.eichenhofer;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import de.uni_koeln.spinfo.arc.utils.DictUtils;
 
 /**
  * Created by franciscomondaca on 7/21/14.

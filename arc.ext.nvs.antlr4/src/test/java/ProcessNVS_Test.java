@@ -1,11 +1,13 @@
-import de.uni_koeln.spinfo.antlr.nvs.common.DictUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import de.uni_koeln.spinfo.arc.antlr.nvs.ProcessNVS;
+import de.uni_koeln.spinfo.arc.utils.DictUtils;
 
 
 public class ProcessNVS_Test {
