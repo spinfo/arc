@@ -54,6 +54,7 @@ public class TestGettingWordsByAspecificLanguage {
     }
 
 
+
     @Test
     public void testGetPageNumberInWU() {
 
@@ -62,6 +63,15 @@ public class TestGettingWordsByAspecificLanguage {
 
     }
 
+
+
+    @Test
+    public void test2(){
+
+        String a = "…";
+        System.out.println(a.charAt(0));
+
+    }
 
     @Ignore
     @Test

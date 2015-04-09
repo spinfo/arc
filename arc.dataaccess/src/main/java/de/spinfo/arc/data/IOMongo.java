@@ -18,6 +18,7 @@ public class IOMongo {
 
     static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
     static WordQueries wordQueries = new WordQueries();
+    private boolean insertedForm;
 
 
     public long getPageNumberInWU(String Wu, long index) {
@@ -90,6 +91,7 @@ public class IOMongo {
     }
 
 
+
     public List<ForStand> getTokens(String fileName) throws Exception {
         List<ForStand> list = new ArrayList<>();
         Map<Long, Integer> map = new HashMap<>();
@@ -100,187 +102,140 @@ public class IOMongo {
 
         for (Entry e : getListOfTokens) {
 
+
+            List<Punct> p_list = new ArrayList<>();
+
             String form = e.getForm();
+            StringBuffer buffer = new StringBuffer();
 
-            if (form.equals("…")) {
-                continue;
-            }
+            for (int j = 0; j < form.length(); j++) {
 
+                if (!Character.isLetterOrDigit(form.charAt(j)) && !String.valueOf(form.charAt(j)).equals(" ") && !String.valueOf(form.charAt(j)).equals("'")) {
 
-            if (form.startsWith("„")) {
-                String first = form.substring(0, 1);
-                form = form.substring(1, form.length());
-
-                ForStand az = new ForStand();
-                az.setIndex(i);
-                az.setForm(first);
-                az.setPOS("P_OTH");
-                list.add(az);
-                i++;
-
-
-                ForStand forStand = new ForStand();
-                forStand.setIndex(i);
-                forStand.setForm(form);
-                forStand.setPOS(e.getPos());
-
-                list.add(forStand);
-                i++;
-
-            }
-
-            if (form.endsWith(".") || form.endsWith("?") || form.endsWith("!")) {
-                String last = form.substring(form.length() - 1);
-                form = form.substring(0, form.length() - 1);
-
-
-                ForStand forStand = new ForStand();
-                forStand.setIndex(i);
-                forStand.setForm(form);
-                forStand.setPOS(e.getPos());
-
-
-                list.add(forStand);
-                map.put(e.getIndex(), i);
-                i++;
-
-                ForStand eos = new ForStand();
-                eos.setIndex(i);
-                eos.setForm(last);
-                eos.setPOS("P_EOS");
-
-                list.add(eos);
-                i++;
-
-            } else if (form.endsWith(",") || form.endsWith(";") || form.endsWith(":")) {
-                String last = form.substring(form.length() - 1);
-                form = form.substring(0, form.length() - 1);
-
-
-                ForStand forStand = new ForStand();
-                forStand.setIndex(i);
-                forStand.setForm(form);
-                forStand.setPOS(e.getPos());
-                list.add(forStand);
-                map.put(e.getIndex(), i);
-
-                i++;
-
-                ForStand comma = new ForStand();
-                comma.setIndex(i);
-                comma.setForm(last);
-                comma.setPOS("P_OTH");
-                list.add(comma);
-
-                i++;
-
-
-            } else if (form.endsWith("“")) {
-
-
-                // If we have a punctiation char in the penultimate position
-                if (!Character.isAlphabetic(form.length() - 2)) {
-                    form = form.substring(0, form.length() - 2);
-                    System.out.println(form);
-                    String penultimate = String.valueOf(form.length() - 2);
-                    String last = form.substring(form.length() - 1);
-
-                    ForStand forStand = new ForStand();
-                    forStand.setIndex(i);
-                    forStand.setForm(form);
-                    forStand.setPOS(e.getPos());
-                    list.add(forStand);
-                    map.put(e.getIndex(), i);
-
-                    i++;
-
-
-                    if (penultimate.equals("!") || penultimate.equals("?") || penultimate.equals(".")) {
-
-                        ForStand eos = new ForStand();
-                        eos.setIndex(i);
-                        eos.setForm(penultimate);
-                        eos.setPOS("P_EOS");
-
-                        list.add(eos);
-
-                        i++;
-
-
-                    } else {
-
-                        ForStand oth = new ForStand();
-                        oth.setIndex(i);
-                        oth.setForm(penultimate);
-                        oth.setPOS("P_OTH");
-
-                        list.add(oth);
-
-                        i++;
-
-                    }
-
-
-                    //Add '“'
-                    ForStand ls = new ForStand();
-                    ls.setIndex(i);
-                    ls.setForm(last);
-                    ls.setPOS("P_OTH");
-
-                    list.add(ls);
-
-                    i++;
-
+                    Punct p = new Punct();
+                    p.setForm(String.valueOf(form.charAt(j)));
+                    p.setIndex(j);
+                    p_list.add(p);
 
                 } else {
-                    form = form.substring(0, form.length() - 2);
-                    String last = form.substring(form.length() - 1);
-                    ForStand forStand = new ForStand();
-                    forStand.setIndex(i);
-                    forStand.setForm(form);
-                    forStand.setPOS(e.getPos());
-                    list.add(forStand);
-                    map.put(e.getIndex(), i);
 
+                    buffer.append(form.charAt(j));
+
+                }
+
+            }
+
+            if (p_list.size() == 0) {
+                ForStand entry = new ForStand();
+                entry.setIndex(i);
+                entry.setForm(buffer.toString());
+                entry.setPOS(e.getPos());
+                list.add(entry);
+                i++;
+                map.put(e.getIndex(), i);
+
+            } else {
+
+
+                if (p_list.size() == 1 && buffer.length() == 0) {
+                    ForStand p = new ForStand();
+                    p.setIndex(i);
+                    p.setForm(form);
+                    p.setPOS(getPOS(p_list.get(0).getForm()));
+                    list.add(p);
                     i++;
-
-
-                    ForStand ls = new ForStand();
-                    ls.setIndex(i);
-                    ls.setForm(last);
-                    ls.setPOS("P_OTH");
-
-                    list.add(ls);
-
-                    i++;
+                    continue;
 
                 }
 
 
-            } else {
+                int firstChar = form.indexOf(buffer.charAt(0));
+                int lastChar = form.lastIndexOf(buffer.charAt(buffer.length() - 1));
 
-                ForStand forStand = new ForStand();
-                forStand.setIndex(i);
-                forStand.setForm(form);
-                forStand.setPOS(e.getPos());
-                list.add(forStand);
+                for (int j = 0; j < p_list.size(); j++) {
+
+                    if (p_list.get(j).getIndex() < firstChar) {
+                        ForStand p = new ForStand();
+                        p.setIndex(i);
+                        p.setForm(p_list.get(j).getForm());
+                        p.setPOS(getPOS(p_list.get(j).getForm()));
+                        list.add(p);
+                        i++;
+
+
+                    }
+
+                }
+
+                ForStand entry = new ForStand();
+                entry.setIndex(i);
+                entry.setForm(buffer.toString());
+                entry.setPOS(e.getPos());
+                list.add(entry);
+                i++;
                 map.put(e.getIndex(), i);
 
-                i++;
+
+                for (int j = 0; j < p_list.size(); j++) {
+
+                    if (p_list.get(j).getIndex() > lastChar) {
+                        ForStand p = new ForStand();
+                        p.setIndex(i);
+                        p.setForm(p_list.get(j).getForm());
+                        p.setPOS(getPOS(p_list.get(j).getForm()));
+                        list.add(p);
+                        i++;
 
 
+                    }
+
+                }
 
 
             }
 
 
         }
-
         FileUtils.writeMap(map, "index_mapping_");
         return list;
 
     }
 
+
+    private String getPOS(String s) {
+        String pos = null;
+
+        switch (s) {
+
+
+            case "!":
+            case "?":
+            case ".":
+                pos = "P_EOS";
+                break;
+
+            case ",":
+            case ";":
+            case ":":
+            case "“":
+            case "„":
+
+                pos = "P_OTH";
+                break;
+
+            case "…":
+            case "-":
+                pos = "NULL";
+                break;
+
+
+        }
+
+
+        return pos;
+
+
+    }
 
     public Set<Long> germanWordsInRange(List<LanguageRange> languageRange) {
         Set<Long> germanWords = new HashSet<>();
