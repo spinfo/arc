@@ -16,335 +16,315 @@ import java.util.*;
  */
 public class IOMongo {
 
-    static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
-    static WordQueries wordQueries = new WordQueries();
-    private boolean insertedForm;
+	static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
+	static WordQueries wordQueries = new WordQueries();
+	private boolean insertedForm;
 
+	public long getPageNumberInWU(String Wu, long index) {
 
-    public long getPageNumberInWU(String Wu, long index) {
+		WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
 
-        WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
+		List<PageRange> pageRange = workingUnit.getPages();
 
-        List<PageRange> pageRange = workingUnit.getPages();
+		List<Range> ranges = new ArrayList<>();
 
-        List<Range> ranges = new ArrayList<>();
+		for (PageRange pr : pageRange) {
 
-        for (PageRange pr : pageRange) {
+			Range range = new Range(pr.getStart(), pr.getEnd());
+			ranges.add(range);
+		}
 
+		for (Range range : ranges) {
 
-            Range range = new Range(pr.getStart(), pr.getEnd());
-            ranges.add(range);
-        }
+			if (index > range.getStart() && index < range.getEnd()) {
 
+				System.out.println(ranges.indexOf(range));
+			}
 
-        for (Range range : ranges) {
+		}
 
-            if (index > range.getStart() && index < range.getEnd()) {
+		return 0;
+	}
 
-                System.out.println(ranges.indexOf(range));
-            }
+	public List<Entry> getSursilvanGoldenEntries() {
 
+		WorkingUnit workingUnit = wuQueries.getWorkingUnit("Band II");
 
-        }
+		List<LanguageRange> languageRange = workingUnit.getLanguages();
+		Set<Long> germanWords = germanWordsInRange(languageRange);
+		List<WordImpl> sursilvanTokens = sursilvanTokensInRange(languageRange);
 
-        return 0;
-    }
+		List<Entry> entries = new ArrayList<>();
 
+		for (WordImpl word : sursilvanTokens) {
 
-    public List<Entry> getSursilvanGoldenEntries() {
+			if (germanWords.contains(word.getIndex())) {
+				continue;
+			}
 
-        WorkingUnit workingUnit = wuQueries.getWorkingUnit("Band II");
+			if (word.getIndex() > 366350) {
+				break;
+			}
 
-        List<LanguageRange> languageRange = workingUnit.getLanguages();
-        Set<Long> germanWords = germanWordsInRange(languageRange);
-        List<WordImpl> sursilvanTokens = sursilvanTokensInRange(languageRange);
+			printNotTagged(word);
 
-        List<Entry> entries = new ArrayList<>();
+			Entry entry = new Entry();
+			entry.setIndex(word.getIndex());
+			entry.setForm(word.getLastFormAnnotation().getForm());
+			if (word.getLastPosAnnotation() != null) {
+				entry.setPos(word.getLastPosAnnotation().getPos().toString());
+				entry.setAutor(word.getLastPosAnnotation().getUserId());
 
-        for (WordImpl word : sursilvanTokens) {
+			}
 
-            if (germanWords.contains(word.getIndex())) {
-                continue;
-            }
+			entries.add(entry);
+		}
 
-            if (word.getIndex() > 366350) {
-                break;
-            }
+		return entries;
+	}
 
-            printNotTagged(word);
+	public List<ForStand> getTokens(String fileName) throws Exception {
+		List<ForStand> list = new ArrayList<>();
+		Map<Long, Integer> map = new HashMap<>();
 
-            Entry entry = new Entry();
-            entry.setIndex(word.getIndex());
-            entry.setForm(word.getLastFormAnnotation().getForm());
-            if (word.getLastPosAnnotation() != null) {
-                entry.setPos(word.getLastPosAnnotation().getPos().toString());
-                entry.setAutor(word.getLastPosAnnotation().getUserId());
+		List<Entry> getListOfTokens = readEntries(fileName);
+		int i = 0;
 
+		for (Entry e : getListOfTokens) {
 
-            }
+			List<Punct> p_list = new ArrayList<>();
 
-            entries.add(entry);
-        }
+			String form = e.getForm();
+			StringBuffer buffer = new StringBuffer();
 
+			for (int j = 0; j < form.length(); j++) {
 
-        return entries;
-    }
+				if (!Character.isLetterOrDigit(form.charAt(j))
+						&& !String.valueOf(form.charAt(j)).equals(" ")
+						&& !String.valueOf(form.charAt(j)).equals("'")) {
 
+					Punct p = new Punct();
+					p.setForm(String.valueOf(form.charAt(j)));
+					p.setIndex(j);
+					p_list.add(p);
 
+				} else {
 
-    public List<ForStand> getTokens(String fileName) throws Exception {
-        List<ForStand> list = new ArrayList<>();
-        Map<Long, Integer> map = new HashMap<>();
+					buffer.append(form.charAt(j));
 
-        List<Entry> getListOfTokens = readEntries(fileName);
-        int i = 0;
+				}
 
+			}
 
-        for (Entry e : getListOfTokens) {
+			if (p_list.size() == 0) {
+				ForStand entry = new ForStand();
+				entry.setIndex(i);
+				entry.setForm(buffer.toString());
+				entry.setPOS(e.getPos());
+				list.add(entry);
+				i++;
+				map.put(e.getIndex(), i);
 
+			} else {
 
-            List<Punct> p_list = new ArrayList<>();
+				if (p_list.size() == 1 && buffer.length() == 0) {
+					ForStand p = new ForStand();
+					p.setIndex(i);
+					p.setForm(form);
+					p.setPOS(getPOS(p_list.get(0).getForm()));
+					list.add(p);
+					i++;
+					continue;
 
-            String form = e.getForm();
-            StringBuffer buffer = new StringBuffer();
+				}
 
-            for (int j = 0; j < form.length(); j++) {
+				int firstChar = form.indexOf(buffer.charAt(0));
+				int lastChar = form
+						.lastIndexOf(buffer.charAt(buffer.length() - 1));
 
-                if (!Character.isLetterOrDigit(form.charAt(j)) && !String.valueOf(form.charAt(j)).equals(" ") && !String.valueOf(form.charAt(j)).equals("'")) {
+				for (int j = 0; j < p_list.size(); j++) {
 
-                    Punct p = new Punct();
-                    p.setForm(String.valueOf(form.charAt(j)));
-                    p.setIndex(j);
-                    p_list.add(p);
+					if (p_list.get(j).getIndex() < firstChar) {
+						ForStand p = new ForStand();
+						p.setIndex(i);
+						p.setForm(p_list.get(j).getForm());
+						p.setPOS(getPOS(p_list.get(j).getForm()));
+						list.add(p);
+						i++;
 
-                } else {
+					}
 
-                    buffer.append(form.charAt(j));
+				}
 
-                }
+				ForStand entry = new ForStand();
+				entry.setIndex(i);
+				entry.setForm(buffer.toString());
+				entry.setPOS(e.getPos());
+				list.add(entry);
+				i++;
+				map.put(e.getIndex(), i);
 
-            }
+				for (int j = 0; j < p_list.size(); j++) {
 
-            if (p_list.size() == 0) {
-                ForStand entry = new ForStand();
-                entry.setIndex(i);
-                entry.setForm(buffer.toString());
-                entry.setPOS(e.getPos());
-                list.add(entry);
-                i++;
-                map.put(e.getIndex(), i);
+					if (p_list.get(j).getIndex() > lastChar) {
+						ForStand p = new ForStand();
+						p.setIndex(i);
+						p.setForm(p_list.get(j).getForm());
+						p.setPOS(getPOS(p_list.get(j).getForm()));
+						list.add(p);
+						i++;
 
-            } else {
+					}
 
+				}
 
-                if (p_list.size() == 1 && buffer.length() == 0) {
-                    ForStand p = new ForStand();
-                    p.setIndex(i);
-                    p.setForm(form);
-                    p.setPOS(getPOS(p_list.get(0).getForm()));
-                    list.add(p);
-                    i++;
-                    continue;
+			}
 
-                }
+		}
+		FileUtils.writeMap(map, "index_mapping_");
+		return list;
 
+	}
 
-                int firstChar = form.indexOf(buffer.charAt(0));
-                int lastChar = form.lastIndexOf(buffer.charAt(buffer.length() - 1));
+	private String getPOS(String s) {
+		String pos = null;
 
-                for (int j = 0; j < p_list.size(); j++) {
+		switch (s) {
 
-                    if (p_list.get(j).getIndex() < firstChar) {
-                        ForStand p = new ForStand();
-                        p.setIndex(i);
-                        p.setForm(p_list.get(j).getForm());
-                        p.setPOS(getPOS(p_list.get(j).getForm()));
-                        list.add(p);
-                        i++;
+		case "!":
+		case "?":
+		case ".":
+			pos = "P_EOS";
+			break;
 
+		case ",":
+		case ";":
+		case ":":
+		case "“":
+		case "„":
 
-                    }
+			pos = "P_OTH";
+			break;
 
-                }
+		case "…":
+		case "-":
+			pos = "NULL";
+			break;
 
-                ForStand entry = new ForStand();
-                entry.setIndex(i);
-                entry.setForm(buffer.toString());
-                entry.setPOS(e.getPos());
-                list.add(entry);
-                i++;
-                map.put(e.getIndex(), i);
+		}
 
+		return pos;
 
-                for (int j = 0; j < p_list.size(); j++) {
+	}
 
-                    if (p_list.get(j).getIndex() > lastChar) {
-                        ForStand p = new ForStand();
-                        p.setIndex(i);
-                        p.setForm(p_list.get(j).getForm());
-                        p.setPOS(getPOS(p_list.get(j).getForm()));
-                        list.add(p);
-                        i++;
+	public Set<Long> germanWordsInRange(List<LanguageRange> languageRange) {
+		Set<Long> germanWords = new HashSet<>();
 
+		for (LanguageRange lr : languageRange) {
+			if (lr.getTitle().equals("Deutsch/Tudesg")) {
+				List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
+				for (WordImpl german : wordsOfLang) {
 
-                    }
+					germanWords.add(german.getIndex());
+				}
 
-                }
+			}
 
+		}
 
-            }
+		return germanWords;
+	}
 
+	public List<WordImpl> sursilvanTokensInRange(
+			List<LanguageRange> languageRange) {
 
-        }
-        FileUtils.writeMap(map, "index_mapping_");
-        return list;
+		List<WordImpl> sursilvanTokens = new ArrayList<>();
 
-    }
+		for (LanguageRange lr : languageRange) {
 
+			if (lr.getTitle().equals("Sursilvan")) {
 
-    private String getPOS(String s) {
-        String pos = null;
+				List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
+				for (WordImpl sur : wordsOfLang) {
 
-        switch (s) {
+					sursilvanTokens.add(sur);
+				}
 
+			}
+		}
 
-            case "!":
-            case "?":
-            case ".":
-                pos = "P_EOS";
-                break;
+		return sursilvanTokens;
+	}
 
-            case ",":
-            case ";":
-            case ":":
-            case "“":
-            case "„":
+	public void getModel(Map<Integer, String> goldenMap) throws IOException {
 
-                pos = "P_OTH";
-                break;
+		File file = new File(FileUtils.outputPath + "model"
+				+ FileUtils.getISO8601StringForCurrentDate() + ".txt");
+		Writer out = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(file), "UTF8"));
 
-            case "…":
-            case "-":
-                pos = "NULL";
-                break;
+		Map<Integer, String> treeMap = new TreeMap<>(goldenMap);
 
+		for (Map.Entry<Integer, String> entry : treeMap.entrySet()) {
 
-        }
+			Integer index = entry.getKey();
+			String form = entry.getValue();
 
+			if (form.equals("!") || form.equals(".") || form.equals("?")
+					|| form.equals(",")) {
+				out.append(form);
+				out.append("_");
+				out.append(form);
+				out.append("\t");
+			}
 
-        return pos;
+		}
 
+		out.close();
+	}
 
-    }
+	private void printNotTagged(WordImpl word) {
 
-    public Set<Long> germanWordsInRange(List<LanguageRange> languageRange) {
-        Set<Long> germanWords = new HashSet<>();
+		StringBuffer buffer = new StringBuffer();
 
+		if (word.getLastPosAnnotation() != null) {
 
-        for (LanguageRange lr : languageRange) {
-            if (lr.getTitle().equals("Deutsch/Tudesg")) {
-                List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
-                for (WordImpl german : wordsOfLang) {
+			if (word.getLastPosAnnotation().getPos().toString().equals("NULL")
+					|| word.getLastPosAnnotation().getPos().toString()
+							.equals("NOT_TAGGED")) {
 
-                    germanWords.add(german.getIndex());
-                }
+				// if
+				// (word.getLastPosAnnotation().getUserId().toString().equals("lutzf")
+				// ||word.getLastPosAnnotation().getUserId().toString().equals("rivald"))
+				// {
 
-            }
+				buffer.append(word.getIndex());
+				buffer.append("\t");
+				buffer.append(word.getLastFormAnnotation().getForm());
+				buffer.append("\t");
+				buffer.append(word.getLastPosAnnotation().getPos());
+				buffer.append("\t");
+				buffer.append(word.getLastPosAnnotation().getUserId());
 
-        }
+				System.out.println(buffer.toString());
+				// }
+			}
+		}
 
-        return germanWords;
-    }
+	}
 
+	// Temporary solution in order top avoid mutual dependence in maven
+	private static List<Entry> readEntries(String fileName) throws Exception {
 
-    public List<WordImpl> sursilvanTokensInRange(List<LanguageRange> languageRange) {
+		ObjectInputStream inputStream = new ObjectInputStream(
+				new FileInputStream(FileUtils.outputPath + fileName));
 
-        List<WordImpl> sursilvanTokens = new ArrayList<>();
+		List<Entry> tokens = (List<Entry>) inputStream.readObject();
 
-        for (LanguageRange lr : languageRange) {
+		inputStream.close();
 
-            if (lr.getTitle().equals("Sursilvan")) {
+		return tokens;
 
-                List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
-                for (WordImpl sur : wordsOfLang) {
-
-                    sursilvanTokens.add(sur);
-                }
-
-            }
-        }
-
-
-        return sursilvanTokens;
-    }
-
-
-    public void getModel(Map<Integer, String> goldenMap) throws IOException {
-
-        File file = new File(FileUtils.outputPath + "model" + FileUtils.getISO8601StringForCurrentDate() + ".txt");
-        Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(file), "UTF8"));
-
-        Map<Integer, String> treeMap = new TreeMap<>(goldenMap);
-
-
-        for (Map.Entry<Integer, String> entry : treeMap.entrySet()) {
-
-            Integer index = entry.getKey();
-            String form = entry.getValue();
-
-            if (form.equals("!") || form.equals(".") || form.equals("?") || form.equals(",")) {
-                out.append(form);
-                out.append("_");
-                out.append(form);
-                out.append("\t");
-            }
-
-        }
-
-
-    }
-
-
-    private void printNotTagged(WordImpl word) {
-
-        StringBuffer buffer = new StringBuffer();
-
-        if (word.getLastPosAnnotation() != null) {
-
-            if (word.getLastPosAnnotation().getPos().toString().equals("NULL") || word.getLastPosAnnotation().getPos().toString().equals("NOT_TAGGED")) {
-
-                //if (word.getLastPosAnnotation().getUserId().toString().equals("lutzf") ||word.getLastPosAnnotation().getUserId().toString().equals("rivald")) {
-
-                buffer.append(word.getIndex());
-                buffer.append("\t");
-                buffer.append(word.getLastFormAnnotation().getForm());
-                buffer.append("\t");
-                buffer.append(word.getLastPosAnnotation().getPos());
-                buffer.append("\t");
-                buffer.append(word.getLastPosAnnotation().getUserId());
-
-                System.out.println(buffer.toString());
-                // }
-            }
-        }
-
-    }
-
-
-    //Temporary solution in order top avoid mutual dependence in maven
-    private static List<Entry> readEntries(String fileName) throws Exception {
-
-        ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FileUtils.outputPath + fileName));
-
-        List<Entry> tokens = (List<Entry>) inputStream.readObject();
-
-        inputStream.close();
-
-        return tokens;
-
-
-    }
-
+	}
 
 }

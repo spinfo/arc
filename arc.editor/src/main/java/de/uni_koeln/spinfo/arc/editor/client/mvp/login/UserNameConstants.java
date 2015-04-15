@@ -7,11 +7,12 @@ package de.uni_koeln.spinfo.arc.editor.client.mvp.login;
  *
  */
 public class UserNameConstants {
-	private UserNameConstants() {};
-	
-	/** Available User names to choose for loggin in*/
+	private UserNameConstants() {
+	};
+
+	/** Available User names to choose for loggin in */
 	public static enum NAMES {
-		rivald, mondacaf, rolshovenj, neuefeindc, atanassovm, badilattim, lutzf,  guest
+		vogta, mondacaf, lutzf, rolshovenj, neuefeindc, atanassovm, hermesj, guest
 	}
-	
+
 }

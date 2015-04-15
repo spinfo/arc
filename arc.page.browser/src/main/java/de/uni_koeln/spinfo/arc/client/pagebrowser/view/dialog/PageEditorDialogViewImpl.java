@@ -1,5 +1,4 @@
 package de.uni_koeln.spinfo.arc.client.pagebrowser.view.dialog;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -332,3 +331,4 @@ public class PageEditorDialogViewImpl extends DialogBox {
     }
 
 }
+
