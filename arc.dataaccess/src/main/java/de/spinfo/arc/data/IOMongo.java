@@ -63,147 +63,7 @@ public class IOMongo {
     }
 
 
-    public Map<String, List<WordImpl>> getAllTokens() {
-        Map<String, List<WordImpl>> allTokens = new HashMap<>();
-
-        List<WordImpl> sursilvanTokens = new ArrayList<>();
-        List<WordImpl> sutsilvanTokens = new ArrayList<>();
-        List<WordImpl> surmiranTokens = new ArrayList<>();
-        List<WordImpl> puterTokens = new ArrayList<>();
-        List<WordImpl> valladerTokens = new ArrayList<>();
-        List<WordImpl> sutsettischTokens = new ArrayList<>();
-        List<WordImpl> bivioTokens = new ArrayList<>();
-        List<WordImpl> bergagliotTokens = new ArrayList<>();
-        List<WordImpl> valmustairTokens = new ArrayList<>();
-        List<WordImpl> buehlerskoineTokens = new ArrayList<>();
-        List<WordImpl> jauerTokens = new ArrayList<>();
-        List<WordImpl> deutschTokens = new ArrayList<>();
-        List<WordImpl> lateinTokens = new ArrayList<>();
-        List<WordImpl> italianoTokens = new ArrayList<>();
-        List<WordImpl> autersTokens = new ArrayList<>();
-
-        WorkingUnitQueries wuQueries = new WorkingUnitQueries();
-
-
-        for (String s : chrestLanguages()) {
-
-            List<WorkingUnit> wuWithLanguage = wuQueries.getWorkingUnitsWithLanguage(s);
-
-            for (WorkingUnit wu : wuWithLanguage) {
-
-                List<LanguageRange> languageRange = wu.getLanguages();
-
-                for (LanguageRange lr : languageRange) {
-
-                    if (lr.getTitle().equals(s)) {
-
-                        List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
-
-                        for (WordImpl wi : wordsOfLang) {
-
-
-                            switch (s) {
-
-                                case sursilvan:
-                                    sursilvanTokens.add(wi);
-                                    break;
-                                case sutsilvan:
-                                    sutsilvanTokens.add(wi);
-                                    break;
-                                case surmiran:
-                                    surmiranTokens.add(wi);
-                                    break;
-                                case puter:
-                                    puterTokens.add(wi);
-                                    break;
-                                case vallader:
-                                    valladerTokens.add(wi);
-                                    break;
-                                case sutsettisch:
-                                    sutsettischTokens.add(wi);
-                                    break;
-                                case bivio:
-                                    bivioTokens.add(wi);
-                                    break;
-                                case bergagliot:
-                                    bergagliotTokens.add(wi);
-                                    break;
-                                case val_mustair:
-                                    valmustairTokens.add(wi);
-                                    break;
-                                case buehlers_koine:
-                                    buehlerskoineTokens.add(wi);
-                                    break;
-                                case jauer:
-                                    jauerTokens.add(wi);
-                                    break;
-                                case deutsch:
-                                    deutschTokens.add(wi);
-                                    break;
-                                case italiano:
-                                    italianoTokens.add(wi);
-                                    break;
-                                case auters:
-                                    autersTokens.add(wi);
-                                    break;
-                                case latein:
-                                    lateinTokens.add(wi);
-                                    break;
-                                default:
-                                    break;
-
-                            }
-
-
-                        }
-
-                    }
-                }
-            }
-
-
-        }
-
-
-        allTokens.put(sursilvan, sursilvanTokens);
-        allTokens.put(sutsilvan, sutsilvanTokens);
-        allTokens.put(surmiran, surmiranTokens);
-        allTokens.put(puter, puterTokens);
-        allTokens.put(vallader, valladerTokens);
-        allTokens.put(sutsettisch, sutsettischTokens);
-        allTokens.put(bivio, bivioTokens);
-        allTokens.put(bergagliot, bergagliotTokens);
-        allTokens.put(val_mustair, valmustairTokens);
-        allTokens.put(buehlers_koine, buehlerskoineTokens);
-        allTokens.put(jauer, jauerTokens);
-        allTokens.put(deutsch, deutschTokens);
-        allTokens.put(italiano, italianoTokens);
-        allTokens.put(auters, autersTokens);
-        allTokens.put(latein, lateinTokens);
-
-
-        return allTokens;
-    }
-
-
     public List<LangRange> getLanguageRanges(DBCollection collection) {
-        Map<String, List<MongoWord>> allTokens = new HashMap<>();
-
-        List<MongoWord> sursilvanTokens = new ArrayList<>();
-        List<MongoWord> sutsilvanTokens = new ArrayList<>();
-        List<MongoWord> surmiranTokens = new ArrayList<>();
-        List<MongoWord> puterTokens = new ArrayList<>();
-        List<MongoWord> valladerTokens = new ArrayList<>();
-        List<MongoWord> sutsettischTokens = new ArrayList<>();
-        List<MongoWord> bivioTokens = new ArrayList<>();
-        List<MongoWord> bergagliotTokens = new ArrayList<>();
-        List<MongoWord> valmustairTokens = new ArrayList<>();
-        List<MongoWord> buehlerskoineTokens = new ArrayList<>();
-        List<MongoWord> jauerTokens = new ArrayList<>();
-        List<MongoWord> deutschTokens = new ArrayList<>();
-        List<MongoWord> lateinTokens = new ArrayList<>();
-        List<MongoWord> italianoTokens = new ArrayList<>();
-        List<MongoWord> autersTokens = new ArrayList<>();
 
 
         DBCursor cursor = collection.find();
@@ -242,7 +102,7 @@ public class IOMongo {
     }
 
 
-    public Map<String, List<MongoWord>> getWordsInRange(List<LangRange> langRanges, DBCollection words) {
+    public Map<String, List<MongoWord>> getWords(List<LangRange> langRanges, DBCollection words) {
 
         Map<String, List<MongoWord>> allTokens = new HashMap<>();
 
@@ -368,6 +228,232 @@ public class IOMongo {
     }
 
 
+    public Map<String, List<String>> getTokens(List<LangRange> langRanges, DBCollection words) {
+
+        Map<String, List<String>> allTokens = new HashMap<>();
+
+        List<String> sursilvanTokens = new ArrayList<>();
+        List<String> sutsilvanTokens = new ArrayList<>();
+        List<String> surmiranTokens = new ArrayList<>();
+        List<String> puterTokens = new ArrayList<>();
+        List<String> valladerTokens = new ArrayList<>();
+        List<String> sutsettischTokens = new ArrayList<>();
+        List<String> bivioTokens = new ArrayList<>();
+        List<String> bergagliotTokens = new ArrayList<>();
+        List<String> valmustairTokens = new ArrayList<>();
+        List<String> buehlerskoineTokens = new ArrayList<>();
+        List<String> jauerTokens = new ArrayList<>();
+        List<String> deutschTokens = new ArrayList<>();
+        List<String> lateinTokens = new ArrayList<>();
+        List<String> italianoTokens = new ArrayList<>();
+        List<String> autersTokens = new ArrayList<>();
+
+
+        for (LangRange lr : langRanges) {
+
+            String s = lr.getLanguage();
+            Long start = lr.getStart();
+            Long end = lr.getEnd();
+            System.out.println(lr.toString());
+            for (long i = start; i <= end; i++) {
+
+                BasicDBObject w = new BasicDBObject("index", i);
+
+                DBObject o = words.findOne(w);
+
+                BasicDBObject annotations = (BasicDBObject) o.get("annotations");
+                BasicDBList forms = (BasicDBList) annotations.get("FORM");
+                //ArrayList<BasicDBObject> formsArray = (ArrayList) forms;
+                BasicDBObject lastForm = (BasicDBObject) forms.get(forms.size() - 1);
+                String lf = lastForm.getString("form");
+
+
+                switch (s) {
+
+                    case sursilvan:
+                        sursilvanTokens.add(lf);
+                        break;
+                    case sutsilvan:
+                        sutsilvanTokens.add(lf);
+                        break;
+                    case surmiran:
+                        surmiranTokens.add(lf);
+                        break;
+                    case puter:
+                        puterTokens.add(lf);
+                        break;
+                    case vallader:
+                        valladerTokens.add(lf);
+                        break;
+                    case sutsettisch:
+                        sutsettischTokens.add(lf);
+                        break;
+                    case bivio:
+                        bivioTokens.add(lf);
+                        break;
+                    case bergagliot:
+                        bergagliotTokens.add(lf);
+                        break;
+                    case val_mustair:
+                        valmustairTokens.add(lf);
+                        break;
+                    case buehlers_koine:
+                        buehlerskoineTokens.add(lf);
+                        break;
+                    case jauer:
+                        jauerTokens.add(lf);
+                        break;
+                    case deutsch:
+                        deutschTokens.add(lf);
+                        break;
+                    case italiano:
+                        italianoTokens.add(lf);
+                        break;
+                    case auters:
+                        autersTokens.add(lf);
+                        break;
+                    case latein:
+                        lateinTokens.add(lf);
+                        break;
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+
+
+        allTokens.put(sursilvan, sursilvanTokens);
+        allTokens.put(sutsilvan, sutsilvanTokens);
+        allTokens.put(surmiran, surmiranTokens);
+        allTokens.put(puter, puterTokens);
+        allTokens.put(vallader, valladerTokens);
+        allTokens.put(sutsettisch, sutsettischTokens);
+        allTokens.put(bivio, bivioTokens);
+        allTokens.put(bergagliot, bergagliotTokens);
+        allTokens.put(val_mustair, valmustairTokens);
+        allTokens.put(buehlers_koine, buehlerskoineTokens);
+        allTokens.put(jauer, jauerTokens);
+        allTokens.put(deutsch, deutschTokens);
+        allTokens.put(italiano, italianoTokens);
+        allTokens.put(auters, autersTokens);
+        allTokens.put(latein, lateinTokens);
+
+
+        return allTokens;
+    }
+
+
+    public List getAllTokensInChrestomathie(DBCollection collection) {
+
+        List<String> chrestTokens = new ArrayList<>();
+
+        DBCursor cursor = collection.find();
+
+        for (DBObject o : cursor) {
+
+            BasicDBObject annotations = (BasicDBObject) o.get("annotations");
+            BasicDBList forms = (BasicDBList) annotations.get("FORM");
+            //ArrayList<BasicDBObject> formsArray = (ArrayList) forms;
+            BasicDBObject lastForm = (BasicDBObject) forms.get(forms.size() - 1);
+            String lf = lastForm.getString("form");
+
+            chrestTokens.add(lf);
+
+        }
+
+        return chrestTokens;
+    }
+
+
+    public Map<String, Set<String>> getTypes(Map<String, List<String>> tokens) {
+        Map<String, Set<String>> allTypes = new HashMap<>();
+
+
+        for (Map.Entry<String, List<String>> entry : tokens.entrySet()) {
+
+            String s = entry.getKey();
+            List<String> list = entry.getValue();
+
+            switch (s) {
+
+                case sursilvan:
+                    Set<String> sursilvanTokens = new HashSet<>(list);
+                    allTypes.put(s, sursilvanTokens);
+                    break;
+                case sutsilvan:
+                    Set<String> sutsilvanTokens = new HashSet<>(list);
+                    allTypes.put(s, sutsilvanTokens);
+                    break;
+                case surmiran:
+                    Set<String> surmiranTokens = new HashSet<>(list);
+                    allTypes.put(s, surmiranTokens);
+                    break;
+                case puter:
+                    Set<String> puterTokens = new HashSet<>(list);
+                    allTypes.put(s, puterTokens);
+                    break;
+                case vallader:
+                    Set<String> valladerTokens = new HashSet<>(list);
+                    allTypes.put(s, valladerTokens);
+                    break;
+                case sutsettisch:
+                    Set<String> sutsettischTokens = new HashSet<>(list);
+                    allTypes.put(s, sutsettischTokens);
+                    break;
+                case bivio:
+                    Set<String> bivioTokens = new HashSet<>(list);
+                    allTypes.put(s, bivioTokens);
+                    break;
+                case bergagliot:
+                    Set<String> bergagliotTokens = new HashSet<>(list);
+                    allTypes.put(s, bergagliotTokens);
+                    break;
+                case val_mustair:
+                    Set<String> valmustairTokens = new HashSet<>(list);
+                    allTypes.put(s, valmustairTokens);
+                    break;
+                case buehlers_koine:
+                    Set<String> buehlerskoineTokens = new HashSet<>(list);
+                    allTypes.put(s, buehlerskoineTokens);
+                    break;
+                case jauer:
+                    Set<String> jauerTokens = new HashSet<>(list);
+                    allTypes.put(s, jauerTokens);
+                    break;
+                case deutsch:
+                    Set<String> deutschTokens = new HashSet<>(list);
+                    allTypes.put(s, deutschTokens);
+                    break;
+                case italiano:
+                    Set<String> italianoTokens = new HashSet<>(list);
+                    allTypes.put(s, italianoTokens);
+                    break;
+                case auters:
+                    Set<String> autersTokens = new HashSet<>(list);
+                    allTypes.put(s, autersTokens);
+                    break;
+                case latein:
+                    Set<String> lateinTokens = new HashSet<>(list);
+                    allTypes.put(s, lateinTokens);
+                    break;
+                default:
+                    break;
+
+            }
+
+
+        }
+
+
+        return allTypes;
+
+    }
+
     public long getPageNumberInWU(String Wu, long index) {
 
         WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
@@ -431,7 +517,7 @@ public class IOMongo {
         return entries;
     }
 
-    public List<ForStand> getTokens(String fileName) throws Exception {
+    public List<ForStand> getTokensForStand(String fileName) throws Exception {
         List<ForStand> list = new ArrayList<>();
         Map<Long, Integer> map = new HashMap<>();
 
@@ -676,6 +762,20 @@ public class IOMongo {
     }
 
 
+    public static List<String> readAllTokens(String fileName) throws Exception {
+
+        ObjectInputStream inputStream = new ObjectInputStream(
+                new FileInputStream(FileUtils.outputPath + fileName));
+
+        List<String> tokens = (List<String>) inputStream.readObject();
+
+        inputStream.close();
+
+        return tokens;
+
+    }
+
+
     // Temporary solution in order top avoid mutual dependence in maven
     public static Map<String, List<MongoWord>> readMap(String fileName) throws Exception {
 
@@ -683,6 +783,21 @@ public class IOMongo {
                 new FileInputStream(FileUtils.outputPath + fileName));
 
         Map<String, List<MongoWord>> tokens = (Map<String, List<MongoWord>>) inputStream.readObject();
+
+        inputStream.close();
+
+        return tokens;
+
+    }
+
+
+    // Temporary solution in order top avoid mutual dependence in maven
+    public static Map<String, List<String>> readTokens(String fileName) throws Exception {
+
+        ObjectInputStream inputStream = new ObjectInputStream(
+                new FileInputStream(FileUtils.outputPath + fileName));
+
+        Map<String, List<String>> tokens = (Map<String, List<String>>) inputStream.readObject();
 
         inputStream.close();
 

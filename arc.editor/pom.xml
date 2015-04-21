@@ -64,12 +64,12 @@
 		</dependency>
 		<dependency>
 			<groupId>de.uni_koeln.spinfo.arc</groupId>
-			<artifactId>annotation.model</artifactId>
+			<artifactId>arc.annotations</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>de.uni_koeln.spinfo.arc</groupId>
-			<artifactId>data.access</artifactId>
+			<artifactId>arc.dataaccess</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
