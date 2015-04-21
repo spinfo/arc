@@ -3,18 +3,11 @@ package de.spinfo.arc.persistance.repository.pos;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
 import de.spinfo.arc.data.*;
-import de.spinfo.arc.persistance.service.query.WordQueries;
-import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
-import de.spinfo.arc.persistance.service.update.WordUpdater;
-import de.spinfo.arc.persistance.util.PosChecker;
 import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -24,15 +17,13 @@ import java.net.UnknownHostException;
 import java.text.NumberFormat;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-
 public class TestGettingWordsByAspecificLanguage {
 
     static IOMongo ioMongo = new IOMongo();
 
-    static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
-    static WordQueries wordQueries = new WordQueries();
-    static WordUpdater wordUpdater = new WordUpdater();
+//    static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
+//    static WordQueries wordQueries = new WordQueries();
+//    static WordUpdater wordUpdater = new WordUpdater();
 
 
     private static MongoClient mongoClient;
@@ -58,20 +49,12 @@ public class TestGettingWordsByAspecificLanguage {
     }
 
     @Test
-    public void testGetTokens() throws Exception {
+    public void testGetTokensForStand() throws Exception {
 
-        List<ForStand> getTokens = ioMongo.getTokens("golden2015-04-01T12:44:58Z");
+        List<ForStand> getTokens = ioMongo.getTokensForStand("golden2015-04-01T12:44:58Z");
 
         FileUtils.printList(getTokens, FileUtils.outputPath, "test_list_");
 
-
-    }
-
-    @Test
-    public void testGetAllLanguages() throws IOException {
-        Map<String, List<WordImpl>> allLanguages = ioMongo.getAllTokens();
-
-        FileUtils.writeMap(allLanguages, "allLanguages");
 
     }
 
@@ -86,7 +69,7 @@ public class TestGettingWordsByAspecificLanguage {
 
 
     @Test
-    public void testGetLangRanges() throws IOException {
+    public void testGetWords() throws IOException {
 
         String dbName = "arc_working_units";
         String collectionName = "workingUnits";
@@ -104,9 +87,62 @@ public class TestGettingWordsByAspecificLanguage {
 
         DBCollection wordsCollection = db.getCollection("words");
 
-        Map<String, List<MongoWord>> getWordsInRange = ioMongo.getWordsInRange(list, wordsCollection);
+        Map<String, List<MongoWord>> getWordsInRange = ioMongo.getWords(list, wordsCollection);
 
         FileUtils.writeMap(getWordsInRange, "wordsInRange");
+
+
+    }
+
+
+    @Test
+    public void testGetTokens() throws IOException {
+
+        String dbName = "arc_working_units";
+        String collectionName = "workingUnits";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        List<LangRange> list = ioMongo.getLanguageRanges(collection);
+
+
+        for (LangRange lr : list) {
+
+            System.out.println(lr);
+        }
+
+        DBCollection wordsCollection = db.getCollection("words");
+
+        Map<String, List<String>> getWordsInRange = ioMongo.getTokens(list, wordsCollection);
+
+        FileUtils.writeMap(getWordsInRange, "tokens_");
+
+
+    }
+
+
+    @Test
+    public void testGetTypes() throws Exception {
+
+
+        Map<String, List<String>> tokens = ioMongo.readTokens("tokens_2015-04-21T14:20:45Z");
+
+        Map<String, Set<String>> types = ioMongo.getTypes(tokens);
+
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setMinimumFractionDigits(1);
+
+        for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
+
+            String lang = entry.getKey();
+            Set<String> tps = entry.getValue();
+            String size_format = numberFormat.format(tps.size());
+
+            System.out.println(lang + "\t" + size_format);
+
+        }
 
 
     }
@@ -131,14 +167,17 @@ public class TestGettingWordsByAspecificLanguage {
 
             String language = entry.getKey();
 
-            List<MongoWord> l = entry.getValue();
+            List<MongoWord> tokens = entry.getValue();
 
-            double percentage = l.size() * 100 / words;
+            double percentage = tokens.size() * 100 / words;
             String percentage_format = numberFormat.format(percentage);
 
-            System.out.println(language + "\t" + l.size() + "\t" + percentage_format + "\n");
+            String size_format = numberFormat.format(tokens.size());
 
-            found = found + l.size();
+
+            System.out.println(language + "\t" + size_format + "\t" + percentage_format);
+
+            found = found + tokens.size();
 
         }
         double saldo = words - found;
@@ -157,107 +196,27 @@ public class TestGettingWordsByAspecificLanguage {
 
     }
 
-    @Ignore
+
     @Test
-    public void test() {
-        /*
-         * First Demo is using iteration over all languages
-		 */
+    public void testGetAllTokensInChrest() throws Exception {
+        String dbName = "arc_working_units";
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection("words");
+        List<String> list = ioMongo.getAllTokensInChrestomathie(collection);
 
-        List<WorkingUnit> allWorkingUnits = wuQueries.getAllWorkingUnits();
-
-        assertEquals("Are all 14 Working units retrieved?", 14, allWorkingUnits.size());
-
-        WorkingUnit retrievedWu = wuQueries.getWorkingUnit("Band II");
-        assertEquals("Is the demanded Working Unit retrievable by its title",
-                "Band II",
-                retrievedWu.getTitle());
-
-        List<LanguageRange> languageRanges = retrievedWu.getLanguages();
+        FileUtils.writeList(list, "allTokens_");
 
 
-		/* Below some dummy demo strings*/
-        String LANGUAGE_TO_LOOK_FOR = "Sursilvan";
-        String WORD_TO_LOOK_FOR_IN_LANGUAGE_IN_ORDER_TO_ADD_POS_OPTION = "svaneus";
-        int wordSize = 0;
-        for (LanguageRange languageRange : languageRanges) {
-            if (languageRange.getTitle().equals(LANGUAGE_TO_LOOK_FOR)) {
-                System.err.println("found range with title: " + languageRange.getTitle());
-                List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(languageRange);
-                /*adding to var in order to make a test a the end*/
-                wordSize += wordsOfLang.size();
-                System.err.println("With num words in this range: " + wordsOfLang.size());
-                for (WordImpl word : wordsOfLang) {
-                    if (word.getLastFormAnnotation().
-                            getForm().equals(WORD_TO_LOOK_FOR_IN_LANGUAGE_IN_ORDER_TO_ADD_POS_OPTION)) {
-                    /*
-                     * HERE you can write the new POs-Options to the specific word in the MongoDB
-					 */
-                        Set<String> posSet = new HashSet<>();
-                    /*
-                     * Below is a commented demo.
-					 * 1. fill the set with relevant posOptions
-					 * 2. use the wordUpdater to update the current word (determined by word.getIndex())
-					 * with the set of availble pos options
-					 */
-//					posSet.add("NN");
-//					posSet.add("CONJ_S");
-                        for (String string : posSet) {
-                            PosChecker.checkIfValid(string);
-                        }
-                        wordUpdater.pushPosTaggerOptionsAsStrings(word.getIndex(), posSet);
-                    }
-                }
-
-
-            }
-        }
-
-
-        assertEquals("Is the amount of words retrieved by the 2 ways equal",
-                wordSize, getWordsByLanguage(LANGUAGE_TO_LOOK_FOR).size());
     }
 
-    @Ignore
     @Test
-    public void testWordstoFile() throws Exception {
+    public void testGetAllTypes() throws Exception {
 
+        List<String> tokens = ioMongo.readAllTokens("allTokens_2015-04-21T14:52:34Z");
+        System.out.println("TOKENS: " + tokens.size());
+        Set<String> types = new HashSet<>(tokens);
+        System.out.println("TYPES: " + types.size());
 
-        String sursilvan = "Sursilvan";
-
-        List<WordImpl> gw = getWordsByLanguage(sursilvan);
-
-        List<Token> tokens = getListOfTokens(gw);
-
-
-        //DictUtils.printList(gw, outputPath, "words_sursilvan_20141203");
-
-        FileUtils.writeList(tokens, "words_");
-    }
-
-
-    /**
-     * Returns a list of all words containing in ALL working units if they match the given lanuage param
-     *
-     * @param language the language to lok for among all workingUnits
-     * @return the words of ALL working units which have this kind of Language as range defined
-     */
-    private static List<WordImpl> getWordsByLanguage(String language) {
-        List<WordImpl> toReturn = new ArrayList<>();
-        List<WorkingUnit> workingUnitsWhichHaveAtLeastOneRangeOfSearchedLanguage
-                = wuQueries.getWorkingUnitsWithLanguage(language);
-        for (WorkingUnit workingUnit : workingUnitsWhichHaveAtLeastOneRangeOfSearchedLanguage) {
-            List<LanguageRange> languageRanges = workingUnit.getLanguages();
-            for (LanguageRange languageRange : languageRanges) {
-                if (language.equals(languageRange.getTitle())) {
-
-                    System.out.println(workingUnit.getTitle() + "\t" + languageRange.getStart() + "\t" + languageRange.getEnd() + "\t" + languageRange.getTitle());
-                    List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(languageRange);
-                    toReturn.addAll(wordsOfLang);
-                }
-            }
-        }
-        return toReturn;
     }
 
 
