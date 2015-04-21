@@ -1,5 +1,6 @@
 package de.spinfo.arc.data;
 
+import com.mongodb.*;
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
@@ -16,315 +17,677 @@ import java.util.*;
  */
 public class IOMongo {
 
-	static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
-	static WordQueries wordQueries = new WordQueries();
-	private boolean insertedForm;
+    static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
+    static WordQueries wordQueries = new WordQueries();
+
+
+    public static final String sursilvan = "Sursilvan";
+    public static final String sutsilvan = "Sutsilvan";
+    public static final String surmiran = "Surmiran";
+    public static final String puter = "Puter";
+    public static final String vallader = "Vallader";
+    public static final String sutsettisch = "Sutsettisch";
+    public static final String bivio = "Bivio";
+    public static final String bergagliot = "Bergagliot";
+    public static final String val_mustair = "Val Müstair";
+    public static final String buehlers_koine = "Bühlers Koine";
+    public static final String jauer = "Jauer";
+    public static final String deutsch = "Deutsch/Tudesg";
+    public static final String latein = "Latein";
+    public static final String italiano = "Italiano";
+    public static final String auters = "Auters";
+
+
+    public static Set<String> chrestLanguages() {
+
+        Set<String> languages = new HashSet<>();
+
+        languages.add(sursilvan);
+        languages.add(sutsilvan);
+        languages.add(surmiran);
+        languages.add(puter);
+        languages.add(vallader);
+        languages.add(sutsettisch);
+        languages.add(bivio);
+        languages.add(bergagliot);
+        languages.add(val_mustair);
+        languages.add(buehlers_koine);
+        languages.add(jauer);
+        languages.add(deutsch);
+        languages.add(latein);
+        languages.add(italiano);
+        languages.add(auters);
+
+
+        return languages;
+    }
+
+
+    public Map<String, List<WordImpl>> getAllTokens() {
+        Map<String, List<WordImpl>> allTokens = new HashMap<>();
+
+        List<WordImpl> sursilvanTokens = new ArrayList<>();
+        List<WordImpl> sutsilvanTokens = new ArrayList<>();
+        List<WordImpl> surmiranTokens = new ArrayList<>();
+        List<WordImpl> puterTokens = new ArrayList<>();
+        List<WordImpl> valladerTokens = new ArrayList<>();
+        List<WordImpl> sutsettischTokens = new ArrayList<>();
+        List<WordImpl> bivioTokens = new ArrayList<>();
+        List<WordImpl> bergagliotTokens = new ArrayList<>();
+        List<WordImpl> valmustairTokens = new ArrayList<>();
+        List<WordImpl> buehlerskoineTokens = new ArrayList<>();
+        List<WordImpl> jauerTokens = new ArrayList<>();
+        List<WordImpl> deutschTokens = new ArrayList<>();
+        List<WordImpl> lateinTokens = new ArrayList<>();
+        List<WordImpl> italianoTokens = new ArrayList<>();
+        List<WordImpl> autersTokens = new ArrayList<>();
+
+        WorkingUnitQueries wuQueries = new WorkingUnitQueries();
+
+
+        for (String s : chrestLanguages()) {
+
+            List<WorkingUnit> wuWithLanguage = wuQueries.getWorkingUnitsWithLanguage(s);
+
+            for (WorkingUnit wu : wuWithLanguage) {
+
+                List<LanguageRange> languageRange = wu.getLanguages();
+
+                for (LanguageRange lr : languageRange) {
+
+                    if (lr.getTitle().equals(s)) {
+
+                        List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
+
+                        for (WordImpl wi : wordsOfLang) {
+
+
+                            switch (s) {
+
+                                case sursilvan:
+                                    sursilvanTokens.add(wi);
+                                    break;
+                                case sutsilvan:
+                                    sutsilvanTokens.add(wi);
+                                    break;
+                                case surmiran:
+                                    surmiranTokens.add(wi);
+                                    break;
+                                case puter:
+                                    puterTokens.add(wi);
+                                    break;
+                                case vallader:
+                                    valladerTokens.add(wi);
+                                    break;
+                                case sutsettisch:
+                                    sutsettischTokens.add(wi);
+                                    break;
+                                case bivio:
+                                    bivioTokens.add(wi);
+                                    break;
+                                case bergagliot:
+                                    bergagliotTokens.add(wi);
+                                    break;
+                                case val_mustair:
+                                    valmustairTokens.add(wi);
+                                    break;
+                                case buehlers_koine:
+                                    buehlerskoineTokens.add(wi);
+                                    break;
+                                case jauer:
+                                    jauerTokens.add(wi);
+                                    break;
+                                case deutsch:
+                                    deutschTokens.add(wi);
+                                    break;
+                                case italiano:
+                                    italianoTokens.add(wi);
+                                    break;
+                                case auters:
+                                    autersTokens.add(wi);
+                                    break;
+                                case latein:
+                                    lateinTokens.add(wi);
+                                    break;
+                                default:
+                                    break;
+
+                            }
+
+
+                        }
+
+                    }
+                }
+            }
+
+
+        }
+
+
+        allTokens.put(sursilvan, sursilvanTokens);
+        allTokens.put(sutsilvan, sutsilvanTokens);
+        allTokens.put(surmiran, surmiranTokens);
+        allTokens.put(puter, puterTokens);
+        allTokens.put(vallader, valladerTokens);
+        allTokens.put(sutsettisch, sutsettischTokens);
+        allTokens.put(bivio, bivioTokens);
+        allTokens.put(bergagliot, bergagliotTokens);
+        allTokens.put(val_mustair, valmustairTokens);
+        allTokens.put(buehlers_koine, buehlerskoineTokens);
+        allTokens.put(jauer, jauerTokens);
+        allTokens.put(deutsch, deutschTokens);
+        allTokens.put(italiano, italianoTokens);
+        allTokens.put(auters, autersTokens);
+        allTokens.put(latein, lateinTokens);
+
+
+        return allTokens;
+    }
+
+
+    public List<LangRange> getLanguageRanges(DBCollection collection) {
+        Map<String, List<MongoWord>> allTokens = new HashMap<>();
+
+        List<MongoWord> sursilvanTokens = new ArrayList<>();
+        List<MongoWord> sutsilvanTokens = new ArrayList<>();
+        List<MongoWord> surmiranTokens = new ArrayList<>();
+        List<MongoWord> puterTokens = new ArrayList<>();
+        List<MongoWord> valladerTokens = new ArrayList<>();
+        List<MongoWord> sutsettischTokens = new ArrayList<>();
+        List<MongoWord> bivioTokens = new ArrayList<>();
+        List<MongoWord> bergagliotTokens = new ArrayList<>();
+        List<MongoWord> valmustairTokens = new ArrayList<>();
+        List<MongoWord> buehlerskoineTokens = new ArrayList<>();
+        List<MongoWord> jauerTokens = new ArrayList<>();
+        List<MongoWord> deutschTokens = new ArrayList<>();
+        List<MongoWord> lateinTokens = new ArrayList<>();
+        List<MongoWord> italianoTokens = new ArrayList<>();
+        List<MongoWord> autersTokens = new ArrayList<>();
+
+
+        DBCursor cursor = collection.find();
+
+        List<LangRange> ranges = new ArrayList<>();
+
+        int i = 1;
+        while (cursor.hasNext()) {
+
+            BasicDBObject annotations = (BasicDBObject) cursor.next().get("annotations");
+
+            BasicDBList langRange = (BasicDBList) annotations.get("LANGUAGE_RANGE");
+            ArrayList<BasicDBObject> langRangeArray = (ArrayList) langRange;
+
+            System.out.println("Band: " + i + "   " + langRange.size());
+
+            for (DBObject object : langRangeArray) {
+
+                String title = (String) object.get("title");
+                Integer start = (Integer) object.get("start");
+                Integer end = (Integer) object.get("end");
+
+                LangRange lr = new LangRange();
+                lr.setBand(i);
+                lr.setLanguage(title);
+                lr.setStart(start);
+                lr.setEnd(end);
+                ranges.add(lr);
+            }
+
+            i++;
+        }
+
+
+        return ranges;
+    }
+
+
+    public Map<String, List<MongoWord>> getWordsInRange(List<LangRange> langRanges, DBCollection words) {
+
+        Map<String, List<MongoWord>> allTokens = new HashMap<>();
+
+        List<MongoWord> sursilvanTokens = new ArrayList<>();
+        List<MongoWord> sutsilvanTokens = new ArrayList<>();
+        List<MongoWord> surmiranTokens = new ArrayList<>();
+        List<MongoWord> puterTokens = new ArrayList<>();
+        List<MongoWord> valladerTokens = new ArrayList<>();
+        List<MongoWord> sutsettischTokens = new ArrayList<>();
+        List<MongoWord> bivioTokens = new ArrayList<>();
+        List<MongoWord> bergagliotTokens = new ArrayList<>();
+        List<MongoWord> valmustairTokens = new ArrayList<>();
+        List<MongoWord> buehlerskoineTokens = new ArrayList<>();
+        List<MongoWord> jauerTokens = new ArrayList<>();
+        List<MongoWord> deutschTokens = new ArrayList<>();
+        List<MongoWord> lateinTokens = new ArrayList<>();
+        List<MongoWord> italianoTokens = new ArrayList<>();
+        List<MongoWord> autersTokens = new ArrayList<>();
+
+
+        for (LangRange lr : langRanges) {
+
+            String s = lr.getLanguage();
+            Long start = lr.getStart();
+            Long end = lr.getEnd();
+            System.out.println(lr.toString());
+            for (long i = start; i <= end; i++) {
+
+                BasicDBObject w = new BasicDBObject("index", i);
+
+                DBObject o = words.findOne(w);
+
+                BasicDBObject annotations = (BasicDBObject) o.get("annotations");
+                BasicDBList forms = (BasicDBList) annotations.get("FORM");
+                //ArrayList<BasicDBObject> formsArray = (ArrayList) forms;
+                BasicDBObject lastForm = (BasicDBObject) forms.get(forms.size() - 1);
+                String lf = lastForm.getString("form");
+
+
+                MongoWord mongoWord = new MongoWord();
+                mongoWord.setIndex(i);
+                mongoWord.setLanguage(s);
+                mongoWord.setWord(lf);
+
+
+                switch (s) {
+
+                    case sursilvan:
+                        sursilvanTokens.add(mongoWord);
+                        break;
+                    case sutsilvan:
+                        sutsilvanTokens.add(mongoWord);
+                        break;
+                    case surmiran:
+                        surmiranTokens.add(mongoWord);
+                        break;
+                    case puter:
+                        puterTokens.add(mongoWord);
+                        break;
+                    case vallader:
+                        valladerTokens.add(mongoWord);
+                        break;
+                    case sutsettisch:
+                        sutsettischTokens.add(mongoWord);
+                        break;
+                    case bivio:
+                        bivioTokens.add(mongoWord);
+                        break;
+                    case bergagliot:
+                        bergagliotTokens.add(mongoWord);
+                        break;
+                    case val_mustair:
+                        valmustairTokens.add(mongoWord);
+                        break;
+                    case buehlers_koine:
+                        buehlerskoineTokens.add(mongoWord);
+                        break;
+                    case jauer:
+                        jauerTokens.add(mongoWord);
+                        break;
+                    case deutsch:
+                        deutschTokens.add(mongoWord);
+                        break;
+                    case italiano:
+                        italianoTokens.add(mongoWord);
+                        break;
+                    case auters:
+                        autersTokens.add(mongoWord);
+                        break;
+                    case latein:
+                        lateinTokens.add(mongoWord);
+                        break;
+                    default:
+                        break;
+
+                }
+
+
+            }
+
+
+        }
+
+
+        allTokens.put(sursilvan, sursilvanTokens);
+        allTokens.put(sutsilvan, sutsilvanTokens);
+        allTokens.put(surmiran, surmiranTokens);
+        allTokens.put(puter, puterTokens);
+        allTokens.put(vallader, valladerTokens);
+        allTokens.put(sutsettisch, sutsettischTokens);
+        allTokens.put(bivio, bivioTokens);
+        allTokens.put(bergagliot, bergagliotTokens);
+        allTokens.put(val_mustair, valmustairTokens);
+        allTokens.put(buehlers_koine, buehlerskoineTokens);
+        allTokens.put(jauer, jauerTokens);
+        allTokens.put(deutsch, deutschTokens);
+        allTokens.put(italiano, italianoTokens);
+        allTokens.put(auters, autersTokens);
+        allTokens.put(latein, lateinTokens);
+
+
+        return allTokens;
+    }
+
+
+    public long getPageNumberInWU(String Wu, long index) {
+
+        WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
+
+        List<PageRange> pageRange = workingUnit.getPages();
+
+        List<Range> ranges = new ArrayList<>();
+
+        for (PageRange pr : pageRange) {
+
+            Range range = new Range(pr.getStart(), pr.getEnd());
+            ranges.add(range);
+        }
+
+        for (Range range : ranges) {
+
+            if (index > range.getStart() && index < range.getEnd()) {
+
+                System.out.println(ranges.indexOf(range));
+            }
+
+        }
+
+        return 0;
+    }
+
+    public List<Entry> getSursilvanGoldenEntries() {
+
+        WorkingUnit workingUnit = wuQueries.getWorkingUnit("Band II");
+
+        List<LanguageRange> languageRange = workingUnit.getLanguages();
+        Set<Long> germanWords = germanWordsInRange(languageRange);
+        List<WordImpl> sursilvanTokens = sursilvanTokensInRange(languageRange);
+
+        List<Entry> entries = new ArrayList<>();
+
+        for (WordImpl word : sursilvanTokens) {
+
+            if (germanWords.contains(word.getIndex())) {
+                continue;
+            }
+
+            if (word.getIndex() > 366350) {
+                break;
+            }
+
+            printNotTagged(word);
+
+            Entry entry = new Entry();
+            entry.setIndex(word.getIndex());
+            entry.setForm(word.getLastFormAnnotation().getForm());
+            if (word.getLastPosAnnotation() != null) {
+                entry.setPos(word.getLastPosAnnotation().getPos().toString());
+                entry.setAutor(word.getLastPosAnnotation().getUserId());
+
+            }
+
+            entries.add(entry);
+        }
+
+        return entries;
+    }
+
+    public List<ForStand> getTokens(String fileName) throws Exception {
+        List<ForStand> list = new ArrayList<>();
+        Map<Long, Integer> map = new HashMap<>();
+
+        List<Entry> getListOfTokens = readEntries(fileName);
+        int i = 0;
 
-	public long getPageNumberInWU(String Wu, long index) {
+        for (Entry e : getListOfTokens) {
 
-		WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
+            List<Punct> p_list = new ArrayList<>();
 
-		List<PageRange> pageRange = workingUnit.getPages();
+            String form = e.getForm();
+            StringBuffer buffer = new StringBuffer();
+
+            for (int j = 0; j < form.length(); j++) {
+
+                if (!Character.isLetterOrDigit(form.charAt(j))
+                        && !String.valueOf(form.charAt(j)).equals(" ")
+                        && !String.valueOf(form.charAt(j)).equals("'")) {
+
+                    Punct p = new Punct();
+                    p.setForm(String.valueOf(form.charAt(j)));
+                    p.setIndex(j);
+                    p_list.add(p);
+
+                } else {
+
+                    buffer.append(form.charAt(j));
+
+                }
 
-		List<Range> ranges = new ArrayList<>();
+            }
 
-		for (PageRange pr : pageRange) {
+            if (p_list.size() == 0) {
+                ForStand entry = new ForStand();
+                entry.setIndex(i);
+                entry.setForm(buffer.toString());
+                entry.setPOS(e.getPos());
+                list.add(entry);
+                i++;
+                map.put(e.getIndex(), i);
 
-			Range range = new Range(pr.getStart(), pr.getEnd());
-			ranges.add(range);
-		}
+            } else {
 
-		for (Range range : ranges) {
+                if (p_list.size() == 1 && buffer.length() == 0) {
+                    ForStand p = new ForStand();
+                    p.setIndex(i);
+                    p.setForm(form);
+                    p.setPOS(getPOS(p_list.get(0).getForm()));
+                    list.add(p);
+                    i++;
+                    continue;
 
-			if (index > range.getStart() && index < range.getEnd()) {
+                }
 
-				System.out.println(ranges.indexOf(range));
-			}
+                int firstChar = form.indexOf(buffer.charAt(0));
+                int lastChar = form
+                        .lastIndexOf(buffer.charAt(buffer.length() - 1));
 
-		}
+                for (int j = 0; j < p_list.size(); j++) {
 
-		return 0;
-	}
+                    if (p_list.get(j).getIndex() < firstChar) {
+                        ForStand p = new ForStand();
+                        p.setIndex(i);
+                        p.setForm(p_list.get(j).getForm());
+                        p.setPOS(getPOS(p_list.get(j).getForm()));
+                        list.add(p);
+                        i++;
 
-	public List<Entry> getSursilvanGoldenEntries() {
+                    }
 
-		WorkingUnit workingUnit = wuQueries.getWorkingUnit("Band II");
+                }
 
-		List<LanguageRange> languageRange = workingUnit.getLanguages();
-		Set<Long> germanWords = germanWordsInRange(languageRange);
-		List<WordImpl> sursilvanTokens = sursilvanTokensInRange(languageRange);
+                ForStand entry = new ForStand();
+                entry.setIndex(i);
+                entry.setForm(buffer.toString());
+                entry.setPOS(e.getPos());
+                list.add(entry);
+                i++;
+                map.put(e.getIndex(), i);
 
-		List<Entry> entries = new ArrayList<>();
+                for (int j = 0; j < p_list.size(); j++) {
 
-		for (WordImpl word : sursilvanTokens) {
+                    if (p_list.get(j).getIndex() > lastChar) {
+                        ForStand p = new ForStand();
+                        p.setIndex(i);
+                        p.setForm(p_list.get(j).getForm());
+                        p.setPOS(getPOS(p_list.get(j).getForm()));
+                        list.add(p);
+                        i++;
 
-			if (germanWords.contains(word.getIndex())) {
-				continue;
-			}
+                    }
 
-			if (word.getIndex() > 366350) {
-				break;
-			}
+                }
 
-			printNotTagged(word);
+            }
 
-			Entry entry = new Entry();
-			entry.setIndex(word.getIndex());
-			entry.setForm(word.getLastFormAnnotation().getForm());
-			if (word.getLastPosAnnotation() != null) {
-				entry.setPos(word.getLastPosAnnotation().getPos().toString());
-				entry.setAutor(word.getLastPosAnnotation().getUserId());
+        }
+        FileUtils.writeMap(map, "index_mapping_");
+        return list;
 
-			}
+    }
 
-			entries.add(entry);
-		}
+    private String getPOS(String s) {
+        String pos = null;
 
-		return entries;
-	}
+        switch (s) {
 
-	public List<ForStand> getTokens(String fileName) throws Exception {
-		List<ForStand> list = new ArrayList<>();
-		Map<Long, Integer> map = new HashMap<>();
+            case "!":
+            case "?":
+            case ".":
+                pos = "P_EOS";
+                break;
 
-		List<Entry> getListOfTokens = readEntries(fileName);
-		int i = 0;
+            case ",":
+            case ";":
+            case ":":
+            case "“":
+            case "„":
 
-		for (Entry e : getListOfTokens) {
+                pos = "P_OTH";
+                break;
 
-			List<Punct> p_list = new ArrayList<>();
+            case "…":
+            case "-":
+                pos = "NULL";
+                break;
 
-			String form = e.getForm();
-			StringBuffer buffer = new StringBuffer();
+        }
 
-			for (int j = 0; j < form.length(); j++) {
+        return pos;
 
-				if (!Character.isLetterOrDigit(form.charAt(j))
-						&& !String.valueOf(form.charAt(j)).equals(" ")
-						&& !String.valueOf(form.charAt(j)).equals("'")) {
+    }
 
-					Punct p = new Punct();
-					p.setForm(String.valueOf(form.charAt(j)));
-					p.setIndex(j);
-					p_list.add(p);
+    public Set<Long> germanWordsInRange(List<LanguageRange> languageRange) {
+        Set<Long> germanWords = new HashSet<>();
 
-				} else {
+        for (LanguageRange lr : languageRange) {
+            if (lr.getTitle().equals("Deutsch/Tudesg")) {
+                List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
+                for (WordImpl german : wordsOfLang) {
 
-					buffer.append(form.charAt(j));
+                    germanWords.add(german.getIndex());
+                }
 
-				}
+            }
 
-			}
+        }
 
-			if (p_list.size() == 0) {
-				ForStand entry = new ForStand();
-				entry.setIndex(i);
-				entry.setForm(buffer.toString());
-				entry.setPOS(e.getPos());
-				list.add(entry);
-				i++;
-				map.put(e.getIndex(), i);
+        return germanWords;
+    }
 
-			} else {
+    public List<WordImpl> sursilvanTokensInRange(
+            List<LanguageRange> languageRange) {
 
-				if (p_list.size() == 1 && buffer.length() == 0) {
-					ForStand p = new ForStand();
-					p.setIndex(i);
-					p.setForm(form);
-					p.setPOS(getPOS(p_list.get(0).getForm()));
-					list.add(p);
-					i++;
-					continue;
+        List<WordImpl> sursilvanTokens = new ArrayList<>();
 
-				}
+        for (LanguageRange lr : languageRange) {
 
-				int firstChar = form.indexOf(buffer.charAt(0));
-				int lastChar = form
-						.lastIndexOf(buffer.charAt(buffer.length() - 1));
+            if (lr.getTitle().equals("Sursilvan")) {
 
-				for (int j = 0; j < p_list.size(); j++) {
+                List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
+                for (WordImpl sur : wordsOfLang) {
 
-					if (p_list.get(j).getIndex() < firstChar) {
-						ForStand p = new ForStand();
-						p.setIndex(i);
-						p.setForm(p_list.get(j).getForm());
-						p.setPOS(getPOS(p_list.get(j).getForm()));
-						list.add(p);
-						i++;
+                    sursilvanTokens.add(sur);
+                }
 
-					}
+            }
+        }
 
-				}
+        return sursilvanTokens;
+    }
 
-				ForStand entry = new ForStand();
-				entry.setIndex(i);
-				entry.setForm(buffer.toString());
-				entry.setPOS(e.getPos());
-				list.add(entry);
-				i++;
-				map.put(e.getIndex(), i);
+    public void getModel(Map<Integer, String> goldenMap) throws IOException {
 
-				for (int j = 0; j < p_list.size(); j++) {
+        File file = new File(FileUtils.outputPath + "model"
+                + FileUtils.getISO8601StringForCurrentDate() + ".txt");
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(file), "UTF8"));
 
-					if (p_list.get(j).getIndex() > lastChar) {
-						ForStand p = new ForStand();
-						p.setIndex(i);
-						p.setForm(p_list.get(j).getForm());
-						p.setPOS(getPOS(p_list.get(j).getForm()));
-						list.add(p);
-						i++;
+        Map<Integer, String> treeMap = new TreeMap<>(goldenMap);
 
-					}
+        for (Map.Entry<Integer, String> entry : treeMap.entrySet()) {
 
-				}
+            Integer index = entry.getKey();
+            String form = entry.getValue();
 
-			}
+            if (form.equals("!") || form.equals(".") || form.equals("?")
+                    || form.equals(",")) {
+                out.append(form);
+                out.append("_");
+                out.append(form);
+                out.append("\t");
+            }
 
-		}
-		FileUtils.writeMap(map, "index_mapping_");
-		return list;
+        }
 
-	}
+        out.close();
+    }
 
-	private String getPOS(String s) {
-		String pos = null;
+    private void printNotTagged(WordImpl word) {
 
-		switch (s) {
+        StringBuffer buffer = new StringBuffer();
 
-		case "!":
-		case "?":
-		case ".":
-			pos = "P_EOS";
-			break;
+        if (word.getLastPosAnnotation() != null) {
 
-		case ",":
-		case ";":
-		case ":":
-		case "“":
-		case "„":
+            if (word.getLastPosAnnotation().getPos().toString().equals("NULL")
+                    || word.getLastPosAnnotation().getPos().toString()
+                    .equals("NOT_TAGGED")) {
 
-			pos = "P_OTH";
-			break;
+                // if
+                // (word.getLastPosAnnotation().getUserId().toString().equals("lutzf")
+                // ||word.getLastPosAnnotation().getUserId().toString().equals("rivald"))
+                // {
 
-		case "…":
-		case "-":
-			pos = "NULL";
-			break;
+                buffer.append(word.getIndex());
+                buffer.append("\t");
+                buffer.append(word.getLastFormAnnotation().getForm());
+                buffer.append("\t");
+                buffer.append(word.getLastPosAnnotation().getPos());
+                buffer.append("\t");
+                buffer.append(word.getLastPosAnnotation().getUserId());
 
-		}
+                System.out.println(buffer.toString());
+                // }
+            }
+        }
 
-		return pos;
+    }
 
-	}
+    // Temporary solution in order top avoid mutual dependence in maven
+    private static List<Entry> readEntries(String fileName) throws Exception {
 
-	public Set<Long> germanWordsInRange(List<LanguageRange> languageRange) {
-		Set<Long> germanWords = new HashSet<>();
+        ObjectInputStream inputStream = new ObjectInputStream(
+                new FileInputStream(FileUtils.outputPath + fileName));
 
-		for (LanguageRange lr : languageRange) {
-			if (lr.getTitle().equals("Deutsch/Tudesg")) {
-				List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
-				for (WordImpl german : wordsOfLang) {
+        List<Entry> tokens = (List<Entry>) inputStream.readObject();
 
-					germanWords.add(german.getIndex());
-				}
+        inputStream.close();
 
-			}
+        return tokens;
 
-		}
+    }
 
-		return germanWords;
-	}
 
-	public List<WordImpl> sursilvanTokensInRange(
-			List<LanguageRange> languageRange) {
+    // Temporary solution in order top avoid mutual dependence in maven
+    public static Map<String, List<MongoWord>> readMap(String fileName) throws Exception {
 
-		List<WordImpl> sursilvanTokens = new ArrayList<>();
+        ObjectInputStream inputStream = new ObjectInputStream(
+                new FileInputStream(FileUtils.outputPath + fileName));
 
-		for (LanguageRange lr : languageRange) {
+        Map<String, List<MongoWord>> tokens = (Map<String, List<MongoWord>>) inputStream.readObject();
 
-			if (lr.getTitle().equals("Sursilvan")) {
+        inputStream.close();
 
-				List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
-				for (WordImpl sur : wordsOfLang) {
+        return tokens;
 
-					sursilvanTokens.add(sur);
-				}
-
-			}
-		}
-
-		return sursilvanTokens;
-	}
-
-	public void getModel(Map<Integer, String> goldenMap) throws IOException {
-
-		File file = new File(FileUtils.outputPath + "model"
-				+ FileUtils.getISO8601StringForCurrentDate() + ".txt");
-		Writer out = new BufferedWriter(new OutputStreamWriter(
-				new FileOutputStream(file), "UTF8"));
-
-		Map<Integer, String> treeMap = new TreeMap<>(goldenMap);
-
-		for (Map.Entry<Integer, String> entry : treeMap.entrySet()) {
-
-			Integer index = entry.getKey();
-			String form = entry.getValue();
-
-			if (form.equals("!") || form.equals(".") || form.equals("?")
-					|| form.equals(",")) {
-				out.append(form);
-				out.append("_");
-				out.append(form);
-				out.append("\t");
-			}
-
-		}
-
-		out.close();
-	}
-
-	private void printNotTagged(WordImpl word) {
-
-		StringBuffer buffer = new StringBuffer();
-
-		if (word.getLastPosAnnotation() != null) {
-
-			if (word.getLastPosAnnotation().getPos().toString().equals("NULL")
-					|| word.getLastPosAnnotation().getPos().toString()
-							.equals("NOT_TAGGED")) {
-
-				// if
-				// (word.getLastPosAnnotation().getUserId().toString().equals("lutzf")
-				// ||word.getLastPosAnnotation().getUserId().toString().equals("rivald"))
-				// {
-
-				buffer.append(word.getIndex());
-				buffer.append("\t");
-				buffer.append(word.getLastFormAnnotation().getForm());
-				buffer.append("\t");
-				buffer.append(word.getLastPosAnnotation().getPos());
-				buffer.append("\t");
-				buffer.append(word.getLastPosAnnotation().getUserId());
-
-				System.out.println(buffer.toString());
-				// }
-			}
-		}
-
-	}
-
-	// Temporary solution in order top avoid mutual dependence in maven
-	private static List<Entry> readEntries(String fileName) throws Exception {
-
-		ObjectInputStream inputStream = new ObjectInputStream(
-				new FileInputStream(FileUtils.outputPath + fileName));
-
-		List<Entry> tokens = (List<Entry>) inputStream.readObject();
-
-		inputStream.close();
-
-		return tokens;
-
-	}
+    }
 
 }
