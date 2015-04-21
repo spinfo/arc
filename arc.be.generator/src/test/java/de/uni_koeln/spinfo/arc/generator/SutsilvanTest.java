@@ -81,6 +81,7 @@ public class SutsilvanTest {
         tagger.configure(new Boolean[]{true, true, true, true});
         tagger.testRecall(pathToFile, sutsTokens, 50);
         Map<String, Set<String>> taggings = tagger.match(sutsTokens);
+        in.close();
     }
 
 }

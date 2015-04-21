@@ -13,671 +13,625 @@ import java.util.regex.Pattern;
 
 public class DictUtils {
 
-    public static String outputPath = "../arc.data/output/";
-    public static String inputPath = "../arc.data/input/";
+	public static String outputPath = "../arc.data/output/";
+	public static String inputPath = "../arc.data/input/";
 
-    private DictUtils() {
-        throw new AssertionError();
-    }
+	private DictUtils() {
+		throw new AssertionError();
+	}
 
+	public static List<String> handleEntriesWithParenthesis(String filePath)
+			throws IOException {
 
-    public static List<String> handleEntriesWithParenthesis(String filePath) throws IOException {
+		List<String> list = new ArrayList<String>();
 
+		FileInputStream fis = new FileInputStream(filePath);
+		InputStreamReader isr = new InputStreamReader(fis, "UTF8");
+		LineNumberReader reader = new LineNumberReader(isr);
 
-        List<String> list = new ArrayList<String>();
+		String currentLine;
 
-        FileInputStream fis = new FileInputStream(filePath);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF8");
-        LineNumberReader reader = new LineNumberReader(isr);
+		while ((currentLine = reader.readLine()) != null) {
 
+			String[] cA = currentLine.split("((?<=\\$)|(?=\\$))");
 
-        String currentLine;
+			for (String s : cA) {
 
-        while ((currentLine = reader.readLine()) != null) {
+				if (s.contains("(")) {
 
+					String[] parA = s.split("\\(");
 
-            String[] cA = currentLine.split("((?<=\\$)|(?=\\$))");
+				}
 
+			}
 
-            for (String s : cA) {
+		}
+		reader.close();
 
-                if (s.contains("(")) {
+		return list;
+	}
 
-                    String[] parA = s.split("\\(");
+	public static List<String> getLinesWithFinalDots(String filePath)
+			throws IOException {
 
+		List<String> list = new ArrayList<String>();
 
-                }
+		FileInputStream fis = new FileInputStream(filePath);
+		InputStreamReader isr = new InputStreamReader(fis, "UTF8");
+		LineNumberReader reader = new LineNumberReader(isr);
 
-            }
+		String currentLine;
 
+		while ((currentLine = reader.readLine()) != null) {
 
-        }
+			String[] cA = currentLine.split(" ");
 
-        return list;
-    }
+			if (cA.length > 1) {
 
+				if (cA[cA.length - 1].endsWith(".")
+						&& !Character.isUpperCase(cA[0].codePointAt(0))) {
 
-    public static List<String> getLinesWithFinalDots(String filePath) throws IOException {
+					list.add(currentLine);
 
-        List<String> list = new ArrayList<String>();
+					String next = reader.readLine();
 
-        FileInputStream fis = new FileInputStream(filePath);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF8");
-        LineNumberReader reader = new LineNumberReader(isr);
+					if (next != null
+							&& !Character.isUpperCase(next.codePointAt(0))) {
+						list.add(next);
+					}
 
+				}
 
-        String currentLine;
+			}
 
-        while ((currentLine = reader.readLine()) != null) {
+		}
 
+		reader.close();
+		return list;
 
-            String[] cA = currentLine.split(" ");
+	}
 
-            if (cA.length > 1) {
+	public static List<String> addTags(String filePath) throws IOException {
 
+		List<String> list = new ArrayList<String>();
 
-                if (cA[cA.length - 1].endsWith(".") && !Character.isUpperCase(cA[0].codePointAt(0))) {
+		FileInputStream fis = new FileInputStream(filePath);
+		InputStreamReader isr = new InputStreamReader(fis, "UTF8");
+		LineNumberReader reader = new LineNumberReader(isr);
 
-                    list.add(currentLine);
+		String currentLine;
 
-                    String next = reader.readLine();
+		while ((currentLine = reader.readLine()) != null) {
 
-                    if (next != null && !Character.isUpperCase(next.codePointAt(0))) {
-                        list.add(next);
-                    }
+			StringBuilder builder = new StringBuilder();
+			builder.append("<E>");
+			builder.append(currentLine);
+			builder.append("</E>");
 
+			list.add(builder.toString());
 
-                }
+		}
 
+		reader.close();
+		return list;
 
-            }
+	}
 
+	public static List<String> cleanTextFile(String filePath)
+			throws IOException {
 
-        }
+		List<String> list = new ArrayList<String>();
 
+		FileInputStream fis = new FileInputStream(filePath);
+		InputStreamReader isr = new InputStreamReader(fis, "UTF8");
+		LineNumberReader reader = new LineNumberReader(isr);
 
-        return list;
+		Set<String> toAvoid = new HashSet<String>();
+		toAvoid.add("m/f");
+		toAvoid.add("rn/f");
+		toAvoid.add("m/f,");
+		toAvoid.add("rn/f,");
+		toAvoid.add("m/f;");
+		toAvoid.add("rn/f;");
+		toAvoid.add("m/f-");
+		toAvoid.add("rn/f-");
 
-    }
+		String currentLine;
 
+		while ((currentLine = reader.readLine()) != null) {
 
-    public static List<String> addTags(String filePath) throws IOException {
+			String[] clAsA = currentLine.split(" ");
 
-        List<String> list = new ArrayList<String>();
+			StringBuilder builder = new StringBuilder();
 
-        FileInputStream fis = new FileInputStream(filePath);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF8");
-        LineNumberReader reader = new LineNumberReader(isr);
+			for (String s : clAsA) {
 
+				// change false tokens
 
-        String currentLine;
+				s = s.replace("rn", "m");
+				s = s.replace("ü.", "v.");
+				s = s.replace("u.", "v.");
+				s = s.replace("o.", "v.");
 
-        while ((currentLine = reader.readLine()) != null) {
+				// remove slashes
+				if (!toAvoid.contains(s)) {
 
-            StringBuilder builder = new StringBuilder();
-            builder.append("<E>");
-            builder.append(currentLine);
-            builder.append("</E>");
+					String[] sAsA = s.split("((?<=\\/)|(?=\\/))");
 
-            list.add(builder.toString());
+					for (String t : sAsA) {
 
-        }
+						if (t.equals("/")) {
 
+							t = t.replace("/", "f");
 
-        return list;
+						}
 
-    }
+						builder.append(t);
+						builder.append(" ");
 
+					}
 
-    public static List<String> cleanTextFile(String filePath) throws IOException {
+				} else {
 
-        List<String> list = new ArrayList<String>();
+					s = s.replace(s, "m/f");
 
-        FileInputStream fis = new FileInputStream(filePath);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF8");
-        LineNumberReader reader = new LineNumberReader(isr);
+					builder.append(s);
+					builder.append(" ");
 
-        Set<String> toAvoid = new HashSet<String>();
-        toAvoid.add("m/f");
-        toAvoid.add("rn/f");
-        toAvoid.add("m/f,");
-        toAvoid.add("rn/f,");
-        toAvoid.add("m/f;");
-        toAvoid.add("rn/f;");
-        toAvoid.add("m/f-");
-        toAvoid.add("rn/f-");
+				}
 
+			}
 
-        String currentLine;
+			list.add(builder.toString());
 
-        while ((currentLine = reader.readLine()) != null) {
+			// list.add(builder.toString());
 
-            String[] clAsA = currentLine.split(" ");
+		}
 
-            StringBuilder builder = new StringBuilder();
+		reader.close();
+		return list;
 
-            for (String s : clAsA) {
+	}
 
-                //change false tokens
+	//
+	public static File removeUnclosedParentheses(String filePath,
+			String destPath, String newFileName) throws IOException {
 
-                s = s.replace("rn", "m");
-                s = s.replace("ü.", "v.");
-                s = s.replace("u.", "v.");
-                s = s.replace("o.", "v.");
+		File inFile = new File(filePath);
+		File outFile = new File(destPath + newFileName + ".txt");
 
-                //remove slashes
-                if (!toAvoid.contains(s)) {
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(outFile), "UTF-8"));
 
-                    String[] sAsA = s.split("((?<=\\/)|(?=\\/))");
+		BufferedReader br = null;
 
-                    for (String t : sAsA) {
+		String sCurrentLine;
 
-                        if (t.equals("/")) {
+		br = new BufferedReader(new FileReader(inFile));
 
-                            t = t.replace("/", "f");
+		while ((sCurrentLine = br.readLine()) != null) {
 
-                        }
+			StringBuffer b = new StringBuffer(sCurrentLine);
 
-                        builder.append(t);
-                        builder.append(" ");
+			Pattern lp = Pattern.compile("\\(");
+			Matcher lm = lp.matcher(b);
+			int lpcount = 0;
+			while (lm.find()) {
+				lpcount += 1;
+			}
 
+			Pattern rp = Pattern.compile("\\)");
+			Matcher rm = rp.matcher(b);
+			int rpcount = 0;
+			while (rm.find()) {
+				rpcount += 1;
+			}
 
-                    }
+			if (lpcount > rpcount) {
 
+				int llp = b.lastIndexOf("(");
+				b.replace(llp, llp + 1, "");
 
-                } else {
+			}
 
-                    s = s.replace(s, "m/f");
+			if (b.length() > 3) {
+				if (b.subSequence(0, 2).equals("<E>")) {
 
-                    builder.append(s);
-                    builder.append(" ");
+					writer.append(b + "</E>" + "\n");
 
-                }
+				} else {
 
-            }
+					writer.append("<E>" + b + "</E>" + "\n");
 
+				}
+			}
 
-            list.add(builder.toString());
+		}
+		br.close();
+		writer.flush();
+		writer.close();
 
-            //list.add(builder.toString());
+		return outFile;
+	}
 
-        }
+	public static File addClosingTag(String filePath, String destPath,
+			String newFileName) throws IOException {
 
+		File inFile = new File(filePath);
+		File outFile = new File(destPath + newFileName + ".txt");
 
-        return list;
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(outFile), "UTF-8"));
 
-    }
+		BufferedReader br = null;
 
+		String sCurrentLine;
 
-    //
-    public static File removeUnclosedParentheses(String filePath, String destPath, String newFileName) throws IOException {
+		br = new BufferedReader(new FileReader(inFile));
 
+		while ((sCurrentLine = br.readLine()) != null) {
 
-        File inFile = new File(filePath);
-        File outFile = new File(destPath + newFileName + ".txt");
+			if (sCurrentLine.endsWith("")) {
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(outFile), "UTF-8"));
+				String nl = sCurrentLine + "</E>\n";
+				writer.append(nl);
 
-        BufferedReader br = null;
+			} else
 
-        String sCurrentLine;
+			{
+				writer.append(sCurrentLine);
 
-        br = new BufferedReader(new FileReader(inFile));
+			}
 
-        while ((sCurrentLine = br.readLine()) != null) {
+			;
 
+		}
+		br.close();
+		writer.flush();
+		writer.close();
 
-            StringBuffer b = new StringBuffer(sCurrentLine);
+		return outFile;
 
-            Pattern lp = Pattern.compile("\\(");
-            Matcher lm = lp.matcher(b);
-            int lpcount = 0;
-            while (lm.find()) {
-                lpcount += 1;
-            }
+	}
 
-            Pattern rp = Pattern.compile("\\)");
-            Matcher rm = rp.matcher(b);
-            int rpcount = 0;
-            while (rm.find()) {
-                rpcount += 1;
-            }
+	public static File sortText(String filePath, String destPath,
+			String newFileName) throws IOException {
 
+		File outFile = new File(destPath + newFileName + ".txt");
 
-            if (lpcount > rpcount) {
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(outFile), "UTF-8"));
 
+		Path f = Paths.get(filePath);
 
-                int llp = b.lastIndexOf("(");
-                b.replace(llp, llp + 1, "");
+		BufferedReader br = Files.newBufferedReader(f, StandardCharsets.UTF_8);
 
+		String line = br.readLine();
 
-            }
+		List<String> lines = new ArrayList<String>();
 
+		while (line != null) {
+			lines.add(line);
+			line = br.readLine();
 
-            if (b.length() > 3) {
-                if (b.subSequence(0, 2).equals("<E>")) {
+		}
 
-                    writer.append(b + "</E>" + "\n");
+		String first = null;
 
+		for (int i = 0; i < lines.size(); i++) {
 
-                } else {
+			first = lines.get(i);
 
-                    writer.append("<E>" + b + "</E>" + "\n");
+			String fft = first.substring(0, 1);
 
+			if (first.endsWith("")) {
 
-                }
-            }
+				if (i + 1 >= lines.size()) {
+					break;
+				}
 
+				String second = lines.get(i + 1);
 
-        }
-        writer.flush();
-        writer.close();
+				fft = first.substring(0, 1);
+				String sst = second.substring(0, 1);
 
-        return outFile;
-    }
+				if (fft.equals(sst)) {
 
+					writer.append(first + "</E>\n");
 
-    public static File addClosingTag(String filePath, String destPath, String newFileName) throws IOException {
+					continue;
 
-        File inFile = new File(filePath);
-        File outFile = new File(destPath + newFileName + ".txt");
+				} else {
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(outFile), "UTF-8"));
+					writer.append(first);
+					continue;
+				}
 
-        BufferedReader br = null;
+			} else {
 
-        String sCurrentLine;
+				writer.append(first);
 
-        br = new BufferedReader(new FileReader(inFile));
+			}
 
-        while ((sCurrentLine = br.readLine()) != null) {
+		}
+		writer.close();
+		return outFile;
 
-            if (sCurrentLine.endsWith("")) {
+	}
 
+	public static List lemmasfromNVS(String file) throws IOException {
 
-                String nl = sCurrentLine + "</E>\n";
-                writer.append(nl);
+		List<String> lemmas = new ArrayList<String>();
 
-            } else
+		BufferedReader br = null;
 
-            {
-                writer.append(sCurrentLine);
+		String sCurrentLine;
 
+		br = new BufferedReader(new FileReader(file));
 
-            }
+		while ((sCurrentLine = br.readLine()) != null) {
 
+			String[] line = sCurrentLine.split("\\s");
 
-            ;
+			String lemma = line[0].replace("*", "").replace("<E>", "");
+			lemmas.add(lemma);
 
+		}
+		br.close();
+		return lemmas;
 
-        }
-        writer.flush();
-        writer.close();
+	}
 
-        return outFile;
+	public static List lemmasfromAntlrList(String antlrFilePath)
+			throws IOException {
 
-    }
+		List<String> antlrLemmas = new ArrayList<String>();
 
+		BufferedReader br = null;
 
-    public static File sortText(String filePath, String destPath, String newFileName) throws IOException {
+		String sCurrentLine;
 
+		br = new BufferedReader(new FileReader(antlrFilePath));
 
-        File outFile = new File(destPath + newFileName + ".txt");
+		while ((sCurrentLine = br.readLine()) != null) {
 
-        Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(outFile), "UTF-8"));
+			String[] line = sCurrentLine.split("\\$");
 
+			String lemma = line[0].replace("*", "");
+			antlrLemmas.add(lemma);
 
-        Path f = Paths.get(filePath);
+		}
+		br.close();
 
-        BufferedReader br = Files.newBufferedReader(f,
-                StandardCharsets.UTF_8);
+		return antlrLemmas;
 
-        String line = br.readLine();
+	}
 
-        List<String> lines = new ArrayList<String>();
+	public static List<String> diffLemmasNVS(List<String> nvsList,
+			List<String> antlrList) {
 
-        while (line != null) {
-            lines.add(line);
-            line = br.readLine();
+		List<String> cleaned_nvsList = new ArrayList<String>();
 
-        }
+		for (String s : nvsList) {
 
-        String first = null;
+			s = s.replace("*", "").replace(",", "");
+			cleaned_nvsList.add(s);
+		}
 
+		cleaned_nvsList.removeAll(antlrList);
 
-        for (int i = 0; i < lines.size(); i++) {
+		return cleaned_nvsList;
 
-            first = lines.get(i);
+	}
 
-            String fft = first.substring(0, 1);
+	public static List<String> diffLemmasAntlr(List<String> nvsList,
+			List<String> antlrList) {
 
-            if (first.endsWith("")) {
+		List<String> cleaned_nvsList = new ArrayList<String>();
 
-                if (i + 1 >= lines.size()) {
-                    break;
-                }
+		for (String s : nvsList) {
 
-                String second = lines.get(i + 1);
+			s = s.replace("*", "").replace(",", "");
+			cleaned_nvsList.add(s);
+		}
 
-                fft = first.substring(0, 1);
-                String sst = second.substring(0, 1);
+		antlrList.removeAll(cleaned_nvsList);
 
-                if (fft.equals(sst)) {
+		return antlrList;
 
-                    writer.append(first + "</E>\n");
+	}
 
-                    continue;
+	public static Map<String, Integer> countPOS(DBCollection collection,
+			String dict_pos) {
 
+		Map<String, Integer> occurrences = new HashMap<String, Integer>();
 
-                } else {
+		DBCursor cursor = collection.find();
 
-                    writer.append(first);
-                    continue;
-                }
+		List<String> posList = new ArrayList<String>();
 
+		while (cursor.hasNext()) {
+			DBObject doc = cursor.next();
+			DBObject pos = (DBObject) doc.get("pos");
 
-            } else {
+			String nvs_pos = (String) pos.get(dict_pos);
+			posList.add(nvs_pos);
 
-                writer.append(first);
+		}
 
-            }
+		for (String s : posList) {
 
+			Integer count = occurrences.get(s);
+			if (count == null) {
+				occurrences.put(s, 1);
+			} else {
+				occurrences.put(s, count + 1);
+			}
+		}
 
-        }
+		return occurrences;
 
+	}
 
-        return outFile;
+	public static Map<String, Integer> countEaglesPOSFromMongo(
+			String collection_name) throws UnknownHostException {
+		Map<String, Integer> occurrences = new HashMap<String, Integer>();
+		Set<String> posSet = new HashSet<String>(
+				Arrays.asList(IPosTags.POS_TAGS_FINAL));
 
-    }
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		DB db = mongoClient.getDB("arc");
+		DBCollection collection = db.getCollection(collection_name);
 
+		DBCursor cursor = collection.find();
 
-    public static List lemmasfromNVS(String file) throws IOException {
+		while (cursor.hasNext()) {
+			DBObject o = cursor.next();
+			DBObject pos = (BasicDBObject) o.get("pos");
+			String eagles_pos = (String) pos.get("eagles_pos");
 
-        List<String> lemmas = new ArrayList<String>();
+			if (eagles_pos != null) {
 
-        BufferedReader br = null;
+				for (String s : posSet) {
 
-        String sCurrentLine;
+					if (eagles_pos.equals(s)) {
 
-        br = new BufferedReader(new FileReader(file));
+						Integer count = occurrences.get(s);
+						if (count == null) {
+							occurrences.put(s, 1);
+						} else {
+							occurrences.put(s, count + 1);
+						}
 
-        while ((sCurrentLine = br.readLine()) != null) {
+					}
 
-            String[] line = sCurrentLine.split("\\s");
+				}
 
-            String lemma = line[0].replace("*", "").replace("<E>", "");
-            lemmas.add(lemma);
+			}
 
-        }
+		}
+		return occurrences;
 
-        return lemmas;
+	}
 
+	// Visit all TXT files in Path
+	public static <T> List joinLines(String foldersPath, final List<T> list)
+			throws IOException {
 
-    }
+		Path start = FileSystems.getDefault().getPath(foldersPath);
+		Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path file,
+					BasicFileAttributes attrs) throws IOException {
+				if (file.toString().endsWith(".txt")) {
+					System.out.println(file.toString());
 
+					try {
+						getLines(list, file);
+					} catch (IOException e) {
 
-    public static List lemmasfromAntlrList(String antlrFilePath) throws IOException {
+						e.printStackTrace();
+					}
 
+				}
 
-        List<String> antlrLemmas = new ArrayList<String>();
+				return FileVisitResult.CONTINUE;
+			}
 
-        BufferedReader br = null;
+		});
 
-        String sCurrentLine;
+		return list;
+	}
 
-        br = new BufferedReader(new FileReader(antlrFilePath));
+	public static <T> List getLines(List<T> list, Path file) throws IOException {
 
-        while ((sCurrentLine = br.readLine()) != null) {
+		BufferedReader br = Files.newBufferedReader(file,
+				StandardCharsets.UTF_8);
 
-            String[] line = sCurrentLine.split("\\$");
+		String line;
 
-            String lemma = line[0].replace("*", "");
-            antlrLemmas.add(lemma);
+		while ((line = br.readLine()) != null) {
 
-        }
+			list.add((T) line);
 
-        return antlrLemmas;
+		}
 
-    }
+		return list;
+	}
 
+	public static <K, V> File printMap(Map<K, V> map, String destPath,
+			String fileName) throws IOException {
 
-    public static List<String> diffLemmasNVS(List<String> nvsList, List<String> antlrList) {
+		File file = new File(destPath + fileName + ".txt");
+		Writer out = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(file), "UTF8"));
 
+		for (Map.Entry<K, V> entry : map.entrySet()) {
+			out.append(entry.getKey() + " : " + entry.getValue());
+			out.append("\n");
+		}
 
-        List<String> cleaned_nvsList = new ArrayList<String>();
+		out.flush();
+		out.close();
 
+		return file;
+	}
 
-        for (String s : nvsList) {
+	public static <T> File printSet(Set<T> set, String destPath, String filename)
+			throws IOException {
 
-            s = s.replace("*", "").replace(",", "");
-            cleaned_nvsList.add(s);
-        }
+		File file = new File(destPath + filename + ".txt");
 
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(file), "UTF8"));
 
-        cleaned_nvsList.removeAll(antlrList);
+		for (Object o : set) {
+			writer.append(o + "\n");
+		}
 
+		writer.flush();
+		writer.close();
 
-        return cleaned_nvsList;
+		return file;
+	}
 
-    }
+	public static <T> File printList(List<T> list, String destPath,
+			String filename) throws IOException {
 
-    public static List<String> diffLemmasAntlr(List<String> nvsList, List<String> antlrList) {
+		File file = new File(destPath + filename + ".txt");
 
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(file), "UTF8"));
 
-        List<String> cleaned_nvsList = new ArrayList<String>();
+		for (Object o : list) {
+			writer.append(o + "\n");
+		}
 
+		writer.flush();
+		writer.close();
 
-        for (String s : nvsList) {
+		return file;
+	}
 
-            s = s.replace("*", "").replace(",", "");
-            cleaned_nvsList.add(s);
-        }
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(
+			Map<K, V> map) {
+		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(
+				map.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+				return (o2.getValue()).compareTo(o1.getValue());
+			}
+		});
 
+		Map<K, V> result = new LinkedHashMap<K, V>();
+		for (Map.Entry<K, V> entry : list) {
+			result.put(entry.getKey(), entry.getValue());
+		}
+		return result;
+	}
 
-        antlrList.removeAll(cleaned_nvsList);
-
-
-        return antlrList;
-
-    }
-
-
-    public static Map<String, Integer> countPOS(DBCollection collection,
-                                                String dict_pos) {
-
-        Map<String, Integer> occurrences = new HashMap<String, Integer>();
-
-        DBCursor cursor = collection.find();
-
-        List<String> posList = new ArrayList<String>();
-
-        while (cursor.hasNext()) {
-            DBObject doc = cursor.next();
-            DBObject pos = (DBObject) doc.get("pos");
-
-            String nvs_pos = (String) pos.get(dict_pos);
-            posList.add(nvs_pos);
-
-        }
-
-        for (String s : posList) {
-
-            Integer count = occurrences.get(s);
-            if (count == null) {
-                occurrences.put(s, 1);
-            } else {
-                occurrences.put(s, count + 1);
-            }
-        }
-
-        return occurrences;
-
-    }
-
-    public static Map<String, Integer> countEaglesPOSFromMongo(
-            String collection_name) throws UnknownHostException {
-        Map<String, Integer> occurrences = new HashMap<String, Integer>();
-        Set<String> posSet = new HashSet<String>(
-                Arrays.asList(IPosTags.POS_TAGS_FINAL));
-
-        MongoClient mongoClient = new MongoClient("localhost", 27017);
-        DB db = mongoClient.getDB("arc");
-        DBCollection collection = db.getCollection(collection_name);
-
-        DBCursor cursor = collection.find();
-
-        while (cursor.hasNext()) {
-            DBObject o = cursor.next();
-            DBObject pos = (BasicDBObject) o.get("pos");
-            String eagles_pos = (String) pos.get("eagles_pos");
-
-            if (eagles_pos != null) {
-
-                for (String s : posSet) {
-
-                    if (eagles_pos.equals(s)) {
-
-                        Integer count = occurrences.get(s);
-                        if (count == null) {
-                            occurrences.put(s, 1);
-                        } else {
-                            occurrences.put(s, count + 1);
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-        return occurrences;
-
-    }
-
-    // Visit all TXT files in Path
-    public static <T> List joinLines
-    (String foldersPath, final List<T> list) throws IOException {
-
-        Path start = FileSystems.getDefault().getPath(foldersPath);
-        Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path file,
-                                             BasicFileAttributes attrs) throws IOException {
-                if (file.toString().endsWith(".txt")) {
-                    System.out.println(file.toString());
-
-                    try {
-                        getLines(list, file);
-                    } catch (IOException e) {
-
-                        e.printStackTrace();
-                    }
-
-                }
-
-                return FileVisitResult.CONTINUE;
-            }
-
-        });
-
-        return list;
-    }
-
-    public static <T> List getLines(List<T> list, Path file) throws IOException {
-
-
-        BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8);
-
-        String line;
-
-
-        while ((line = br.readLine()) != null) {
-
-            list.add((T) line);
-
-        }
-
-        return list;
-    }
-
-
-    public static <K, V> File printMap(Map<K, V> map, String destPath,
-                                       String fileName) throws IOException {
-
-        File file = new File(destPath + fileName + ".txt");
-        Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(file), "UTF8"));
-
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            out.append(entry.getKey() + " : " + entry.getValue());
-            out.append("\n");
-        }
-
-        out.flush();
-        out.close();
-
-        return file;
-    }
-
-    public static <T> File printSet(Set<T> set, String destPath, String filename)
-            throws IOException {
-
-        File file = new File(destPath + filename + ".txt");
-
-        Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(file), "UTF8"));
-
-        for (Object o : set) {
-            writer.append(o + "\n");
-        }
-
-        writer.flush();
-        writer.close();
-
-        return file;
-    }
-
-    public static <T> File printList(List<T> list, String destPath,
-                                     String filename) throws IOException {
-
-        File file = new File(destPath + filename + ".txt");
-
-        Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(file), "UTF8"));
-
-        for (Object o : list) {
-            writer.append(o + "\n");
-        }
-
-        writer.flush();
-        writer.close();
-
-        return file;
-    }
-
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(
-            Map<K, V> map) {
-        List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(
-                map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return (o2.getValue()).compareTo(o1.getValue());
-            }
-        });
-
-        Map<K, V> result = new LinkedHashMap<K, V>();
-        for (Map.Entry<K, V> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
-    }
-
-    public static void removeUnclosedParenthesis(String nvs_0_200, String output_path, String nvs_0_200_pp) {
-    }
-
+	public static void removeUnclosedParenthesis(String nvs_0_200,
+			String output_path, String nvs_0_200_pp) {
+	}
 
 }

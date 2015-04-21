@@ -84,6 +84,7 @@ public class SurmiranTest {
         tagger.configure(new Boolean[]{true, true, true, true});
         tagger.testRecall(pathToFile, surmTokens, 50);
         Map<String, Set<String>> taggings = tagger.match(surmTokens);
+        in.close();
 
     }
 }

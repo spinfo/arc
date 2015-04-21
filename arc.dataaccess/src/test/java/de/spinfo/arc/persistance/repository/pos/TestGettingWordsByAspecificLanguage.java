@@ -1,23 +1,27 @@
 package de.spinfo.arc.persistance.repository.pos;
 
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.spinfo.arc.data.Entry;
-import de.spinfo.arc.data.ForStand;
-import de.spinfo.arc.data.IOMongo;
+import de.spinfo.arc.data.*;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
 import de.spinfo.arc.persistance.util.PosChecker;
 import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
+import java.text.NumberFormat;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -29,6 +33,16 @@ public class TestGettingWordsByAspecificLanguage {
     static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
     static WordQueries wordQueries = new WordQueries();
     static WordUpdater wordUpdater = new WordUpdater();
+
+
+    private static MongoClient mongoClient;
+
+    @BeforeClass
+    public static void initialize() throws UnsupportedEncodingException,
+            FileNotFoundException, UnknownHostException {
+
+        mongoClient = new MongoClient("localhost", 27017);
+    }
 
 
     //@Ignore
@@ -53,6 +67,14 @@ public class TestGettingWordsByAspecificLanguage {
 
     }
 
+    @Test
+    public void testGetAllLanguages() throws IOException {
+        Map<String, List<WordImpl>> allLanguages = ioMongo.getAllTokens();
+
+        FileUtils.writeMap(allLanguages, "allLanguages");
+
+    }
+
 
     @Test
     public void testGetPageNumberInWU() {
@@ -62,6 +84,78 @@ public class TestGettingWordsByAspecificLanguage {
 
     }
 
+
+    @Test
+    public void testGetLangRanges() throws IOException {
+
+        String dbName = "arc_working_units";
+        String collectionName = "workingUnits";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        List<LangRange> list = ioMongo.getLanguageRanges(collection);
+
+
+        for (LangRange lr : list) {
+
+            System.out.println(lr);
+        }
+
+        DBCollection wordsCollection = db.getCollection("words");
+
+        Map<String, List<MongoWord>> getWordsInRange = ioMongo.getWordsInRange(list, wordsCollection);
+
+        FileUtils.writeMap(getWordsInRange, "wordsInRange");
+
+
+    }
+
+
+    @Test
+    public void printWordsInRange() throws Exception {
+        String dbName = "arc_working_units";
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection("words");
+
+        Map<String, List<MongoWord>> getWordsInRange = ioMongo.readMap("wordsInRange2015-04-20T15:26:40Z");
+
+        double words = collection.count();
+
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setMinimumFractionDigits(3);
+
+        double found = 0;
+
+        for (Map.Entry<String, List<MongoWord>> entry : getWordsInRange.entrySet()) {
+
+            String language = entry.getKey();
+
+            List<MongoWord> l = entry.getValue();
+
+            double percentage = l.size() * 100 / words;
+            String percentage_format = numberFormat.format(percentage);
+
+            System.out.println(language + "\t" + l.size() + "\t" + percentage_format + "\n");
+
+            found = found + l.size();
+
+        }
+        double saldo = words - found;
+        double saldo_per = saldo * 100 / words;
+        double found_per = found * 100 / words;
+
+        String saldo_format = numberFormat.format(saldo_per);
+        String found_format = numberFormat.format(found_per);
+
+
+        System.out.println("FOUND: " + found + "\t" + found_format);
+        System.out.println("TOTAL: " + words);
+
+
+        System.out.println("NOT IN RANGE: " + saldo + "\t" + saldo_format);
+
+    }
 
     @Ignore
     @Test
@@ -188,8 +282,6 @@ public class TestGettingWordsByAspecificLanguage {
 
 
     }
-
-
 
 
 }

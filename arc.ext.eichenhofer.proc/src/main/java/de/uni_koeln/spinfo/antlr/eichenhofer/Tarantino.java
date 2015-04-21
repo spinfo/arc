@@ -1,4 +1,5 @@
 package de.uni_koeln.spinfo.antlr.eichenhofer;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,245 +11,225 @@ import java.util.*;
  */
 public class Tarantino {
 
-    private List<String> lemmata;
-    private Set<String> pos;
+	private List<String> lemmata;
+	private Set<String> pos;
 
+	public List<String> getLemmata(String file) throws IOException {
 
-    public List<String> getLemmata(String file) throws IOException {
+		Set<String> pos = new HashSet<String>();
 
+		pos.add("m");
+		pos.add("f");
+		pos.add("/");
+		pos.add("art");
+		pos.add("adv");
+		pos.add("adj");
+		pos.add("inter");
+		pos.add("conj");
+		pos.add("prep");
+		pos.add("tr");
+		pos.add("int");
 
-        Set<String> pos = new HashSet<String>();
+		List<String> lemmata = new ArrayList<String>();
 
-        pos.add("m");
-        pos.add("f");
-        pos.add("/");
-        pos.add("art");
-        pos.add("adv");
-        pos.add("adj");
-        pos.add("inter");
-        pos.add("conj");
-        pos.add("prep");
-        pos.add("tr");
-        pos.add("int");
+		FileInputStream fis = new FileInputStream(file);
+		InputStreamReader isr = new InputStreamReader(fis, "UTF8");
+		LineNumberReader reader = new LineNumberReader(isr);
 
+		String currentLine;
 
-        List<String> lemmata = new ArrayList<String>();
+		while ((currentLine = reader.readLine()) != null) {
 
-        FileInputStream fis = new FileInputStream(file);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF8");
-        LineNumberReader reader = new LineNumberReader(isr);
+			String delims = " \n\t<E></E>";
 
+			StringTokenizer tokenizer = new StringTokenizer(currentLine, delims);
 
-        String currentLine;
+			while (tokenizer.countTokens() > 3) {
 
-        while ((currentLine = reader.readLine()) != null) {
+				String lemma = tokenizer.nextToken();
+				String li2 = tokenizer.nextToken();
+				String li3 = tokenizer.nextToken();
 
-            String delims = " \n\t<E></E>";
+				StringBuilder sb = new StringBuilder();
 
-            StringTokenizer tokenizer = new StringTokenizer(currentLine, delims);
+				sb.append(lemma);
+				sb.append("\t");
+				sb.append(li2);
+				sb.append("\t");
+				sb.append(li3);
 
-            while (tokenizer.countTokens() > 3) {
+				lemmata.add(sb.toString());
+				break;
+			}
 
+		}
+		reader.close();
+		return lemmata;
+	}
 
-                String lemma = tokenizer.nextToken();
-                String li2 = tokenizer.nextToken();
-                String li3 = tokenizer.nextToken();
+	public List<String> cleanLemmata(List<String> lemmata) {
 
+		List<String> cleanedLemmata = new ArrayList<String>();
 
-                StringBuilder sb = new StringBuilder();
+		Set<String> pos = new HashSet<String>();
 
-                sb.append(lemma);
-                sb.append("\t");
-                sb.append(li2);
-                sb.append("\t");
-                sb.append(li3);
+		pos.add("m");
+		pos.add("f");
+		pos.add("/");
+		pos.add("mf");
+		pos.add("art");
+		pos.add("adv");
+		pos.add("adj");
+		pos.add("interj");
+		pos.add("conj");
+		pos.add("prep");
+		pos.add("tr");
+		pos.add("fr");
+		pos.add("int");
 
-                lemmata.add(sb.toString());
-                break;
-            }
+		Set<String> wS = new HashSet<String>();
 
+		wS.add("➀");
+		wS.add("©");
 
-        }
+		Set<String> suffix = new HashSet<String>();
 
-        return lemmata;
-    }
+		for (String s : lemmata) {
 
+			StringTokenizer tokenizer = new StringTokenizer(s);
 
-    public List<String> cleanLemmata(List<String> lemmata) {
+			String t1 = tokenizer.nextToken();
+			String t2 = tokenizer.nextToken();
+			String t3 = tokenizer.nextToken();
 
-        List<String> cleanedLemmata = new ArrayList<String>();
+			StringBuilder builder = new StringBuilder();
 
-        Set<String> pos = new HashSet<String>();
+			// Normal case (1)
 
-        pos.add("m");
-        pos.add("f");
-        pos.add("/");
-        pos.add("mf");
-        pos.add("art");
-        pos.add("adv");
-        pos.add("adj");
-        pos.add("interj");
-        pos.add("conj");
-        pos.add("prep");
-        pos.add("tr");
-        pos.add("fr");
-        pos.add("int");
+			if (pos.contains(t2) && !t1.endsWith("(a)")) {
 
-        Set<String> wS = new HashSet<String>();
+				builder.append(t1.replaceAll("\\d", ""));
+				builder.append("$");
+				builder.append(t2);
+				builder.append("(1)");
 
-        wS.add("➀");
-        wS.add("©");
+				cleanedLemmata.add(builder.toString());
 
+				continue;
 
-        Set<String> suffix = new HashSet<String>();
+			}
 
+			// If there are symbols like ➀
 
-        for (String s : lemmata) {
+			if (wS.contains(t2) && pos.contains(t3)) {
 
-            StringTokenizer tokenizer = new StringTokenizer(s);
+				builder.append(t1.replaceAll("\\d", ""));
+				builder.append("$");
+				builder.append(t3);
+				builder.append("(2)");
 
-            String t1 = tokenizer.nextToken();
-            String t2 = tokenizer.nextToken();
-            String t3 = tokenizer.nextToken();
+				cleanedLemmata.add(builder.toString());
+				continue;
+			}
 
-            StringBuilder builder = new StringBuilder();
+			// If there are commata
+			// Like: bagnruaiọ, -ada adj
 
+			if (t1.endsWith(",") && !pos.contains(t3)) {
 
-            //Normal case (1)
+				// First token
 
-            if (pos.contains(t2) && !t1.endsWith("(a)")) {
+				// Clean first token
 
-                builder.append(t1.replaceAll("\\d", ""));
-                builder.append("$");
-                builder.append(t2);
-                builder.append("(1)");
+				t1 = t1.replaceAll(",", "").replaceAll("\\d", "");
 
-                cleanedLemmata.add(builder.toString());
+				if (t1.endsWith("o")) {
 
-                continue;
+					// Remove 'o'
+					t1 = t1.substring(0, t1.length() - 1);
 
-            }
+					// Remove '-' from second Token
+					t2 = t2.substring(1);
 
-            //If there are symbols like ➀
+					// Join both
+					StringBuilder joinToken = new StringBuilder();
+					joinToken.append(t1);
+					joinToken.append(t2);
+					builder.append(joinToken.toString());
 
-            if (wS.contains(t2) && pos.contains(t3)) {
+					builder.append("$");
+					builder.append(t3);
+					builder.append("4");
 
-                builder.append(t1.replaceAll("\\d", ""));
-                builder.append("$");
-                builder.append(t3);
-                builder.append("(2)");
+					cleanedLemmata.add(builder.toString());
+					continue;
 
-                cleanedLemmata.add(builder.toString());
-                continue;
-            }
+				} else if (pos.contains(t3)) {
 
+					// Take the first token and add it to the list
+					builder.append(t1);
+					builder.append("$");
+					builder.append(t3);
+					builder.append("5");
 
-            //If there are commata
-            //Like: bagnruaiọ,	-ada	adj
+					cleanedLemmata.add(builder.toString());
+					continue;
+				}
 
-            if (t1.endsWith(",") && !pos.contains(t3)) {
+			}
 
-                //First token
+			// For verbs with () as second tokens
+			// Like: arcunar (-una) tr
 
-                //Clean first token
+			if (t2.startsWith("(") && t2.endsWith(")")) {
+				// Take the first token and add it to the list
+				builder.append(t1.replaceAll(",", "").replaceAll("\\d", ""));
+				builder.append("$");
 
-                t1 = t1.replaceAll(",", "").replaceAll("\\d", "");
+				if (pos.contains(t3)) {
 
-                if (t1.endsWith("o")) {
+					builder.append(t3);
+					builder.append("6");
+					cleanedLemmata.add(builder.toString());
 
-                    //Remove 'o'
-                    t1 = t1.substring(0, t1.length() - 1);
+				} else {
 
-                    //Remove '-' from second Token
-                    t2 = t2.substring(1);
+					continue;
+				}
 
-                    //Join both
-                    StringBuilder joinToken = new StringBuilder();
-                    joinToken.append(t1);
-                    joinToken.append(t2);
-                    builder.append(joinToken.toString());
+			}
 
-                    builder.append("$");
-                    builder.append(t3);
-                    builder.append("4");
+			// For feminine nouns included in masc. ones
+			// Like: batarlùnz(a) m (f)
 
-                    cleanedLemmata.add(builder.toString());
-                    continue;
+			if (t1.endsWith("(a)")) {
 
-                } else if (pos.contains(t3)) {
+				t1 = t1.replaceAll("\\(a\\)", "");
 
-                    //Take the first token and add it to the list
-                    builder.append(t1);
-                    builder.append("$");
-                    builder.append(t3);
-                    builder.append("5");
+				builder.append(t1);
+				builder.append("$");
+				builder.append(t2);
+				builder.append("7");
+				// Add masculine token
+				cleanedLemmata.add(builder.toString());
 
-                    cleanedLemmata.add(builder.toString());
-                    continue;
-                }
+				// builder.setLength(0);
+				StringBuilder sT = new StringBuilder();
 
+				sT.append(t1);
+				sT.append("a");
+				sT.append("$");
+				sT.append("f");
+				sT.append("8");
+				// Add feminine token
+				cleanedLemmata.add(sT.toString());
+				continue;
 
-            }
+			}
 
+		}
 
-            //For verbs with () as second tokens
-            //Like: arcunar	(-una)	tr
-
-            if (t2.startsWith("(") && t2.endsWith(")")) {
-                //Take the first token and add it to the list
-                builder.append(t1.replaceAll(",", "").replaceAll("\\d", ""));
-                builder.append("$");
-
-                if (pos.contains(t3)) {
-
-                    builder.append(t3);
-                    builder.append("6");
-                    cleanedLemmata.add(builder.toString());
-
-
-                } else {
-
-                    continue;
-                }
-
-
-            }
-
-            //For feminine nouns included in masc. ones
-            //Like: batarlùnz(a)	m	(f)
-
-
-            if (t1.endsWith("(a)")) {
-
-                t1 = t1.replaceAll("\\(a\\)", "");
-
-                builder.append(t1);
-                builder.append("$");
-                builder.append(t2);
-                builder.append("7");
-                //Add masculine token
-                cleanedLemmata.add(builder.toString());
-
-
-                //builder.setLength(0);
-                StringBuilder sT = new StringBuilder();
-
-
-                sT.append(t1);
-                sT.append("a");
-                sT.append("$");
-                sT.append("f");
-                sT.append("8");
-                //Add feminine token
-                cleanedLemmata.add(sT.toString());
-                continue;
-
-            }
-
-        }
-
-        return cleanedLemmata;
-    }
-
+		return cleanedLemmata;
+	}
 
 }

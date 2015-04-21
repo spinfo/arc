@@ -1,4 +1,5 @@
 package de.uni_koeln.spinfo.antlr.eichenhofer;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,36 +12,33 @@ import java.util.List;
  */
 public class PreProcess {
 
+	public static List<String> addTags(String filePath) throws IOException {
 
-    public static List<String> addTags(String filePath) throws IOException {
+		List<String> list = new ArrayList<String>();
 
-        List<String> list = new ArrayList<String>();
+		FileInputStream fis = new FileInputStream(filePath);
+		InputStreamReader isr = new InputStreamReader(fis, "UTF8");
+		LineNumberReader reader = new LineNumberReader(isr);
 
-        FileInputStream fis = new FileInputStream(filePath);
-        InputStreamReader isr = new InputStreamReader(fis, "UTF8");
-        LineNumberReader reader = new LineNumberReader(isr);
+		String currentLine;
 
+		while ((currentLine = reader.readLine()) != null) {
 
-        String currentLine;
+			if (!currentLine.startsWith(" ") && currentLine.contains(" ")
+					&& currentLine.length() > 4) {
+				StringBuilder builder = new StringBuilder();
+				builder.append("<E>");
+				builder.append(currentLine);
+				builder.append("</E>");
 
-        while ((currentLine = reader.readLine()) != null) {
+				list.add(builder.toString());
+			}
 
-            if (!currentLine.startsWith(" ") && currentLine.contains(" ")  && currentLine.length() > 4) {
-                StringBuilder builder = new StringBuilder();
-                builder.append("<E>");
-                builder.append(currentLine);
-                builder.append("</E>");
+		}
 
-                list.add(builder.toString());
-            }
+		reader.close();
+		return list;
 
-
-        }
-
-
-        return list;
-
-    }
-
+	}
 
 }

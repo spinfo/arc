@@ -18,7 +18,7 @@
         <module>../arc.ext.eichenhofer.pdfbox</module>
         <module>../arc.ext.eichenhofer.gramm</module>
         <module>../arc.ext.nvs.proc</module>
-        <module>../arc.ext.nvs.parser</module>
+        <module>../arc.ext.nvs.mongo</module>
         <module>../arc.ext.nvs.gramm</module>
         <module>../arc.ext.puter.proc</module>
         <module>../arc.ext.puter.gramm</module>
