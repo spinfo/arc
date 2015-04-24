@@ -21,6 +21,8 @@ public class IOMongo {
     static WordQueries wordQueries = new WordQueries();
 
 
+
+
     public static final String sursilvan = "Sursilvan";
     public static final String sutsilvan = "Sutsilvan";
     public static final String surmiran = "Surmiran";
