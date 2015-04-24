@@ -19,6 +19,9 @@
            <groupId>de.uni_koeln.spinfo.arc</groupId>
            <artifactId>arc.ext.vallader.gramm</artifactId>
            <version>0.0.1-SNAPSHOT</version>
-       </dependency></dependencies>
+       </dependency>
+
+
+   </dependencies>
 
 </project>
