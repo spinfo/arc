@@ -1,8 +1,9 @@
-package de.uni_koeln.spinfo.arc.ext.vallader.proc.antlr4;
+package de.uni_koeln.spinfo.arc.ext.puter.proc.antlr4;
 
-import de.uni_koeln.spinfo.arc.ext.vallader.gramm.ValladerBaseListener;
-import de.uni_koeln.spinfo.arc.ext.vallader.gramm.ValladerLexer;
-import de.uni_koeln.spinfo.arc.ext.vallader.gramm.ValladerParser;
+import de.uni_koeln.spinfo.arc.ext.vallader.proc.pdftextstream.PdfXStreamExtractor;
+import de.uni_koeln.spinfo.arc.puter.gramm.PuterBaseListener;
+import de.uni_koeln.spinfo.arc.puter.gramm.PuterLexer;
+import de.uni_koeln.spinfo.arc.puter.gramm.PuterParser;
 import de.uni_koeln.spinfo.arc.utils.DictUtils;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -10,6 +11,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.*;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,10 +20,33 @@ import java.util.regex.Pattern;
 /**
  * Created by Andreas on 21.04.2015.
  */
-public class ProcessVallader {
+public class ProcessPuter {
 
-    public static String output_data_path = "../arc.data/output/";
-    public static String input_data_path = "../arc.data/input/";
+    public static String output_data_path = "../arc.data/output/puter/";
+    public static String input_data_path = "../arc.data/input/puter/";
+
+    public void extractionWorkflow(String pdfFilePath) throws IOException, ParseException {
+
+        // Text aus pdf extrahieren
+        PdfXStreamExtractor pdfEx = new PdfXStreamExtractor();
+        pdfEx.extractWithPDFTextStream("PuterPdfStreamExtraction"+timestamper());
+        // valladerTXTtoList optional: cleanVAlladerTXTtoList
+        //DictUtils.printList(:::);
+        // processPuterListReturn
+        // Statistiken
+        // Errors and komplex Lemmas
+            // delinate Genus
+            // processPuterListReturn
+            // Statistiken
+        // Dict.Utils.PrintList
+
+    }
+
+    public String timestamper() throws ParseException {
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        System.out.println(timeStamp);
+        return timeStamp;
+    }
 
     public List<String> valladerTXTtoList (String filePath) throws IOException {
 
@@ -81,11 +107,11 @@ public class ProcessVallader {
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
                 new FileInputStream(file), "UTF8"));
 
-        ValladerLexer lexer = new ValladerLexer(input);
+        PuterLexer lexer = new PuterLexer(input);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        ValladerParser parser = new ValladerParser(tokens);
+        PuterParser parser = new PuterParser(tokens);
 
         parser.setBuildParseTree(true);
         ParseTree tree = parser.dict();
@@ -110,11 +136,11 @@ public class ProcessVallader {
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
                 new FileInputStream(file), "UTF8"));
 
-        ValladerLexer lexer = new ValladerLexer(input);
+        PuterLexer lexer = new PuterLexer(input);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        ValladerParser parser = new ValladerParser(tokens);
+        PuterParser parser = new PuterParser(tokens);
 
         parser.setBuildParseTree(true);
         ParseTree tree = parser.dict();
@@ -181,13 +207,13 @@ public class ProcessVallader {
         return errors;
     }
 
-    public static class LemmaLoader extends ValladerBaseListener implements
+    public static class LemmaLoader extends PuterBaseListener implements
             ParseTreeListener {
         ArrayList<String> lemmas = new ArrayList<String>();
         //ArrayList<String> errors = new ArrayList<String>();
         SortedSet<Integer> errorLines = new TreeSet<Integer>();
 
-        public void exitLexentry(ValladerParser.LexentryContext ctx) {
+        public void exitLexentry(PuterParser.LexentryContext ctx) {
 
             List<TerminalNode> tokens = ctx.keyphrase().phrase().COMPLEXWORD();
 
@@ -228,7 +254,7 @@ public class ProcessVallader {
 
         }
 
-        public void exitError(ValladerParser.ErrorContext ctx) {
+        public void exitError(PuterParser.ErrorContext ctx) {
 
            // String error = ctx.getText();
            int lineNumber = ctx.getStart().getLine();
@@ -377,9 +403,8 @@ public class ProcessVallader {
                 cleanedList.add(corrected);
             }
         }
-        System.out.println(cleanedList.size() +" Error-Einträge wurden für einen erneuten Parsingversuch bearbeitet");
 
-        DictUtils.printList(cleanedList, ProcessVallader.output_data_path, "correctedErrors");
+        DictUtils.printList(cleanedList, ProcessPuter.output_data_path, "correctedErrors");
 
     }
 
