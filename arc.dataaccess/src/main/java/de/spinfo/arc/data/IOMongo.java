@@ -21,6 +21,8 @@ public class IOMongo {
     static WordQueries wordQueries = new WordQueries();
 
 
+
+
     public static final String sursilvan = "Sursilvan";
     public static final String sutsilvan = "Sutsilvan";
     public static final String surmiran = "Surmiran";
@@ -382,63 +384,63 @@ public class IOMongo {
             switch (s) {
 
                 case sursilvan:
-                    Set<String> sursilvanTokens = new HashSet<>(list);
+                    Set<String> sursilvanTokens = new TreeSet<>(list);
                     allTypes.put(s, sursilvanTokens);
                     break;
                 case sutsilvan:
-                    Set<String> sutsilvanTokens = new HashSet<>(list);
+                    Set<String> sutsilvanTokens = new TreeSet<>(list);
                     allTypes.put(s, sutsilvanTokens);
                     break;
                 case surmiran:
-                    Set<String> surmiranTokens = new HashSet<>(list);
+                    Set<String> surmiranTokens = new TreeSet<>(list);
                     allTypes.put(s, surmiranTokens);
                     break;
                 case puter:
-                    Set<String> puterTokens = new HashSet<>(list);
+                    Set<String> puterTokens = new TreeSet<>(list);
                     allTypes.put(s, puterTokens);
                     break;
                 case vallader:
-                    Set<String> valladerTokens = new HashSet<>(list);
+                    Set<String> valladerTokens = new TreeSet<>(list);
                     allTypes.put(s, valladerTokens);
                     break;
                 case sutsettisch:
-                    Set<String> sutsettischTokens = new HashSet<>(list);
+                    Set<String> sutsettischTokens = new TreeSet<>(list);
                     allTypes.put(s, sutsettischTokens);
                     break;
                 case bivio:
-                    Set<String> bivioTokens = new HashSet<>(list);
+                    Set<String> bivioTokens = new TreeSet<>(list);
                     allTypes.put(s, bivioTokens);
                     break;
                 case bergagliot:
-                    Set<String> bergagliotTokens = new HashSet<>(list);
+                    Set<String> bergagliotTokens = new TreeSet<>(list);
                     allTypes.put(s, bergagliotTokens);
                     break;
                 case val_mustair:
-                    Set<String> valmustairTokens = new HashSet<>(list);
+                    Set<String> valmustairTokens = new TreeSet<>(list);
                     allTypes.put(s, valmustairTokens);
                     break;
                 case buehlers_koine:
-                    Set<String> buehlerskoineTokens = new HashSet<>(list);
+                    Set<String> buehlerskoineTokens = new TreeSet<>(list);
                     allTypes.put(s, buehlerskoineTokens);
                     break;
                 case jauer:
-                    Set<String> jauerTokens = new HashSet<>(list);
+                    Set<String> jauerTokens = new TreeSet<>(list);
                     allTypes.put(s, jauerTokens);
                     break;
                 case deutsch:
-                    Set<String> deutschTokens = new HashSet<>(list);
+                    Set<String> deutschTokens = new TreeSet<>(list);
                     allTypes.put(s, deutschTokens);
                     break;
                 case italiano:
-                    Set<String> italianoTokens = new HashSet<>(list);
+                    Set<String> italianoTokens = new TreeSet<>(list);
                     allTypes.put(s, italianoTokens);
                     break;
                 case auters:
-                    Set<String> autersTokens = new HashSet<>(list);
+                    Set<String> autersTokens = new TreeSet<>(list);
                     allTypes.put(s, autersTokens);
                     break;
                 case latein:
-                    Set<String> lateinTokens = new HashSet<>(list);
+                    Set<String> lateinTokens = new TreeSet<>(list);
                     allTypes.put(s, lateinTokens);
                     break;
                 default:
@@ -453,6 +455,107 @@ public class IOMongo {
         return allTypes;
 
     }
+
+
+    public Set<String> getCombinedQuantity(Set<String> a, Set<String> b) {
+        Set<String> cq = new TreeSet<>();
+        cq.addAll(a);
+        cq.addAll(b);
+        return cq;
+    }
+
+
+    public Set<String> getIntersection(Set<String> a, Set<String> b) {
+
+        Set<String> cq = new TreeSet<>();
+        cq.addAll(a);
+        cq.retainAll(b);
+
+
+        return cq;
+    }
+
+
+    public Map<String, Set<String>> getIntersections(Map<String, Set<String>> types) {
+
+        Map<String, Set<String>> intersections = new HashMap<>();
+
+        for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
+
+            String lang = entry.getKey();
+            Set<String> tps = entry.getValue();
+
+
+            for (Map.Entry<String, Set<String>> entry_2 : types.entrySet()) {
+
+                String lang_2 = entry_2.getKey();
+
+                Set<String> tps_2 = entry_2.getValue();
+
+                if (!lang.equals(lang_2)) {
+
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append(lang);
+                    buffer.append("_");
+                    buffer.append(lang_2);
+
+                    Set<String> inter = getIntersection(tps, tps_2);
+
+                    intersections.put(buffer.toString(), inter);
+                }
+
+
+            }
+
+
+        }
+
+        return intersections;
+    }
+
+
+    public Map<String, Set<String>> getCombinedQuantities(Map<String, Set<String>> types) {
+
+        Map<String, Set<String>> cqs = new HashMap<>();
+
+        for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
+
+            String lang = entry.getKey();
+            Set<String> tps = entry.getValue();
+
+
+            for (Map.Entry<String, Set<String>> entry_2 : types.entrySet()) {
+
+                String lang_2 = entry_2.getKey();
+
+                Set<String> tps_2 = entry_2.getValue();
+
+                if (lang_2.equals(jauer)) {
+
+                    continue;
+                }
+
+                if (!lang.equals(lang_2)) {
+
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append(lang);
+                    buffer.append("_");
+                    buffer.append(lang_2);
+
+                    Set<String> cq = getCombinedQuantity(tps, tps_2);
+
+                    cqs.put(buffer.toString(), cq);
+                }
+
+
+            }
+
+
+        }
+
+        return cqs;
+    }
+
 
     public long getPageNumberInWU(String Wu, long index) {
 
@@ -650,6 +753,7 @@ public class IOMongo {
         return pos;
 
     }
+
 
     public Set<Long> germanWordsInRange(List<LanguageRange> languageRange) {
         Set<Long> germanWords = new HashSet<>();

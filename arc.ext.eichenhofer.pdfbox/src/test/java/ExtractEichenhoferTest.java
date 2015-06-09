@@ -35,7 +35,7 @@ public class ExtractEichenhoferTest {
     @Test
     public void testExtractWithPDTTextStream() throws FileNotFoundException {
     	// FIXME: There are missing libs, e.g. for class "PDFTextStream"
-        // extractor.extractWithPDFTextStream("20140715_pdftextstream");
+        extractor.extractWithPDFTextStream("20150421_vallader");
 
     }
 

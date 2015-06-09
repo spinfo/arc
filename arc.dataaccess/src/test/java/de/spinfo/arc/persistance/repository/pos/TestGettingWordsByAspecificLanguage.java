@@ -3,9 +3,7 @@ package de.spinfo.arc.persistance.repository.pos;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.data.*;
-import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,7 +13,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TestGettingWordsByAspecificLanguage {
 
@@ -132,7 +133,7 @@ public class TestGettingWordsByAspecificLanguage {
 
 
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        numberFormat.setMinimumFractionDigits(1);
+        numberFormat.setMinimumFractionDigits(2);
 
         for (Map.Entry<String, Set<String>> entry : types.entrySet()) {
 
@@ -149,7 +150,69 @@ public class TestGettingWordsByAspecificLanguage {
 
 
     @Test
-    public void printWordsInRange() throws Exception {
+    public void testGetIntersections() throws Exception {
+
+
+        Map<String, List<String>> tokens = ioMongo.readTokens("tokens_2015-04-21T14:20:45Z");
+
+        Map<String, Set<String>> types = ioMongo.getTypes(tokens);
+
+        Map<String, Set<String>> intersections = ioMongo.getIntersections(types);
+
+
+        System.out.println(types.size());
+        System.out.println(intersections.size());
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setMinimumFractionDigits(2);
+
+        for (Map.Entry<String, Set<String>> entry : intersections.entrySet()) {
+
+            String lang = entry.getKey();
+            Set<String> tps = entry.getValue();
+            String size_format = numberFormat.format(tps.size());
+
+            System.out.println(lang + "\t" + size_format);
+
+        }
+
+
+    }
+
+
+    @Test
+    public void testGetCombinedQuantities() throws Exception {
+
+
+        Map<String, List<String>> tokens = ioMongo.readTokens("tokens_2015-04-21T14:20:45Z");
+
+        Map<String, Set<String>> types = ioMongo.getTypes(tokens);
+
+        Map<String, Set<String>> cqs = ioMongo.getCombinedQuantities(types);
+
+
+        System.out.println(types.size());
+        System.out.println(cqs.size());
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setMinimumFractionDigits(2);
+
+        for (Map.Entry<String, Set<String>> entry : cqs.entrySet()) {
+
+            String lang = entry.getKey();
+            Set<String> tps = entry.getValue();
+            String size_format = numberFormat.format(tps.size());
+
+            System.out.println(lang + "\t" + size_format);
+
+        }
+
+
+    }
+
+
+
+
+    @Test
+    public void printClassTokens() throws Exception {
         String dbName = "arc_working_units";
         DB db = mongoClient.getDB(dbName);
         DBCollection collection = db.getCollection("words");
@@ -159,9 +222,9 @@ public class TestGettingWordsByAspecificLanguage {
         double words = collection.count();
 
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        numberFormat.setMinimumFractionDigits(3);
+        numberFormat.setMinimumFractionDigits(2);
 
-        double found = 0;
+        double classifiedTokens = 0;
 
         for (Map.Entry<String, List<MongoWord>> entry : getWordsInRange.entrySet()) {
 
@@ -174,25 +237,24 @@ public class TestGettingWordsByAspecificLanguage {
 
             String size_format = numberFormat.format(tokens.size());
 
-
             System.out.println(language + "\t" + size_format + "\t" + percentage_format);
 
-            found = found + tokens.size();
+            classifiedTokens = classifiedTokens + tokens.size();
 
         }
-        double saldo = words - found;
+        double saldo = words - classifiedTokens;
         double saldo_per = saldo * 100 / words;
-        double found_per = found * 100 / words;
+        double found_per = classifiedTokens * 100 / words;
 
         String saldo_format = numberFormat.format(saldo_per);
         String found_format = numberFormat.format(found_per);
 
 
-        System.out.println("FOUND: " + found + "\t" + found_format);
-        System.out.println("TOTAL: " + words);
+        System.out.println("CLASSIFIED: " + "\t" + classifiedTokens + "\t" + found_format);
+        System.out.println("TOTAL: " + "\t" + words);
 
 
-        System.out.println("NOT IN RANGE: " + saldo + "\t" + saldo_format);
+        System.out.println("NOT CLASSIFIED: " + "\t" + saldo + "\t" + saldo_format);
 
     }
 
@@ -214,31 +276,8 @@ public class TestGettingWordsByAspecificLanguage {
 
         List<String> tokens = ioMongo.readAllTokens("allTokens_2015-04-21T14:52:34Z");
         System.out.println("TOKENS: " + tokens.size());
-        Set<String> types = new HashSet<>(tokens);
+        Set<String> types = new TreeSet<>(tokens);
         System.out.println("TYPES: " + types.size());
-
-    }
-
-
-    private static List<Token> getListOfTokens(List<WordImpl> words) throws Exception {
-
-        List<Token> tokens = new ArrayList<>();
-
-        for (WordImpl word : words) {
-
-            Token token = new Token();
-            token.setIndex(word.getIndex());
-            token.setToken(word.getFirstAnnotation().getForm());
-
-
-            tokens.add(token);
-
-
-        }
-
-
-        return tokens;
-
 
     }
 
