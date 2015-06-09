@@ -1,5 +1,6 @@
 package de.uni_koeln.spinfo.arc.ext.puter.proc.antlr4;
 
+import de.uni_koeln.spinfo.arc.ext.vallader.proc.pdftextstream.PdfXStreamExtractor;
 import de.uni_koeln.spinfo.arc.puter.gramm.PuterBaseListener;
 import de.uni_koeln.spinfo.arc.puter.gramm.PuterLexer;
 import de.uni_koeln.spinfo.arc.puter.gramm.PuterParser;
@@ -10,6 +11,8 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.*;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,8 +22,31 @@ import java.util.regex.Pattern;
  */
 public class ProcessPuter {
 
-    public static String output_data_path = "../arc.data/output/";
-    public static String input_data_path = "../arc.data/input/";
+    public static String output_data_path = "../arc.data/output/puter/";
+    public static String input_data_path = "../arc.data/input/puter/";
+
+    public void extractionWorkflow(String pdfFilePath) throws IOException, ParseException {
+
+        // Text aus pdf extrahieren
+        PdfXStreamExtractor pdfEx = new PdfXStreamExtractor();
+        pdfEx.extractWithPDFTextStream("PuterPdfStreamExtraction"+timestamper());
+        // valladerTXTtoList optional: cleanVAlladerTXTtoList
+        //DictUtils.printList(:::);
+        // processPuterListReturn
+        // Statistiken
+        // Errors and komplex Lemmas
+            // delinate Genus
+            // processPuterListReturn
+            // Statistiken
+        // Dict.Utils.PrintList
+
+    }
+
+    public String timestamper() throws ParseException {
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+        System.out.println(timeStamp);
+        return timeStamp;
+    }
 
     public List<String> valladerTXTtoList (String filePath) throws IOException {
 

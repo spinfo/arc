@@ -377,6 +377,7 @@ public class ProcessVallader {
                 cleanedList.add(corrected);
             }
         }
+        System.out.println(cleanedList.size() +" Error-Einträge wurden für einen erneuten Parsingversuch bearbeitet");
 
         DictUtils.printList(cleanedList, ProcessVallader.output_data_path, "correctedErrors");
 
