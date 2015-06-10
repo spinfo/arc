@@ -1,5 +1,6 @@
 package de.uni_koeln.spinfo.arc.ext.puter.proc.antlr4;
 
+
 import de.uni_koeln.spinfo.arc.ext.vallader.proc.pdftextstream.PdfXStreamExtractor;
 import de.uni_koeln.spinfo.arc.puter.gramm.PuterBaseListener;
 import de.uni_koeln.spinfo.arc.puter.gramm.PuterLexer;
@@ -12,7 +13,6 @@ import org.antlr.v4.runtime.tree.*;
 
 import java.io.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,26 +29,46 @@ public class ProcessPuter {
 
         // Text aus pdf extrahieren
         PdfXStreamExtractor pdfEx = new PdfXStreamExtractor();
-        pdfEx.extractWithPDFTextStream("PuterPdfStreamExtraction"+timestamper());
-        // valladerTXTtoList optional: cleanVAlladerTXTtoList
-        //DictUtils.printList(:::);
-        // processPuterListReturn
-        // Statistiken
-        // Errors and komplex Lemmas
-            // delinate Genus
-            // processPuterListReturn
-            // Statistiken
-        // Dict.Utils.PrintList
+        pdfEx.extractWithPDFTextStream("PuterPdfStreamExtraction");
+        // optional:
+        //cleanExtraction(ProcessPuter.output_data_path + "PuterPdfStreamExtraction");
+        ParsedToLists firstParse = parsePuterListReturn(ProcessPuter.output_data_path+"PuterPdfStreamExtraction.txt", "parsedPuter", ProcessPuter.output_data_path);
+
+        List<String> entries = firstParse.getEntries();
+        List<String> errors = firstParse.getErrors();
+        List<String> complexEntries = firstParse.getComplexEntries();
+
+        System.out.println("Entries enthält " + complexEntries.size() + " Enträge mit mehreren Genusformen");
+
+        // Umgang mit Einträgen mit mehreren Genus
+        List<String> processedComplexEntries = processComplexEntries(complexEntries);
+        System.out.println(processedComplexEntries.size() +" Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
+        entries.addAll(processedComplexEntries);
+
+        // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
+        cleanErrors(firstParse.getErrors());
+        ParsedToLists secondParse = parsePuterListReturn(ProcessPuter.output_data_path+"/correctedErrors.txt","parsedPuter2ndIteration", ProcessPuter.output_data_path);
+        System.out.println("Der zweite Durchgang erbrachte " + secondParse.getEntries().size() + " weitere korrekt geparste Einträge");
+        entries.addAll(secondParse.getEntries());
+
+        System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
+        DictUtils.printList(entries,ProcessPuter.output_data_path, "finalPuterParsingResult");
 
     }
 
-    public String timestamper() throws ParseException {
+  /*  public String timestamper() throws ParseException {
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
         System.out.println(timeStamp);
         return timeStamp;
-    }
+    }*/
 
-    public List<String> valladerTXTtoList (String filePath) throws IOException {
+    /**
+     * Test Method
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
+    public List<String> TXTtoList(String filePath) throws IOException {
 
         List<String> entryList = new ArrayList<String>();
         entryList = DictUtils.addTags(filePath);
@@ -58,8 +78,11 @@ public class ProcessPuter {
     }
 
 
-
-    public List<String> cleanedValladerTXTtoList (String filePath) throws IOException {
+    /**
+     * @param filePath
+     * @throws IOException
+     */
+    public void cleanExtraction(String filePath) throws IOException {
 
         List<String> entryList = new ArrayList<String>();
 
@@ -90,7 +113,7 @@ public class ProcessPuter {
         }
 
         reader.close();
-        return entryList;
+        DictUtils.printList(entryList, ProcessPuter.output_data_path,"cleanedPdfExtraction");
     }
 
     private String addTags(String string) {
@@ -101,7 +124,7 @@ public class ProcessPuter {
         return builder.toString();
     }
 
-    public void parseVallader(String file, String newFile, String outputpath)
+    public void parsePuter(String file, String newFile, String outputpath)
             throws IOException {
 
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
@@ -130,7 +153,7 @@ public class ProcessPuter {
 
     }
 
-    public ParsedToLists parseValladerListReturn(String file, String newFile, String outputpath)
+    public ParsedToLists parsePuterListReturn(String file, String newFile, String outputpath)
             throws IOException {
 
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
