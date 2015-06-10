@@ -2,6 +2,7 @@
 
 arc.backend/arc.extractions/data
 arc.backend/arc.data
+arc.ext.vallader.proc\lib
 
 *.class
 *.jar

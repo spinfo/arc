@@ -4,8 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>arc.ext.nvs.proc</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>../arc.data</module>
+    </modules>
 
     <parent>
         <groupId>de.uni_koeln.spinfo.arc</groupId>
