@@ -47,7 +47,7 @@ public class SursilvanTest {
 
 	}
 
-	@Ignore
+	//@Ignore
 	@Test
 	public void testVFGenerator() throws UnknownHostException {
 
@@ -57,9 +57,9 @@ public class SursilvanTest {
 
 		DB db = mongoClient.getDB("arc");
 
-		DBCollection collection = db.getCollection("nvs_cleaned");
+		//DBCollection collection = db.getCollection("nvs_cleaned");
 
-		Map<String, TreeSet<String>> VFs = vfg.generateFullforms(collection);
+		Map<String, TreeSet<String>> VFs = vfg.generateFullforms(nvs_collection);
 
 		System.out.println(vfg.getNumberOfDBEntries());
 		System.out.println(vfg.getNumberOfVFEntries());

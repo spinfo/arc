@@ -20,6 +20,11 @@
            <artifactId>arc.ext.vallader.gramm</artifactId>
            <version>0.0.1-SNAPSHOT</version>
        </dependency>
+       <dependency>
+           <groupId>de.uni_koeln.spinfo.arc</groupId>
+           <artifactId>arc.utils</artifactId>
+           <version>0.0.1-SNAPSHOT</version>
+       </dependency>
 
 
    </dependencies>

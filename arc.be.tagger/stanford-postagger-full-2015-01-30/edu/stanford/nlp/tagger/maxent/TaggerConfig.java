@@ -157,6 +157,7 @@ public class TaggerConfig extends Properties /* Inherits implementation of Seria
 
   public void setProperties(Properties props) {
     if (props.getProperty("") != null) {
+        System.out.println(props.getProperty(""));
       throw new RuntimeException("unknown argument(s): \"" + props.getProperty("") + '\"');
     }
 

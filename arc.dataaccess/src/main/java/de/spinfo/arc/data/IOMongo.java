@@ -21,8 +21,6 @@ public class IOMongo {
     static WordQueries wordQueries = new WordQueries();
 
 
-
-
     public static final String sursilvan = "Sursilvan";
     public static final String sutsilvan = "Sutsilvan";
     public static final String surmiran = "Surmiran";
@@ -561,6 +559,13 @@ public class IOMongo {
 
         WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
 
+
+//        BasicDBObject annotations = (BasicDBObject) cursor.next().get("annotations");
+//
+//        BasicDBList langRange = (BasicDBList) annotations.get("LANGUAGE_RANGE");
+//        ArrayList<BasicDBObject> langRangeArray = (ArrayList) langRange;
+//
+
         List<PageRange> pageRange = workingUnit.getPages();
 
         List<Range> ranges = new ArrayList<>();
@@ -583,7 +588,20 @@ public class IOMongo {
         return 0;
     }
 
-    public List<Entry> getSursilvanGoldenEntries() {
+
+    public long getLastTokenInPage(String Wu, int page) {
+
+        WorkingUnit workingUnit = wuQueries.getWorkingUnit(Wu);
+
+        List<PageRange> ranges = workingUnit.getPages();
+
+        PageRange pageRange = ranges.get(page);
+
+        return pageRange.getEnd();
+    }
+
+
+    public List<Entry> getSursilvanGoldenData(String Wu, int page) {
 
         WorkingUnit workingUnit = wuQueries.getWorkingUnit("Band II");
 
@@ -599,7 +617,7 @@ public class IOMongo {
                 continue;
             }
 
-            if (word.getIndex() > 366350) {
+            if (word.getIndex() > getLastTokenInPage(Wu, page)) {
                 break;
             }
 
@@ -622,8 +640,6 @@ public class IOMongo {
 
     public List<ForStand> getTokensForStand(String fileName) throws Exception {
         List<ForStand> list = new ArrayList<>();
-        Map<Long, Integer> map = new HashMap<>();
-
         List<Entry> getListOfTokens = readEntries(fileName);
         int i = 0;
 
@@ -655,18 +671,20 @@ public class IOMongo {
 
             if (p_list.size() == 0) {
                 ForStand entry = new ForStand();
-                entry.setIndex(i);
+                //               entry.setIndex(i);
+                entry.setWord_index(e.getIndex());
                 entry.setForm(buffer.toString());
                 entry.setPOS(e.getPos());
                 list.add(entry);
                 i++;
-                map.put(e.getIndex(), i);
+                //map.put(e.getIndex(), i);
 
             } else {
 
                 if (p_list.size() == 1 && buffer.length() == 0) {
                     ForStand p = new ForStand();
-                    p.setIndex(i);
+                    // p.setIndex(i);
+                    p.setWord_index(e.getIndex());
                     p.setForm(form);
                     p.setPOS(getPOS(p_list.get(0).getForm()));
                     list.add(p);
@@ -683,7 +701,8 @@ public class IOMongo {
 
                     if (p_list.get(j).getIndex() < firstChar) {
                         ForStand p = new ForStand();
-                        p.setIndex(i);
+                        //  p.setIndex(i);
+                        p.setWord_index(e.getIndex());
                         p.setForm(p_list.get(j).getForm());
                         p.setPOS(getPOS(p_list.get(j).getForm()));
                         list.add(p);
@@ -694,18 +713,20 @@ public class IOMongo {
                 }
 
                 ForStand entry = new ForStand();
-                entry.setIndex(i);
+                // entry.setIndex(i);
+                entry.setWord_index(e.getIndex());
                 entry.setForm(buffer.toString());
                 entry.setPOS(e.getPos());
                 list.add(entry);
                 i++;
-                map.put(e.getIndex(), i);
+                //map.put(e.getIndex(), i);
 
                 for (int j = 0; j < p_list.size(); j++) {
 
                     if (p_list.get(j).getIndex() > lastChar) {
                         ForStand p = new ForStand();
-                        p.setIndex(i);
+                        // p.setIndex(i);
+                        p.setWord_index(e.getIndex());
                         p.setForm(p_list.get(j).getForm());
                         p.setPOS(getPOS(p_list.get(j).getForm()));
                         list.add(p);
@@ -718,7 +739,7 @@ public class IOMongo {
             }
 
         }
-        FileUtils.writeMap(map, "index_mapping_");
+        //FileUtils.writeMap(map, "index_mapping_");
         return list;
 
     }
@@ -739,12 +760,14 @@ public class IOMongo {
             case ":":
             case "“":
             case "„":
-
+            case "\"":
                 pos = "P_OTH";
                 break;
 
             case "…":
             case "-":
+            case "*":
+            case "—":
                 pos = "NULL";
                 break;
 
@@ -851,6 +874,7 @@ public class IOMongo {
 
     }
 
+
     // Temporary solution in order top avoid mutual dependence in maven
     private static List<Entry> readEntries(String fileName) throws Exception {
 
@@ -908,5 +932,6 @@ public class IOMongo {
         return tokens;
 
     }
+
 
 }

@@ -5,17 +5,18 @@ package de.spinfo.arc.data;
  */
 public class ForStand {
 
-    private Integer index;
+   // private Integer index;
     private String form;
     private String POS;
-
-    public Integer getIndex() {
-        return index;
-    }
-
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
+    private long word_index;
+//
+//    public Integer getIndex() {
+//        return index;
+//    }
+//
+//    public void setIndex(Integer index) {
+//        this.index = index;
+//    }
 
     public String getForm() {
         return form;
@@ -33,15 +34,25 @@ public class ForStand {
         this.POS = POS;
     }
 
+    public long getWord_index() {
+        return word_index;
+    }
+
+    public void setWord_index(long word_index) {
+        this.word_index = word_index;
+    }
+
     @Override
     public String toString() {
 
         StringBuffer buffer = new StringBuffer();
-        buffer.append(getIndex());
+        buffer.append(word_index);
         buffer.append("\t");
-        buffer.append(getForm());
+//        buffer.append(index);
+//        buffer.append("\t");
+        buffer.append(form);
         buffer.append("\t");
-        buffer.append(getPOS());
+        buffer.append(POS);
 
         return buffer.toString();
     }
