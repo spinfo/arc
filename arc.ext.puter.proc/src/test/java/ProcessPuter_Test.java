@@ -2,7 +2,6 @@ import de.uni_koeln.spinfo.arc.ext.puter.proc.antlr4.ParsedToLists;
 import de.uni_koeln.spinfo.arc.ext.puter.proc.antlr4.ProcessPuter;
 import de.uni_koeln.spinfo.arc.ext.vallader.proc.pdftextstream.PdfXStreamExtractor;
 import de.uni_koeln.spinfo.arc.utils.DictUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,6 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,25 +27,35 @@ public class ProcessPuter_Test {
 
     }
 
+
+    @Test
+    public void testExtractWF() throws ParseException, IOException {
+
+        processor.extractionWorkflow(ProcessPuter.input_data_path + "tscharner-20150114_20150318_20150326.pdf");
+
+
+    }
+
     @Ignore
     @Test
     public void valladerTXTtoList_Test() throws IOException {
         DictUtils.printList(processor.TXTtoList(ProcessPuter.input_data_path + "tscharner-20140715_20140923_20150319.txt"), ProcessPuter.output_data_path, "ValladerTXTtoList-Test.txt");
     }
-   /* @Ignore
-    @Test
-    public void cleanedValladerTXTtoList_dummyData_Test() throws IOException {
-        List<String> entries = processor.cleanedTXTtoList(ProcessPuter.input_data_path + "testinput.txt");
-        DictUtils.printList(entries, ProcessPuter.output_data_path,"cleanedDummyEntries");
-        Assert.assertTrue("Es sollten eigentlich 6 akzeptable Einträge gefunden werden", entries.size() == 6);
-    }
-    @Ignore
-    @Test
-    public void cleanValladerTXTtoList_realData_Test() throws IOException {
-        List<String> entries = processor.cleanedTXTtoList(ProcessPuter.input_data_path + "20150421_vallader.txt");
-        DictUtils.printList(entries, ProcessPuter.output_data_path,"cleanedrealEntries");
-        Assert.assertNotNull("In dieser Liste sollten hauptsächlich die ersten Zeilen von Wörterbucheinträgen stehen", entries);
-    }*/
+
+    /* @Ignore
+     @Test
+     public void cleanedValladerTXTtoList_dummyData_Test() throws IOException {
+         List<String> entries = processor.cleanedTXTtoList(ProcessPuter.input_data_path + "testinput.txt");
+         DictUtils.printList(entries, ProcessPuter.output_data_path,"cleanedDummyEntries");
+         Assert.assertTrue("Es sollten eigentlich 6 akzeptable Einträge gefunden werden", entries.size() == 6);
+     }
+     @Ignore
+     @Test
+     public void cleanValladerTXTtoList_realData_Test() throws IOException {
+         List<String> entries = processor.cleanedTXTtoList(ProcessPuter.input_data_path + "20150421_vallader.txt");
+         DictUtils.printList(entries, ProcessPuter.output_data_path,"cleanedrealEntries");
+         Assert.assertNotNull("In dieser Liste sollten hauptsächlich die ersten Zeilen von Wörterbucheinträgen stehen", entries);
+     }*/
     @Ignore
     @Test
     public void pdfXStreamExtractor_Test() throws IOException {
@@ -115,7 +125,7 @@ public class ProcessPuter_Test {
 
         // Umgang mit Einträgen mit mehreren Genus
         List<String> processedComplexEntries = processor.processComplexEntries(complexEntries);
-        System.out.println(processedComplexEntries.size() +" Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
+        System.out.println(processedComplexEntries.size() + " Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
         entries.addAll(processedComplexEntries);
 
         // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
@@ -124,8 +134,8 @@ public class ProcessPuter_Test {
         System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
         entries.addAll(secondIterationParsing.getEntries());
 
-        System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
-        DictUtils.printList(entries,ProcessPuter.output_data_path, "finalParsingResult");
+        System.out.println("Es wurden nach 2 Durchgängen " + entries.size() + " Einträge korrekt geparst");
+        DictUtils.printList(entries, ProcessPuter.output_data_path, "finalParsingResult");
 
     }
 
@@ -138,8 +148,8 @@ public class ProcessPuter_Test {
         List<String> linesWithoutStartingBlanks;
         linesWithoutStartingBlanks = new ArrayList<String>();
 
-        for (String line: originalFileAsList) {
-            if(!line.startsWith("<E> ")) {
+        for (String line : originalFileAsList) {
+            if (!line.startsWith("<E> ")) {
                 linesWithoutStartingBlanks.add(line);
             }
         }
