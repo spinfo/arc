@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,22 +30,22 @@ public class ProcessPuter_Test {
     @Ignore
     @Test
     public void valladerTXTtoList_Test() throws IOException {
-        DictUtils.printList(processor.valladerTXTtoList(ProcessPuter.input_data_path + "tscharner-20140715_20140923_20150319.txt"), ProcessPuter.output_data_path, "ValladerTXTtoList-Test.txt");
+        DictUtils.printList(processor.TXTtoList(ProcessPuter.input_data_path + "tscharner-20140715_20140923_20150319.txt"), ProcessPuter.output_data_path, "ValladerTXTtoList-Test.txt");
     }
-    @Ignore
+   /* @Ignore
     @Test
     public void cleanedValladerTXTtoList_dummyData_Test() throws IOException {
-        List<String> entries = processor.cleanedValladerTXTtoList(ProcessPuter.input_data_path + "testinput.txt");
+        List<String> entries = processor.cleanedTXTtoList(ProcessPuter.input_data_path + "testinput.txt");
         DictUtils.printList(entries, ProcessPuter.output_data_path,"cleanedDummyEntries");
         Assert.assertTrue("Es sollten eigentlich 6 akzeptable Einträge gefunden werden", entries.size() == 6);
     }
     @Ignore
     @Test
     public void cleanValladerTXTtoList_realData_Test() throws IOException {
-        List<String> entries = processor.cleanedValladerTXTtoList(ProcessPuter.input_data_path + "20150421_vallader.txt");
+        List<String> entries = processor.cleanedTXTtoList(ProcessPuter.input_data_path + "20150421_vallader.txt");
         DictUtils.printList(entries, ProcessPuter.output_data_path,"cleanedrealEntries");
         Assert.assertNotNull("In dieser Liste sollten hauptsächlich die ersten Zeilen von Wörterbucheinträgen stehen", entries);
-    }
+    }*/
     @Ignore
     @Test
     public void pdfXStreamExtractor_Test() throws IOException {
@@ -60,7 +59,7 @@ public class ProcessPuter_Test {
 
         String inputFilePath = ProcessPuter.output_data_path + "cleanedrealEntries.txt";
 
-        processor.parseVallader(inputFilePath, "parsedValladerOLD", ProcessPuter.output_data_path);
+        processor.parsePuter(inputFilePath, "parsedValladerOLD", ProcessPuter.output_data_path);
 
         statistics(inputFilePath);
 
@@ -75,7 +74,7 @@ public class ProcessPuter_Test {
         String inputFilePath = ProcessPuter.output_data_path + "cleanedrealEntries.txt";
         List<String> complexEntries = new ArrayList<String>();
 
-        ParsedToLists parsedToLists = processor.parseValladerListReturn(inputFilePath, "parsedVallader20150506", ProcessPuter.output_data_path);
+        ParsedToLists parsedToLists = processor.parsePuterListReturn(inputFilePath, "parsedVallader20150506", ProcessPuter.output_data_path);
 
         statistics(inputFilePath);
 
@@ -101,7 +100,7 @@ public class ProcessPuter_Test {
 
         String inputFilePath = ProcessPuter.output_data_path + "cleanedrealEntries.txt";
 
-        ParsedToLists parsedToLists = processor.parseValladerListReturn(inputFilePath, "parsedVallader20150506", ProcessPuter.output_data_path);
+        ParsedToLists parsedToLists = processor.parsePuterListReturn(inputFilePath, "parsedVallader20150506", ProcessPuter.output_data_path);
         List<String> entries = parsedToLists.getEntries();
         List<String> errors = parsedToLists.getErrors();
         List<String> complexEntries = parsedToLists.getComplexEntries();
@@ -121,7 +120,7 @@ public class ProcessPuter_Test {
 
         // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
         processor.cleanErrors(parsedToLists.getErrors());
-        ParsedToLists secondIterationParsing = processor.parseValladerListReturn(ProcessPuter.output_data_path+"/correctedErrors.txt","parsedVallader2ndIteration", ProcessPuter.output_data_path);
+        ParsedToLists secondIterationParsing = processor.parsePuterListReturn(ProcessPuter.output_data_path + "/correctedErrors.txt", "parsedVallader2ndIteration", ProcessPuter.output_data_path);
         System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
         entries.addAll(secondIterationParsing.getEntries());
 
@@ -145,11 +144,6 @@ public class ProcessPuter_Test {
             }
         }
         System.out.println("Die eingelesene Datei hatte " + linesWithoutStartingBlanks.size() + " Zeilen, die nicht mit einem Leerzeichen beginnen.");
-    }
-
-    @Test
-    public void timestamper_Test() throws ParseException {
-        processor.timestamper();
     }
 
 }
