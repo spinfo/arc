@@ -3,8 +3,14 @@ package de.spinfo.arc.persistance.repository.pos;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotation.PageRange;
 import de.spinfo.arc.data.*;
+import de.spinfo.arc.persistance.service.query.WordQueries;
+import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
+import de.uni_koeln.spinfo.core.helpers.crossvalidation.CrossvalidationGroupBuilder;
+import de.uni_koeln.spinfo.core.helpers.crossvalidation.TrainingTestSets;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -12,14 +18,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class TestGettingWordsByAspecificLanguage {
-
+    static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
+    static WordQueries wordQueries = new WordQueries();
     static IOMongo ioMongo = new IOMongo();
 
 //    static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
@@ -37,24 +44,236 @@ public class TestGettingWordsByAspecificLanguage {
     }
 
 
-    //@Ignore
+    @Test
+    public void testGetLastTokenInPage() {
+
+        System.out.println(ioMongo.getLastTokenInPage("Band II", 19));
+
+    }
+
+
     @Test
     public void getGoldenTokens() throws IOException {
 
 
-        List<Entry> entries = ioMongo.getSursilvanGoldenEntries();
+        List<Entry> entries = ioMongo.getSursilvanGoldenData("Band II", 19);
 
         FileUtils.writeList(entries, "golden");
         FileUtils.printList(entries, FileUtils.outputPath, "golden");
 
     }
 
+
+    @Test
+    public void testregex() throws IOException {
+
+
+        String s = "per|PREP";
+
+        String[] array = s.split("\\|");
+        System.out.println(s);
+        System.out.println(array[0]);
+
+
+    }
+
+
+    @Test
+    public void getNOTTAGGED() throws Exception {
+
+        List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-05-12T10:21:44Z");
+        WorkingUnit workingUnit = wuQueries.getWorkingUnit("Band II");
+
+        System.out.println(workingUnit.getStart());
+        System.out.println(workingUnit.getEnd());
+        List<PageRange> pages = workingUnit.getPages();
+        List<String> not_tagged = new ArrayList<>();
+
+
+        for (ForStand s : sursilvantokens) {
+
+            String pos = s.getPOS();
+
+            if (pos.equals("NOT_TAGGED")) {
+
+                StringBuffer buffer = new StringBuffer();
+                buffer.append(s.getForm());
+                buffer.append("\t");
+                buffer.append(s.getPOS());
+                buffer.append("\t");
+                //buffer.append(s.getWord_index());
+                //buffer.append("\t");
+                //System.out.println(s.getIndex());
+
+                for (PageRange r : pages) {
+
+                    //System.out.println(r.toString());
+
+                    long start = r.getStart();
+                    long end = r.getEnd();
+
+
+                    if (s.getWord_index() >= start && s.getWord_index() <= end) {
+                        buffer.append("Seite N°: ");
+                        buffer.append(pages.indexOf(r));
+
+                    }
+
+                }
+
+                not_tagged.add(buffer.toString());
+
+
+            }
+
+        }
+
+
+        FileUtils.printList(not_tagged, FileUtils.outputPath, "NOT_TAGGED_");
+
+    }
+
+
+    @Test
+    public void testProcessNOTTagged() throws Exception {
+
+        List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-05-12T11:55:35Z");
+        List<ForStand> toReturn = new ArrayList<>();
+
+        int index = 0;
+        for (ForStand fs : sursilvantokens) {
+
+            if (fs.getPOS().equals("NOT_TAGGED")) {
+
+
+                String form = fs.getForm();
+
+                String[] array = form.split("\\s+");
+
+                for (String s : array) {
+
+                    ForStand n = new ForStand();
+                    n.setWord_index(fs.getWord_index());
+                    //n.setIndex(index);
+                    n.setForm(s);
+                    n.setPOS(fs.getPOS());
+
+                    toReturn.add(n);
+
+                    index++;
+                }
+
+
+            } else {
+
+
+                ForStand n = new ForStand();
+                n.setWord_index(fs.getWord_index());
+                //n.setIndex(index);
+                n.setForm(fs.getForm());
+                n.setPOS(fs.getPOS());
+
+                toReturn.add(fs);
+                index++;
+            }
+
+
+        }
+
+
+        FileUtils.printList(toReturn, FileUtils.outputPath, "forstand_");
+
+
+    }
+
     @Test
     public void testGetTokensForStand() throws Exception {
 
-        List<ForStand> getTokens = ioMongo.getTokensForStand("golden2015-04-01T12:44:58Z");
 
-        FileUtils.printList(getTokens, FileUtils.outputPath, "test_list_");
+        List<String> lines = Files.readAllLines(Paths.get(FileUtils.outputPath + "forstand_2015-05-13T11:23:02Z.txt"),
+                Charset.defaultCharset());
+
+        List<ForStand> withoutNulls = new ArrayList<>();
+
+        //List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-05-12T11:55:35Z");
+
+        List<ForStand> sursilvantokens = new ArrayList<>();
+
+        for (String s : lines) {
+
+            String[] array = s.split("\\t");
+
+            ForStand fs = new ForStand();
+            fs.setWord_index(Long.parseLong(array[0]));
+            fs.setForm(array[1]);
+            fs.setPOS(array[2]);
+
+
+            sursilvantokens.add(fs);
+
+
+        }
+
+//
+//        for (ForStand stand : sursilvantokens) {
+//
+//            if (stand.getForm().equals("“") || stand.getForm().equals("„") || stand.getForm().equals("\"")
+//                    // || stand.getForm().equals(",") || stand.getForm().equals(";") || stand.getForm().equals(":")
+//                    || stand.getPOS().equals("NULL")) {
+//
+//                continue;
+//
+//            } else {
+//
+//                withoutNulls.add(stand);
+//            }
+//
+//        }
+//
+//        withoutNulls.remove(0);
+
+
+        List<List<String>> sentences = new ArrayList<>();
+        List<String> words = new ArrayList<>();
+
+
+        for (ForStand stand : sursilvantokens) {
+            words.add(stand.getForm().replaceAll("\\s+", "") + "|" + stand.getPOS());
+
+
+            if (stand.getPOS().endsWith("EOS")) {
+
+                sentences.add(words);
+                System.out.println(words);
+
+                System.out.println("\n");
+                words = new ArrayList<>();
+            }
+
+
+        }
+
+
+        CrossvalidationGroupBuilder<List<String>> cvgb = new CrossvalidationGroupBuilder<List<String>>(sentences, 10);
+
+        Iterator<TrainingTestSets<List<String>>> iterator = cvgb.iterator();
+
+        int index = 1;
+
+        while (iterator.hasNext()) {
+
+            TrainingTestSets<List<String>> test = iterator.next();
+
+            List<List<String>> trainingSet = test.getTrainingSet();
+            List<List<String>> testSet = test.getTestSet();
+
+
+            FileUtils.printForStand(trainingSet, "training", index);
+            FileUtils.printForStand(testSet, "test", index);
+
+
+            index++;
+        }
 
 
     }
@@ -63,7 +282,7 @@ public class TestGettingWordsByAspecificLanguage {
     @Test
     public void testGetPageNumberInWU() {
 
-        ioMongo.getPageNumberInWU("Band II", 365059);
+        ioMongo.getPageNumberInWU("Band II", 368488);
 
 
     }
@@ -207,8 +426,6 @@ public class TestGettingWordsByAspecificLanguage {
 
 
     }
-
-
 
 
     @Test

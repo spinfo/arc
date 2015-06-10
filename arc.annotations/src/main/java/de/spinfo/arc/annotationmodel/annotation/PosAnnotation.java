@@ -24,12 +24,16 @@ public interface PosAnnotation extends Annotation {
         PREP,
         // Prepositions fusioned with Articles
         PREP_ART,
+        // Prepositions_articles with with Nouns
+        PREP_ART_NN,
         // Prepositions fusioned with Pronouns
         PREP_PRON,
         // Prepositions with Adverbs
         PREP_ADV,
-        //Prepositions with Verbs
+        // Prepositions with Verbs
         PREP_GVRB,
+        // Prepositions with Nouns
+        PREP_NN,
         // Adjectives
         ADJ, ADJ_DEM, ADJ_IND, ADJ_IES, ADJ_POS, ADJ_NUM,
         // Adjectives fusioned with Nouns
@@ -44,15 +48,21 @@ public interface PosAnnotation extends Annotation {
         CONJ_GVRB,
         // Adverbs
         ADV,
-        //Adverbs with Prepositions
+        // Adverbs with Adverbs
+        ADV_ADV,
+        // Adverbs with Particles
+        ADV_PART,
+        // Adverbs with Prepositions.
         ADV_PREP,
+        // Adverbs with Pronouns
+        ADV_PRON,
         // Interjections
         INT,
         // Numbers
         C_NUM,
         // Pronouns
         PRON_PER, PRON_REL, PRON_DEM, PRON_IND, PRON_IES, PRON_POS, PRON_REF,
-        //Pronouns with Verbs
+        // Pronouns with Verbs
         PRON_GVRB,
         // Particles
         PART,
@@ -63,8 +73,9 @@ public interface PosAnnotation extends Annotation {
         // NOT TAGGED
         NOT_TAGGED
 
-    };
+    }
 
+    ;
 
     public PosTags getPos();
 

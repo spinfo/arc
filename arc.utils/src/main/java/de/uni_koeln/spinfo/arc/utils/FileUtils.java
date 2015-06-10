@@ -18,7 +18,7 @@ public class FileUtils {
     public static String outputPath = "../arc.data/output/";
     public static String inputPath = "../arc.data/input/";
 
-    public static <K,V> void writeMap(Map<K,V> matchedWords, String fileName) throws IOException {
+    public static <K, V> void writeMap(Map<K, V> matchedWords, String fileName) throws IOException {
 
         ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + fileName + getISO8601StringForCurrentDate()));
 
@@ -51,7 +51,6 @@ public class FileUtils {
         outputStream.close();
 
     }
-
 
 
     public static <K, V> File printMap(Map<K, V> map, String destPath,
@@ -108,6 +107,64 @@ public class FileUtils {
 
         return file;
     }
+
+
+    public static void printForStand(List<List<String>> sentences,
+                                     String filename, int index) throws IOException {
+
+        File file = new File(outputPath + "/forstand/" + filename + "_" + index + ".txt");
+
+        Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(file), "UTF8"));
+
+
+//        if (filename.startsWith("test")) {
+//            for (List<String> list : sentences) {
+//
+//                for (String s : list) {
+//
+//                    String[] array = s.split("\\|");
+//                    System.out.println(s);
+//                    System.out.println(array[0]);
+//                    writer.append(array[0]);
+//                    writer.append("\n");
+//                }
+//                writer.append("\n");
+//
+//            }
+//
+//        } else {
+//
+//            for (List<String> list : sentences) {
+//
+//                for (String s : list) {
+//
+//                    writer.append(s);
+//                    writer.append("\n");
+//                }
+//                writer.append("\n");
+//
+//            }
+//        }
+
+
+
+        for (List<String> list : sentences) {
+
+            for (String s : list) {
+
+                writer.append(s);
+                writer.append("\n");
+            }
+            writer.append("\n");
+
+        }
+        writer.flush();
+        writer.close();
+
+
+    }
+
 
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(
             Map<K, V> map) {
