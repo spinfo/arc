@@ -111,6 +111,25 @@ public class DictUtils {
 			list.add(builder.toString());
 
 		}
+		System.out.println("Kandidaten gesamt: " +list.size());
+		reader.close();
+		return list;
+
+	}
+
+	public static List<String> txtToList(String filePath) throws IOException {
+
+		List<String> list = new ArrayList<String>();
+
+		FileInputStream fis = new FileInputStream(filePath);
+		InputStreamReader isr = new InputStreamReader(fis, "UTF8");
+		LineNumberReader reader = new LineNumberReader(isr);
+
+		String currentLine;
+
+		while ((currentLine = reader.readLine()) != null) {
+			list.add(currentLine);
+		}
 
 		reader.close();
 		return list;

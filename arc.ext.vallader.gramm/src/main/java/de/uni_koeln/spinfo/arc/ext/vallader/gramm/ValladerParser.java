@@ -18,27 +18,28 @@ public class ValladerParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		OPENINGTAG=1, CLOSINGTAG=2, PAREX=3, ROMAN=4, ARABIC=5, GRAMM=6, QM=7, 
-		SL=8, EXK=9, DOT=10, COMPLEXWORD=11, TOKEN=12, CHARSEQUENCE=13, COMMA=14, 
-		HYP=15, ENUM=16, SEMICOLON=17, ALT=18, REF=19, RE=20, NEWLINE=21, WS=22, 
-		ErrorChar=23;
+		EXK=8, DOT=9, OBRACKETS=10, CLBRACKETS=11, COMPLEXWORD=12, TOKEN=13, CHARSEQUENCE=14, 
+		COMMA=15, HYP=16, ENUM=17, SEMICOLON=18, ALT=19, REF=20, RE=21, NEWLINE=22, 
+		WS=23, ErrorChar=24;
 	public static final int
 		RULE_dict = 0, RULE_entry = 1, RULE_error = 2, RULE_lexentry = 3, RULE_endEntry = 4, 
 		RULE_keyphrase = 5, RULE_phrase = 6, RULE_infl_info = 7, RULE_grammatical_info = 8, 
-		RULE_additional_info = 9, RULE_nge = 10;
+		RULE_parex = 9, RULE_nge = 10;
 	public static final String[] ruleNames = {
 		"dict", "entry", "error", "lexentry", "endEntry", "keyphrase", "phrase", 
-		"infl_info", "grammatical_info", "additional_info", "nge"
+		"infl_info", "grammatical_info", "parex", "nge"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'<E>'", "'</E>'", null, null, null, null, "'?'", "'/'", "'!'", 
-		"'.'", null, null, null, "','", "'-'", null, "';'", null, "'\\u25ba'", 
+		null, "'<E>'", "'</E>'", null, null, null, null, "'?'", "'!'", "'.'", 
+		"'('", "')'", null, null, null, "','", "'-'", null, "';'", null, "'\\u25ba'", 
 		"'~'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, "OPENINGTAG", "CLOSINGTAG", "PAREX", "ROMAN", "ARABIC", "GRAMM", 
-		"QM", "SL", "EXK", "DOT", "COMPLEXWORD", "TOKEN", "CHARSEQUENCE", "COMMA", 
-		"HYP", "ENUM", "SEMICOLON", "ALT", "REF", "RE", "NEWLINE", "WS", "ErrorChar"
+		"QM", "EXK", "DOT", "OBRACKETS", "CLBRACKETS", "COMPLEXWORD", "TOKEN", 
+		"CHARSEQUENCE", "COMMA", "HYP", "ENUM", "SEMICOLON", "ALT", "REF", "RE", 
+		"NEWLINE", "WS", "ErrorChar"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -268,9 +269,6 @@ public class ValladerParser extends Parser {
 		public NgeContext nge() {
 			return getRuleContext(NgeContext.class,0);
 		}
-		public Additional_infoContext additional_info() {
-			return getRuleContext(Additional_infoContext.class,0);
-		}
 		public LexentryContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -295,16 +293,7 @@ public class ValladerParser extends Parser {
 			keyphrase();
 			setState(39); 
 			grammatical_info();
-			setState(41);
-			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
-			case 1:
-				{
-				setState(40); 
-				additional_info();
-				}
-				break;
-			}
-			setState(43); 
+			setState(40); 
 			nge();
 			}
 		}
@@ -342,9 +331,9 @@ public class ValladerParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(45); 
+			setState(42); 
 			match(CLOSINGTAG);
-			setState(46); 
+			setState(43); 
 			match(NEWLINE);
 			}
 		}
@@ -387,13 +376,13 @@ public class ValladerParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(48); 
+			setState(45); 
 			phrase();
-			setState(50);
+			setState(47);
 			_la = _input.LA(1);
 			if (_la==PAREX) {
 				{
-				setState(49); 
+				setState(46); 
 				infl_info();
 				}
 			}
@@ -416,7 +405,6 @@ public class ValladerParser extends Parser {
 		public TerminalNode COMPLEXWORD(int i) {
 			return getToken(ValladerParser.COMPLEXWORD, i);
 		}
-		public TerminalNode PAREX() { return getToken(ValladerParser.PAREX, 0); }
 		public PhraseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -438,29 +426,20 @@ public class ValladerParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53); 
+			setState(50); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(52); 
+				setState(49); 
 				match(COMPLEXWORD);
 				}
 				}
-				setState(55); 
+				setState(52); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( _la==COMPLEXWORD );
-			setState(58);
-			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
-			case 1:
-				{
-				setState(57); 
-				match(PAREX);
-				}
-				break;
-			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -496,7 +475,7 @@ public class ValladerParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(60); 
+			setState(54); 
 			match(PAREX);
 			}
 		}
@@ -533,7 +512,7 @@ public class ValladerParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62); 
+			setState(56); 
 			match(GRAMM);
 			}
 		}
@@ -548,30 +527,55 @@ public class ValladerParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Additional_infoContext extends ParserRuleContext {
-		public TerminalNode PAREX() { return getToken(ValladerParser.PAREX, 0); }
-		public Additional_infoContext(ParserRuleContext parent, int invokingState) {
+	public static class ParexContext extends ParserRuleContext {
+		public TerminalNode OBRACKETS() { return getToken(ValladerParser.OBRACKETS, 0); }
+		public List<TerminalNode> CLBRACKETS() { return getTokens(ValladerParser.CLBRACKETS); }
+		public TerminalNode CLBRACKETS(int i) {
+			return getToken(ValladerParser.CLBRACKETS, i);
+		}
+		public ParexContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_additional_info; }
+		@Override public int getRuleIndex() { return RULE_parex; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ValladerListener ) ((ValladerListener)listener).enterAdditional_info(this);
+			if ( listener instanceof ValladerListener ) ((ValladerListener)listener).enterParex(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ValladerListener ) ((ValladerListener)listener).exitAdditional_info(this);
+			if ( listener instanceof ValladerListener ) ((ValladerListener)listener).exitParex(this);
 		}
 	}
 
-	public final Additional_infoContext additional_info() throws RecognitionException {
-		Additional_infoContext _localctx = new Additional_infoContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_additional_info);
+	public final ParexContext parex() throws RecognitionException {
+		ParexContext _localctx = new ParexContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_parex);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
+			setState(58); 
+			match(OBRACKETS);
+			setState(60); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(59);
+				_la = _input.LA(1);
+				if ( _la <= 0 || (_la==CLBRACKETS) ) {
+				_errHandler.recoverInline(this);
+				}
+				consume();
+				}
+				}
+				setState(62); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OPENINGTAG) | (1L << CLOSINGTAG) | (1L << PAREX) | (1L << ROMAN) | (1L << ARABIC) | (1L << GRAMM) | (1L << QM) | (1L << EXK) | (1L << DOT) | (1L << OBRACKETS) | (1L << COMPLEXWORD) | (1L << TOKEN) | (1L << CHARSEQUENCE) | (1L << COMMA) | (1L << HYP) | (1L << ENUM) | (1L << SEMICOLON) | (1L << ALT) | (1L << REF) | (1L << RE) | (1L << NEWLINE) | (1L << WS) | (1L << ErrorChar))) != 0) );
 			setState(64); 
-			match(PAREX);
+			match(CLBRACKETS);
 			}
 		}
 		catch (RecognitionException re) {
@@ -609,7 +613,7 @@ public class ValladerParser extends Parser {
 			{
 			setState(69);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=1 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1+1 ) {
 					{
@@ -621,7 +625,7 @@ public class ValladerParser extends Parser {
 				}
 				setState(71);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
 			}
 		}
@@ -637,24 +641,24 @@ public class ValladerParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\31K\4\2\t\2\4\3\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\32K\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
 		"\f\t\f\3\2\3\2\6\2\33\n\2\r\2\16\2\34\3\2\3\2\3\3\3\3\3\3\3\3\3\4\3\4"+
-		"\3\4\3\4\3\5\3\5\3\5\5\5,\n\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\5\7\65\n\7\3"+
-		"\b\6\b8\n\b\r\b\16\b9\3\b\5\b=\n\b\3\t\3\t\3\n\3\n\3\13\3\13\3\f\7\fF"+
-		"\n\f\f\f\16\fI\13\f\3\f\3G\2\r\2\4\6\b\n\f\16\20\22\24\26\2\2F\2\32\3"+
-		"\2\2\2\4 \3\2\2\2\6$\3\2\2\2\b(\3\2\2\2\n/\3\2\2\2\f\62\3\2\2\2\16\67"+
-		"\3\2\2\2\20>\3\2\2\2\22@\3\2\2\2\24B\3\2\2\2\26G\3\2\2\2\30\33\5\4\3\2"+
-		"\31\33\5\6\4\2\32\30\3\2\2\2\32\31\3\2\2\2\33\34\3\2\2\2\34\32\3\2\2\2"+
-		"\34\35\3\2\2\2\35\36\3\2\2\2\36\37\7\2\2\3\37\3\3\2\2\2 !\7\3\2\2!\"\5"+
-		"\b\5\2\"#\5\n\6\2#\5\3\2\2\2$%\7\3\2\2%&\5\26\f\2&\'\5\n\6\2\'\7\3\2\2"+
-		"\2()\5\f\7\2)+\5\22\n\2*,\5\24\13\2+*\3\2\2\2+,\3\2\2\2,-\3\2\2\2-.\5"+
-		"\26\f\2.\t\3\2\2\2/\60\7\4\2\2\60\61\7\27\2\2\61\13\3\2\2\2\62\64\5\16"+
-		"\b\2\63\65\5\20\t\2\64\63\3\2\2\2\64\65\3\2\2\2\65\r\3\2\2\2\668\7\r\2"+
-		"\2\67\66\3\2\2\289\3\2\2\29\67\3\2\2\29:\3\2\2\2:<\3\2\2\2;=\7\5\2\2<"+
-		";\3\2\2\2<=\3\2\2\2=\17\3\2\2\2>?\7\5\2\2?\21\3\2\2\2@A\7\b\2\2A\23\3"+
-		"\2\2\2BC\7\5\2\2C\25\3\2\2\2DF\13\2\2\2ED\3\2\2\2FI\3\2\2\2GH\3\2\2\2"+
-		"GE\3\2\2\2H\27\3\2\2\2IG\3\2\2\2\t\32\34+\649<G";
+		"\3\4\3\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\5\7\62\n\7\3\b\6\b\65\n\b"+
+		"\r\b\16\b\66\3\t\3\t\3\n\3\n\3\13\3\13\6\13?\n\13\r\13\16\13@\3\13\3\13"+
+		"\3\f\7\fF\n\f\f\f\16\fI\13\f\3\f\3G\2\r\2\4\6\b\n\f\16\20\22\24\26\2\3"+
+		"\3\2\r\rE\2\32\3\2\2\2\4 \3\2\2\2\6$\3\2\2\2\b(\3\2\2\2\n,\3\2\2\2\f/"+
+		"\3\2\2\2\16\64\3\2\2\2\208\3\2\2\2\22:\3\2\2\2\24<\3\2\2\2\26G\3\2\2\2"+
+		"\30\33\5\4\3\2\31\33\5\6\4\2\32\30\3\2\2\2\32\31\3\2\2\2\33\34\3\2\2\2"+
+		"\34\32\3\2\2\2\34\35\3\2\2\2\35\36\3\2\2\2\36\37\7\2\2\3\37\3\3\2\2\2"+
+		" !\7\3\2\2!\"\5\b\5\2\"#\5\n\6\2#\5\3\2\2\2$%\7\3\2\2%&\5\26\f\2&\'\5"+
+		"\n\6\2\'\7\3\2\2\2()\5\f\7\2)*\5\22\n\2*+\5\26\f\2+\t\3\2\2\2,-\7\4\2"+
+		"\2-.\7\30\2\2.\13\3\2\2\2/\61\5\16\b\2\60\62\5\20\t\2\61\60\3\2\2\2\61"+
+		"\62\3\2\2\2\62\r\3\2\2\2\63\65\7\16\2\2\64\63\3\2\2\2\65\66\3\2\2\2\66"+
+		"\64\3\2\2\2\66\67\3\2\2\2\67\17\3\2\2\289\7\5\2\29\21\3\2\2\2:;\7\b\2"+
+		"\2;\23\3\2\2\2<>\7\f\2\2=?\n\2\2\2>=\3\2\2\2?@\3\2\2\2@>\3\2\2\2@A\3\2"+
+		"\2\2AB\3\2\2\2BC\7\r\2\2C\25\3\2\2\2DF\13\2\2\2ED\3\2\2\2FI\3\2\2\2GH"+
+		"\3\2\2\2GE\3\2\2\2H\27\3\2\2\2IG\3\2\2\2\b\32\34\61\66@G";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

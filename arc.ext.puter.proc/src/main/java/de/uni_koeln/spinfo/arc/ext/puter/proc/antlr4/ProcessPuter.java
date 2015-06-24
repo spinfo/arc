@@ -22,14 +22,18 @@ import java.util.regex.Pattern;
  */
 public class ProcessPuter {
 
-    public static String output_data_path = "../arc.data/output/puter/";
-    public static String input_data_path = "../arc.data/input/puter/";
+    public static String output_data_path = "../arc.data/puter/output/";
+    public static String input_data_path = "../arc.data/puter/input/";
 
     public void extractionWorkflow(String pdfFilePath) throws IOException, ParseException {
 
         // Text aus pdf extrahieren
         PdfXStreamExtractor pdfEx = new PdfXStreamExtractor();
         pdfEx.extractWithPDFTextStream("PuterPdfStreamExtraction");
+
+        // TODO
+        // add Tags??
+
         // optional:
         //cleanExtraction(ProcessPuter.output_data_path + "PuterPdfStreamExtraction");
         ParsedToLists firstParse = parsePuterListReturn(ProcessPuter.output_data_path+"PuterPdfStreamExtraction.txt", "parsedPuter", ProcessPuter.output_data_path);
@@ -51,6 +55,7 @@ public class ProcessPuter {
         System.out.println("Der zweite Durchgang erbrachte " + secondParse.getEntries().size() + " weitere korrekt geparste Einträge");
         entries.addAll(secondParse.getEntries());
 
+        // summary and save
         System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
         DictUtils.printList(entries,ProcessPuter.output_data_path, "finalPuterParsingResult");
 

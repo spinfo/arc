@@ -27,6 +27,13 @@ public class ProcessVallader_Test {
 
     @Ignore
     @Test
+    public void TXTtoList_Test() throws IOException {
+        List<String> listWithTags = DictUtils.addTags(ProcessVallader.output_data_path +"/pdfTextStreamExtraction2.txt");
+        DictUtils.printList(listWithTags, processor.output_data_path,"taggedValladerExtraction");
+    }
+
+    @Ignore
+    @Test
     public void valladerTXTtoList_Test() throws IOException {
         DictUtils.printList(processor.valladerTXTtoList(ProcessVallader.input_data_path + "tscharner-20140715_20140923_20150319.txt"), ProcessVallader.output_data_path, "ValladerTXTtoList-Test.txt");
     }
@@ -48,7 +55,7 @@ public class ProcessVallader_Test {
     @Test
     public void pdfXStreamExtractor_Test() throws IOException {
         PdfXStreamExtractor pdfEx = new PdfXStreamExtractor();
-        pdfEx.extractWithPDFTextStream("pdfTextStreamExtraction2");
+        pdfEx.extractWithPDFTextStream("ValladerPdfExtraction");
     }
 
     @Ignore
@@ -63,6 +70,7 @@ public class ProcessVallader_Test {
 
     }
 
+    @Ignore
     @Test
     public void parseValladerListReturn_Test() throws IOException {
 
@@ -81,12 +89,13 @@ public class ProcessVallader_Test {
             }
         }
         DictUtils.printList(parsedToLists.getErrors(), ProcessVallader.output_data_path, "errorsBeforeCorrection");
-        processor.cleanErrors(parsedToLists.getErrors());
+        processor.cleanErrors(parsedToLists.getErrors(),processor.output_data_path,"correctedErrorsSingleIt");
 
         DictUtils.printList(complexEntries, ProcessVallader.output_data_path, "complexEntries.txt");
         System.out.println("Entries enthält " + complexEntries.size() + " Enträge mit einem \"-\"");
 
     }
+
 
     @Test
     public void parseValladerTwoIterations_Test() throws IOException {
@@ -94,7 +103,7 @@ public class ProcessVallader_Test {
         System.out.println("\n\n__________________\n Zweifaches Parsen");
 
 
-        String inputFilePath = ProcessVallader.output_data_path + "cleanedrealEntries.txt";
+        String inputFilePath = ProcessVallader.output_data_path + "taggedValladerExtraction.txt";
 
         ParsedToLists parsedToLists = processor.parseValladerListReturn(inputFilePath, "parsedVallader20150506", ProcessVallader.output_data_path);
         List<String> entries = parsedToLists.getEntries();
@@ -115,7 +124,7 @@ public class ProcessVallader_Test {
         entries.addAll(processedComplexEntries);
 
         // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
-        processor.cleanErrors(parsedToLists.getErrors());
+        processor.cleanErrors(parsedToLists.getErrors(), processor.output_data_path,"correctedErrors");
         ParsedToLists secondIterationParsing = processor.parseValladerListReturn(ProcessVallader.output_data_path+"/correctedErrors.txt","parsedVallader2ndIteration", ProcessVallader.output_data_path);
         System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
         entries.addAll(secondIterationParsing.getEntries());
@@ -125,9 +134,54 @@ public class ProcessVallader_Test {
 
     }
 
+
+    @Test
+    public void parseValladerBracketCorrection_Test() throws IOException {
+
+        System.out.println("\n\n__________________\n Parsen mit Bracket Correction");
+
+
+        String inputFilePath = ProcessVallader.output_data_path + "ValladerPdfExtraction.txt";
+
+        processor.bracketCorrection(inputFilePath, processor.output_data_path, "ValladerBracketsCorrected");
+        List<String> taggedEntries = DictUtils.addTags(processor.output_data_path +"/ValladerBracketsCorrected.txt");
+        DictUtils.printList(taggedEntries,processor.output_data_path,"taggedValladerEntries");
+
+
+        ParsedToLists parsedToLists = processor.parseValladerListReturn(processor.output_data_path+"/taggedValladerEntries.txt", "parsedValladerBrackets", ProcessVallader.output_data_path);
+        List<String> entries = parsedToLists.getEntries();
+        List<String> errors = parsedToLists.getErrors();
+        List<String> complexEntries = parsedToLists.getComplexEntries();
+
+        System.out.println("Entries enthält " + complexEntries.size() + " Enträge mit mehreren Genusformen");
+        DictUtils.printList(complexEntries, ProcessVallader.output_data_path, "complexEntries");
+
+        // Fehler vor der Korrektur
+        DictUtils.printList(parsedToLists.getErrors(), ProcessVallader.output_data_path, "errorsBeforeCorrectionBrackets");
+
+        statistics(inputFilePath);
+
+        // Umgang mit Einträgen mit mehreren Genus
+        List<String> processedComplexEntries = processor.processComplexEntries(complexEntries);
+        System.out.println(processedComplexEntries.size() +" Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
+        entries.addAll(processedComplexEntries);
+
+        // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
+        processor.cleanErrors(parsedToLists.getErrors(),processor.output_data_path, "correctedErrorsBrackets");
+        ParsedToLists secondIterationParsing = processor.parseValladerListReturn(ProcessVallader.output_data_path+"/correctedErrorsBrackets.txt","parsedVallader2ndIterationBrackets", ProcessVallader.output_data_path);
+        System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
+        entries.addAll(secondIterationParsing.getEntries());
+
+        System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
+        DictUtils.printList(entries,ProcessVallader.output_data_path, "finalParsingResultBrackets");
+
+    }
+
+
+
     private void statistics(String inputFilePath) throws IOException {
         List<String> originalFileAsList = new ArrayList<String>();
-        Path file = Paths.get(ProcessVallader.output_data_path + "cleanedrealEntries.txt");
+        Path file = Paths.get(ProcessVallader.output_data_path + "taggedValladerExtraction.txt");
         DictUtils.getLines(originalFileAsList, file);
         System.out.println("Die eingelesene Datei hatte " + originalFileAsList.size() + " Zeilen");
 

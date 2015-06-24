@@ -6,7 +6,6 @@
 
     <packaging>jar</packaging>
 
-    <groupId>de.uni-koeln.spinfo.arc</groupId>
     <artifactId>arc.ext.puter.gramm</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 

@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.*;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -30,7 +31,6 @@ public class ProcessVallader {
         return entryList;
 
     }
-
 
 
     public List<String> cleanedValladerTXTtoList (String filePath) throws IOException {
@@ -322,7 +322,7 @@ public class ProcessVallader {
      * Gets List of Lines with parser-errors and tries to fix some of the common OCR-Errors on them.
      * @param
      */
-    public void cleanErrors(List<String> errorEntries) throws IOException {
+    public void cleanErrors(List<String> errorEntries, String filepath, String fileName) throws IOException {
         ArrayList<String> cleanedList = new ArrayList<String>();
 
         /*TODO: mf -> " m f " bzw wie mit 2 POS umgehen;
@@ -379,8 +379,40 @@ public class ProcessVallader {
         }
         System.out.println(cleanedList.size() +" Error-Einträge wurden für einen erneuten Parsingversuch bearbeitet");
 
-        DictUtils.printList(cleanedList, ProcessVallader.output_data_path, "correctedErrors");
+        DictUtils.printList(cleanedList, filepath, fileName);
 
+    }
+
+    public List<String> bracketCorrection(String inputFilePath, String output_data_path, String fileName) throws IOException {
+
+        List<String> entries = DictUtils.txtToList(inputFilePath);
+        List<String> correctedEntries = new ArrayList<String>();
+        List<String> corrected = new ArrayList<String>();
+
+        Iterator<String> entryIterator = entries.iterator();
+
+        for(String entry : entries){
+            int openingbrackets = StringUtils.countOccurrencesOf(entry,"(");
+            int closingbrackets = StringUtils.countOccurrencesOf(entry, ")");
+
+            int dif = openingbrackets - closingbrackets;
+
+            if (dif > 0) {
+                //System.out.println(entry);
+                corrected.add(entry);
+                for(int i = 0; i < dif; i++) {
+                    entry = entry + ")";
+                }
+                corrected.add(entry);
+            }
+            correctedEntries.add(entry);
+
+        }
+        DictUtils.printList(corrected,ProcessVallader.output_data_path,"infoOutputBrackets");
+        System.out.println("Es wurden in " + corrected.size()/2 + " Zeilen fehlende schließende Klammern ergänzt.");
+        DictUtils.printList(correctedEntries,ProcessVallader.output_data_path,fileName);
+
+        return correctedEntries;
     }
 
 

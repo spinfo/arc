@@ -99,15 +99,15 @@ public interface ValladerListener extends ParseTreeListener {
 	 */
 	void exitGrammatical_info(@NotNull ValladerParser.Grammatical_infoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ValladerParser#additional_info}.
+	 * Enter a parse tree produced by {@link ValladerParser#parex}.
 	 * @param ctx the parse tree
 	 */
-	void enterAdditional_info(@NotNull ValladerParser.Additional_infoContext ctx);
+	void enterParex(@NotNull ValladerParser.ParexContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link ValladerParser#additional_info}.
+	 * Exit a parse tree produced by {@link ValladerParser#parex}.
 	 * @param ctx the parse tree
 	 */
-	void exitAdditional_info(@NotNull ValladerParser.Additional_infoContext ctx);
+	void exitParex(@NotNull ValladerParser.ParexContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ValladerParser#nge}.
 	 * @param ctx the parse tree

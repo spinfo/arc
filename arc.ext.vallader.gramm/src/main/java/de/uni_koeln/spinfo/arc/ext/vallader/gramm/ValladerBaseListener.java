@@ -125,13 +125,13 @@ public class ValladerBaseListener implements ValladerListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAdditional_info(@NotNull ValladerParser.Additional_infoContext ctx) { }
+	@Override public void enterParex(@NotNull ValladerParser.ParexContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAdditional_info(@NotNull ValladerParser.Additional_infoContext ctx) { }
+	@Override public void exitParex(@NotNull ValladerParser.ParexContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
