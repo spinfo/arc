@@ -51,6 +51,20 @@ public class ProcessVallader_Test {
         DictUtils.printList(entries, ProcessVallader.output_data_path,"cleanedrealEntries");
         Assert.assertNotNull("In dieser Liste sollten hauptsächlich die ersten Zeilen von Wörterbucheinträgen stehen", entries);
     }
+
+    @Test
+    public void reduceErrors_Test() throws IOException {
+        List<String> entries = processor.cleanedValladerTXTtoList(ProcessVallader.output_data_path + "remainingErrors.txt");
+        DictUtils.printList(entries, ProcessVallader.output_data_path,"reducedRemainingErrors");
+        Assert.assertNotNull("In dieser Liste sollten hauptsächlich die ersten Zeilen von Wörterbucheinträgen stehen", entries);
+    }
+
+    @Test
+    public void reduceNotCorrected_Test() throws IOException {
+        List<String> entries = processor.cleanedValladerTXTtoList(ProcessVallader.output_data_path + "notCorrectedErrors.txt");
+        DictUtils.printList(entries, ProcessVallader.output_data_path,"reducedNotCorrectedErrors");
+        Assert.assertNotNull("In dieser Liste sollten hauptsächlich die ersten Zeilen von Wörterbucheinträgen stehen", entries);
+    }
     @Ignore
     @Test
     public void pdfXStreamExtractor_Test() throws IOException {
@@ -96,7 +110,7 @@ public class ProcessVallader_Test {
 
     }
 
-
+    @Ignore
     @Test
     public void parseValladerTwoIterations_Test() throws IOException {
 
@@ -171,12 +185,13 @@ public class ProcessVallader_Test {
         ParsedToLists secondIterationParsing = processor.parseValladerListReturn(ProcessVallader.output_data_path+"/correctedErrorsBrackets.txt","parsedVallader2ndIterationBrackets", ProcessVallader.output_data_path);
         System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
         entries.addAll(secondIterationParsing.getEntries());
+        DictUtils.printList(secondIterationParsing.getEntries(),processor.output_data_path,"savedEntries");
+        DictUtils.printList(secondIterationParsing.getErrors(),processor.output_data_path,"remainingErrors");
 
         System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
         DictUtils.printList(entries,ProcessVallader.output_data_path, "finalParsingResultBrackets");
 
     }
-
 
 
     private void statistics(String inputFilePath) throws IOException {

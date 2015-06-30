@@ -13,7 +13,7 @@ endEntry: CLOSINGTAG NEWLINE;
 
 keyphrase :	phrase infl_info?;
 
-phrase : COMPLEXWORD+ /*parex?*/;
+phrase : COMPLEXWORD+ PAREX?;
 
 infl_info: PAREX;
 //infl_info: parex;
