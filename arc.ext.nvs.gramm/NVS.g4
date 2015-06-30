@@ -11,7 +11,6 @@ grammar NVS;
    nge: .*? ;
 
 
-
 //LEXER RULES
 
    OPENINGTAG:'<E>';

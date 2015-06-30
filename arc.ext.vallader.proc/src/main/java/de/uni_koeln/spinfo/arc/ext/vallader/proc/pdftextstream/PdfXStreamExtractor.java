@@ -24,7 +24,7 @@ public class PdfXStreamExtractor {
 		pdf.close();
 
 		System.out.printf("The text extracted from %s is:", vallader_input);
-		System.out.println(buffer);
+		//System.out.println(buffer);
 
 		try {
 			File fileDir = new File(ProcessVallader.output_data_path + "/" + outputFile + ".txt");

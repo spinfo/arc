@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.*;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -32,7 +33,6 @@ public class ProcessVallader {
     }
 
 
-
     public List<String> cleanedValladerTXTtoList (String filePath) throws IOException {
 
         List<String> entryList = new ArrayList<String>();
@@ -44,7 +44,7 @@ public class ProcessVallader {
         String currentLine;
 
         // Pattern for lines starting with 3 or more blanks
-        Pattern pattern = Pattern.compile("^  [ ]+");
+        Pattern pattern = Pattern.compile("^(<E>)?  [ ]+");
 
         while ((currentLine = reader.readLine()) != null) {
 
@@ -59,7 +59,7 @@ public class ProcessVallader {
             // Check if the matcher's prefix match with the matcher's pattern
             if (!matcher.lookingAt()) {
                 // add line to list
-                entryList.add(addTags(currentLine));
+                entryList.add(currentLine);
             }
         }
 
@@ -144,11 +144,14 @@ public class ProcessVallader {
     private ArrayList<String> filterComplexEntries(ArrayList<String> lemmas) {
         ArrayList<String> complexEntries = new ArrayList<String>();
 
+        Pattern complexPattern = Pattern.compile(",\\s?-");
+
         Iterator<String> entryIt = lemmas.iterator();
 
         while (entryIt.hasNext()) {
             String entry = entryIt.next();
-            if (entry.contains("-")) {
+            Matcher complexMatcher = complexPattern.matcher(entry);
+            if (complexMatcher.find()) {
                 complexEntries.add(entry);
                 entryIt.remove();
             }
@@ -322,8 +325,10 @@ public class ProcessVallader {
      * Gets List of Lines with parser-errors and tries to fix some of the common OCR-Errors on them.
      * @param
      */
-    public void cleanErrors(List<String> errorEntries) throws IOException {
+    public void cleanErrors(List<String> errorEntries, String filepath, String fileName) throws IOException {
         ArrayList<String> cleanedList = new ArrayList<String>();
+        ArrayList<String> qmList = new ArrayList<String>();
+        ArrayList<String> notCorrectedList = new ArrayList<String>();
 
         /*TODO: mf -> " m f " bzw wie mit 2 POS umgehen;
         f am Ende zu " f"
@@ -337,10 +342,10 @@ public class ProcessVallader {
         // POS ist direkt an Lemma angschlossen
 
         //Pattern posPattern = Pattern.compile("(?<=^<E>\\s{0,3}\\p{L}{1,25})[m|f|m,f|adj/adv|adj invar/num|adj invar|adj|adv|invar/num|prep|interj|intr|intr/tr|tr ind|tr|mpl|fpl|cj|pron indef|pron pers|pron pers/refl|pron|refl|fcoll|p sg]");
-        Pattern posPattern = Pattern.compile("(<E>\\s{0,3}\\p{L}{1,30})([m,f|adj/adv|adj invar/num|adj invar|adj|adv|invar/num|prep|interj|intr|intr/tr|tr ind|tr|mpl|fpl|cj|pron indef|pron pers|pron pers/refl|pron|refl|fcoll|p sg|m|f])(\\s)");
+        Pattern posPattern = Pattern.compile("(<E>\\s{0,3}\\p{L}{1,30})(m,f|adj/adv|adj invar/num|adj invar|adj|adv|invar/num|prep|interj|intr|intr/tr|tr ind|tr|mpl|fpl|cj|pron indef|pron pers|pron pers/refl|pron|refl|fcoll|p sg|m|f)(\\s|\\()");
 
         // OCR-Fehler refl = rejl
-        //Pattern reflPattern = Pattern.compile("(rejl)");
+        Pattern reflPattern = Pattern.compile("(rejl)");
 
 
 
@@ -351,12 +356,11 @@ public class ProcessVallader {
 
             // 1. OCR-Fehler rejl = refl
 
-            //Matcher reflMatcher = reflPattern.matcher(errorEntry);
-           /* if (reflMatcher.find()) {
-                System.out.println("Found refl" + reflMatcher.group(1));
-                reflMatcher.replaceAll(" refl ");
-            }*/
-            errorEntry = errorEntry.replaceAll("rejl","refl");
+            Matcher reflMatcher = reflPattern.matcher(errorEntry);
+            if (reflMatcher.find()) {
+                corrected = reflMatcher.replaceAll(" refl ");
+            }
+            //errorEntry = errorEntry.replaceAll("rejl","refl");
 
             // 2. angeschlossenes mf an feminines Suffix
             Matcher mfMatcher = mfPattern.matcher(errorEntry);
@@ -370,17 +374,57 @@ public class ProcessVallader {
             Matcher posMatcher = posPattern.matcher(errorEntry);
             if(posMatcher.find()){
                 //System.out.println("found pos" + posMatcher.group(1)+posMatcher.group(2));
-                corrected = posMatcher.replaceFirst(posMatcher.group(1)+" "+posMatcher.group(2)+"");
+                corrected = posMatcher.replaceFirst(posMatcher.group(1)+" "+posMatcher.group(2)+" ");
             }
 
             if (!corrected.equals("")){
                 cleanedList.add(corrected);
+                // Kontrolle
+                qmList.add(errorEntry);
+                qmList.add(corrected);
+            } else {
+                // Kontrolle
+                notCorrectedList.add(errorEntry);
             }
         }
         System.out.println(cleanedList.size() +" Error-Einträge wurden für einen erneuten Parsingversuch bearbeitet");
 
-        DictUtils.printList(cleanedList, ProcessVallader.output_data_path, "correctedErrors");
+        DictUtils.printList(cleanedList, filepath, fileName);
+        DictUtils.printList(qmList, ProcessVallader.output_data_path, "correctionsBeforeAndAfter");
+        DictUtils.printList(notCorrectedList, ProcessVallader.output_data_path, "notCorrectedErrors");
 
+    }
+
+    public List<String> bracketCorrection(String inputFilePath, String output_data_path, String fileName) throws IOException {
+
+        List<String> entries = DictUtils.txtToList(inputFilePath);
+        List<String> correctedEntries = new ArrayList<String>();
+        List<String> corrected = new ArrayList<String>();
+
+        Iterator<String> entryIterator = entries.iterator();
+
+        for(String entry : entries){
+            int openingbrackets = StringUtils.countOccurrencesOf(entry,"(");
+            int closingbrackets = StringUtils.countOccurrencesOf(entry, ")");
+
+            int dif = openingbrackets - closingbrackets;
+
+            if (dif > 0) {
+                //System.out.println(entry);
+                corrected.add(entry);
+                for(int i = 0; i < dif; i++) {
+                    entry = entry + ")";
+                }
+                corrected.add(entry);
+            }
+            correctedEntries.add(entry);
+
+        }
+        DictUtils.printList(corrected,ProcessVallader.output_data_path,"infoOutputBrackets");
+        System.out.println("Es wurden in " + corrected.size()/2 + " Zeilen fehlende schließende Klammern ergänzt.");
+        DictUtils.printList(correctedEntries,ProcessVallader.output_data_path,fileName);
+
+        return correctedEntries;
     }
 
 
