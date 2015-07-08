@@ -13,21 +13,19 @@ import java.io.*;
  */
 public class PdfXStreamExtractor {
 
-    public static String vallader_input = ProcessVallader.input_data_path + "tscharner-20140715_20140923-20150318.pdf";
+	public void extractWithPDFTextStream(String inputPath, String outputPath, String outputFileName) throws IOException {
 
-	public void extractWithPDFTextStream(String outputFile) throws IOException {
-
-		File pdfFile = new File(vallader_input);
+		File pdfFile = new File(inputPath);
 		Document pdf = PDF.open(pdfFile);
 		StringWriter buffer = new StringWriter();
 		pdf.pipe(new OutputTarget(buffer));
 		pdf.close();
 
-		System.out.printf("The text extracted from %s is:", vallader_input);
+		System.out.printf("The text extracted from %s is:", inputPath);
 		//System.out.println(buffer);
 
 		try {
-			File fileDir = new File(ProcessVallader.output_data_path + "/" + outputFile + ".txt");
+			File fileDir = new File(outputPath + "/" + outputFileName + ".txt");
 
 			Writer out = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(fileDir), "UTF8"));
