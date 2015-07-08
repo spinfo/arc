@@ -1,5 +1,9 @@
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import de.uni_koeln.spinfo.arc.ext.vallader.proc.antlr4.ParsedToLists;
 import de.uni_koeln.spinfo.arc.ext.vallader.proc.antlr4.ProcessVallader;
+import de.uni_koeln.spinfo.arc.ext.vallader.proc.mongo.MongoIO;
 import de.uni_koeln.spinfo.arc.ext.vallader.proc.pdftextstream.PdfXStreamExtractor;
 import de.uni_koeln.spinfo.arc.utils.DictUtils;
 import org.junit.Assert;
@@ -7,8 +11,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.*;
+import java.io.InputStreamReader;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -17,11 +25,32 @@ import java.util.*;
 public class ProcessVallader_Test {
 
     static ProcessVallader processor;
+    static MongoClient mongoClient;
+    static MongoIO mongoIO;
 
     @BeforeClass
-    public static void initialize() {
+    public static void initialize() throws UnknownHostException {
 
         processor = new ProcessVallader();
+        mongoIO = new MongoIO();
+        mongoClient = new MongoClient("localhost", 27017);
+
+    }
+
+    @Test
+    public void testValladerToMongo() throws IOException {
+
+        String txtFile = processor.output_data_path + "finalParsingResultBrackets.txt";
+        String dbName = "arc_test";
+        String collectionName = "vallader";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(
+                txtFile), StandardCharsets.UTF_8));
+
+        mongoIO.txtToMongo(br, collection);
 
     }
 
@@ -69,7 +98,7 @@ public class ProcessVallader_Test {
     @Test
     public void pdfXStreamExtractor_Test() throws IOException {
         PdfXStreamExtractor pdfEx = new PdfXStreamExtractor();
-        pdfEx.extractWithPDFTextStream("ValladerPdfExtraction");
+        pdfEx.extractWithPDFTextStream(processor.vallader_input, ProcessVallader.output_data_path, "ValladerPdfExtraction");
     }
 
     @Ignore
@@ -80,7 +109,6 @@ public class ProcessVallader_Test {
 
         processor.parseVallader(inputFilePath, "parsedValladerOLD", ProcessVallader.output_data_path);
 
-        statistics(inputFilePath);
 
     }
 
@@ -95,7 +123,6 @@ public class ProcessVallader_Test {
 
         ParsedToLists parsedToLists = processor.parseValladerListReturn(inputFilePath, "parsedVallader20150506", ProcessVallader.output_data_path);
 
-        statistics(inputFilePath);
 
         for (String entry : parsedToLists.getEntries()) {
             if (entry.contains("-")) {
@@ -130,7 +157,6 @@ public class ProcessVallader_Test {
         // Fehler vor der Korrektur
         DictUtils.printList(parsedToLists.getErrors(), ProcessVallader.output_data_path, "errorsBeforeCorrection");
 
-        statistics(inputFilePath);
 
         // Umgang mit Einträgen mit mehreren Genus
         List<String> processedComplexEntries = processor.processComplexEntries(complexEntries);
@@ -148,7 +174,12 @@ public class ProcessVallader_Test {
 
     }
 
+    @Test
+    public void extractionWorkflow_Test() throws IOException {
+        processor.extractionWorkflow();
+    }
 
+    @Ignore
     @Test
     public void parseValladerBracketCorrection_Test() throws IOException {
 
@@ -173,8 +204,6 @@ public class ProcessVallader_Test {
         // Fehler vor der Korrektur
         DictUtils.printList(parsedToLists.getErrors(), ProcessVallader.output_data_path, "errorsBeforeCorrectionBrackets");
 
-        statistics(inputFilePath);
-
         // Umgang mit Einträgen mit mehreren Genus
         List<String> processedComplexEntries = processor.processComplexEntries(complexEntries);
         System.out.println(processedComplexEntries.size() +" Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
@@ -194,21 +223,6 @@ public class ProcessVallader_Test {
     }
 
 
-    private void statistics(String inputFilePath) throws IOException {
-        List<String> originalFileAsList = new ArrayList<String>();
-        Path file = Paths.get(ProcessVallader.output_data_path + "taggedValladerExtraction.txt");
-        DictUtils.getLines(originalFileAsList, file);
-        System.out.println("Die eingelesene Datei hatte " + originalFileAsList.size() + " Zeilen");
 
-        List<String> linesWithoutStartingBlanks;
-        linesWithoutStartingBlanks = new ArrayList<String>();
-
-        for (String line: originalFileAsList) {
-            if(!line.startsWith("<E> ")) {
-                linesWithoutStartingBlanks.add(line);
-            }
-        }
-        System.out.println("Die eingelesene Datei hatte " + linesWithoutStartingBlanks.size() + " Zeilen, die nicht mit einem Leerzeichen beginnen.");
-    }
 
 }
