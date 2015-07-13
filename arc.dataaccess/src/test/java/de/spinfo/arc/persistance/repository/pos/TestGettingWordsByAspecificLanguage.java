@@ -40,7 +40,7 @@ public class TestGettingWordsByAspecificLanguage {
     public static void initialize() throws UnsupportedEncodingException,
             FileNotFoundException, UnknownHostException {
 
-        mongoClient = new MongoClient("localhost", 27017);
+        //mongoClient = new MongoClient("localhost", 27017);
     }
 
 
@@ -137,7 +137,7 @@ public class TestGettingWordsByAspecificLanguage {
     @Test
     public void testProcessNOTTagged() throws Exception {
 
-        List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-05-12T11:55:35Z");
+        List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-06-22T10:28:04Z");
         List<ForStand> toReturn = new ArrayList<>();
 
         int index = 0;
@@ -282,7 +282,7 @@ public class TestGettingWordsByAspecificLanguage {
     @Test
     public void testGetPageNumberInWU() {
 
-        ioMongo.getPageNumberInWU("Band II", 368488);
+        ioMongo.getPageNumberInWU("Band II", 367843);
 
 
     }

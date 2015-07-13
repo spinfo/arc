@@ -1,6 +1,3 @@
-package de.uni_koeln.spinfo.arc.parser;
-
-
 import com.mongodb.*;
 
 import java.io.BufferedReader;
@@ -8,7 +5,59 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-public class NVSParser {
+/**
+ * Created by franciscomondaca on 13/7/15.
+ */
+public class TXTToMongo {
+
+
+    public DBCollection txtToMongo(BufferedReader br, DBCollection collection, String dictToSave)
+            throws IOException {
+
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            if (!line.startsWith("#")) {
+                String[] nvs_line = line.split("\\$");
+                DBObject mongoEntry;
+
+                switch (dictToSave) {
+
+                    case "puter":
+                        mongoEntry = puterEntryToMongoObject(nvs_line);
+                        collection.insert(mongoEntry);
+                        break;
+
+                    case "surmiran":
+                        mongoEntry = surmiranEntryToMongoObject(nvs_line);
+                        collection.insert(mongoEntry);
+                        break;
+
+                    case "sursilvan":
+                        mongoEntry = sursilvanEntryToMongoObject(nvs_line);
+                        collection.insert(mongoEntry);
+                        break;
+
+                    case "sutsilvan":
+                        mongoEntry = sutsilvanEntryToMongoObject(nvs_line);
+                        collection.insert(mongoEntry);
+                        break;
+
+                    case "vallader":
+                        mongoEntry = valladerEntryToMongoObject(nvs_line);
+                        collection.insert(mongoEntry);
+                        break;
+
+
+                }
+
+
+            }
+        }
+
+        return collection;
+    }
+
 
     public Map<String, Set<String>> getLemmas(DBCollection nvs) {
 
@@ -74,22 +123,6 @@ public class NVSParser {
         return map;
     }
 
-    public DBCollection nvsToMongo(BufferedReader br, DBCollection collection)
-            throws IOException {
-
-        String line;
-
-        while ((line = br.readLine()) != null) {
-            if (!line.startsWith("#")) {
-                String[] nvs_line = line.split("\\$");
-                DBObject mongoEntry = nvsEntryToMongoObject(nvs_line);
-                collection.insert(mongoEntry);
-            }
-        }
-
-        return collection;
-    }
-
 
     public void writeNewEntry(DBCollection nvs, String lemma, String eagles_pos) {
 
@@ -152,7 +185,19 @@ public class NVSParser {
     }
 
 
-    public DBObject nvsEntryToMongoObject(String[] nvs_line) {
+    private DBObject puterEntryToMongoObject(String[] nvs_line) {
+
+        return null;
+    }
+
+
+    private DBObject surmiranEntryToMongoObject(String[] nvs_line) {
+
+        return null;
+    }
+
+
+    public DBObject sursilvanEntryToMongoObject(String[] nvs_line) {
 
         BasicDBObject entry = new BasicDBObject();
 
@@ -313,6 +358,116 @@ public class NVSParser {
 
     }
 
+    private DBObject sutsilvanEntryToMongoObject(String[] nvs_line) {
+
+        return null;
+    }
+
+
+    public DBObject valladerEntryToMongoObject(String[] nvs_line) {
+
+        BasicDBObject entry = new BasicDBObject();
+
+        BasicDBObject pos = new BasicDBObject();
+
+        String lemma = nvs_line[0];
+
+        lemma = lemma.replace("*", "");
+
+        entry.put("entry", lemma);
+
+        System.out.println(nvs_line[0]);
+
+        String nvs_pos = nvs_line[1];
+
+        String eagles_pos = null;
+
+        switch (nvs_pos) {
+
+            // ADJ
+            case "adj":
+            case "adj invar":
+                eagles_pos = "ADJ";
+                break;
+            case "adj invar/num":
+                eagles_pos = "ADJ_NUM";
+                break;
+
+            // ADV
+            case "adv":
+                eagles_pos = "ADV";
+                break;
+            // INT
+            case "interj":
+                eagles_pos = "INT";
+                break;
+
+            // NN
+            case "m":
+            case "f":
+            case "fcoll":
+            case "fpl":
+            case "coll":
+            case "mpl":
+            case "m f":
+            case "mf":
+            case "/":
+                eagles_pos = "NN";
+                break;
+
+            // PREP
+            case "prep":
+                eagles_pos = "PREP";
+                break;
+
+            // CARDINAL_NUMBERS
+            case "invar/num":
+                eagles_pos = "C_NUM";
+                break;
+
+            // PRON
+            case "pron":
+                eagles_pos = "PRON";
+                break;
+            case "pron pers":
+                eagles_pos = "PRON_PER";
+                break;
+            case "pron pers/refl":
+                eagles_pos = "PRON_REF";
+                break;
+
+            case "pron indef.":
+                eagles_pos = "PRON_IES";
+                break;
+
+
+            // V_GVRB
+            case "tr":
+            case "tr ind":
+            case "intr":
+            case "mtr":
+            case "intr/tr":
+            case "intr(tr)":
+                eagles_pos = "V_GVRB";
+                break;
+            default:
+                break;
+        }
+
+        // Add nvs_pos info
+        pos.put("vallader_pos", nvs_line[1]);
+        // Add eagles_pos info
+        if (eagles_pos != null) {
+            pos.put("eagles_pos", eagles_pos);
+        }
+
+        entry.put("pos", pos);
+
+        return entry;
+
+    }
+
+
     public DBCollection mergeNVSVersions(DB db, DBCollection firstToMerge,
                                          DBCollection secondToMerge, String newCollection) {
 
@@ -345,5 +500,6 @@ public class NVSParser {
         return mergedCollection;
 
     }
+
 
 }

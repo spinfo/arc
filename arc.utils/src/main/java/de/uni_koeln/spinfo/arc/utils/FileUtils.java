@@ -154,7 +154,7 @@ public class FileUtils {
             for (String s : list) {
 
                 writer.append(s);
-                writer.append("\n");
+                writer.append(" ");
             }
             writer.append("\n");
 
