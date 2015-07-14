@@ -55,7 +55,7 @@ public class TXTToMongoTest {
     @Test
     public void testValladerToMongo() throws IOException {
 
-        String txtFile = "../arc.data/input/finalParsingResults-20150708.txt";
+        String txtFile = "../arc.data/input/finalParsingResultBrackets.txt";
         String dbName = "dicts";
         String collectionName = "vallader";
 
