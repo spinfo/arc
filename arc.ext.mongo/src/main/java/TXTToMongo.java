@@ -376,9 +376,9 @@ public class TXTToMongo {
 
         entry.put("entry", lemma);
 
-        System.out.println(nvs_line[0]);
-
         String nvs_pos = nvs_line[1];
+
+        System.out.println(nvs_line[0] + ", " + nvs_line[1]);
 
         String eagles_pos = null;
 

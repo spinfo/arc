@@ -39,8 +39,11 @@ public class Vallader_VFGenerator {
             count++;
 
             String entry = (String) doc.get("entry");
+            System.out.println();
             DBObject pos = (BasicDBObject) doc.get("pos");
             String eagles_pos = (String) pos.get("eagles_pos");
+
+            System.out.println("Entry: "+entry + "| POS: "+entry + "| eaglesPOS: " + eagles_pos);
 
             if (eagles_pos != null) {
                 if (eagles_pos.equals("V_GVRB")) {
@@ -139,7 +142,7 @@ public class Vallader_VFGenerator {
         // feminin
         // Unregelmäßige Formen nach Endung
         String femEntry = "";
-        if (length < 6) {
+        if (length > 6) {
             endung = entry.substring(entry.length() - 6);
 
             switch (endung) {
@@ -323,7 +326,12 @@ public class Vallader_VFGenerator {
         // feminin plural
         addVF(entry + "s", "NN");
 
-        String stamm = entry.substring(0, entry.length() - 1);
+        String stamm;
+        if (entry.length() > 1) {
+            stamm = entry.substring(0, entry.length() - 1);
+        } else {
+            stamm = entry;
+        }
 
         // augmentativ f
         addVF(stamm + "una", "NN");
@@ -380,56 +388,58 @@ public class Vallader_VFGenerator {
 		 * gher->gra
 		 * zzer->zra
 		 */
-        String stamm = entry.substring(0, entry.length() - 3);
-        String endung = entry.substring(entry.length() - 3);
 
-        switch (endung) {
-            case "bel":
-                addVF(stamm + "bla", pos);
-                break;
-            case "ber":
-                addVF(stamm + "bra", pos);
-                break;
-            case "cal":
-                addVF(stamm + "cla", pos);
-                break;
-            case "der":
-                addVF(stamm + "dra", pos);
-                break;
-            case "mel":
-                addVF(stamm + "mla", pos);
-                break;
-            case "ner":
-                addVF(stamm + "nra", pos);
-                break;
-            case "pel":
-                addVF(stamm + "pla", pos);
-                break;
-            case "ser":
-                addVF(stamm + "sra", pos);
-                break;
-            case "sen":
-                addVF(stamm + "sna", pos);
-                break;
-            case "sem":
-                addVF(stamm + "sma", pos);
-                break;
-            case "tel":
-                addVF(stamm + "tla", pos);
-                break;
-            case "ter":
-                addVF(stamm + "tra", pos);
-                break;
-            case "ven":
-                addVF(stamm + "vna", pos);
-                break;
-            case "ver":
-                addVF(stamm + "vra", pos);
-                break;
-            case "vel":
-                addVF(stamm + "vla", pos);
-                break;
+        if (entry.length() > 3) {
+            String stamm = entry.substring(0, entry.length() - 3);
+            String endung = entry.substring(entry.length() - 3);
 
+            switch (endung) {
+                case "bel":
+                    addVF(stamm + "bla", pos);
+                    break;
+                case "ber":
+                    addVF(stamm + "bra", pos);
+                    break;
+                case "cal":
+                    addVF(stamm + "cla", pos);
+                    break;
+                case "der":
+                    addVF(stamm + "dra", pos);
+                    break;
+                case "mel":
+                    addVF(stamm + "mla", pos);
+                    break;
+                case "ner":
+                    addVF(stamm + "nra", pos);
+                    break;
+                case "pel":
+                    addVF(stamm + "pla", pos);
+                    break;
+                case "ser":
+                    addVF(stamm + "sra", pos);
+                    break;
+                case "sen":
+                    addVF(stamm + "sna", pos);
+                    break;
+                case "sem":
+                    addVF(stamm + "sma", pos);
+                    break;
+                case "tel":
+                    addVF(stamm + "tla", pos);
+                    break;
+                case "ter":
+                    addVF(stamm + "tra", pos);
+                    break;
+                case "ven":
+                    addVF(stamm + "vna", pos);
+                    break;
+                case "ver":
+                    addVF(stamm + "vra", pos);
+                    break;
+                case "vel":
+                    addVF(stamm + "vla", pos);
+                    break;
+            }
         }
 
         // vereinzelte Spezialfälle ...
@@ -658,73 +668,76 @@ public class Vallader_VFGenerator {
         // Infinitiv
         addVF(entry, "V_GVRB");
         VerbClass verbClass;
-        String endung = entry.substring(entry.length() - 2);
-        String stamm = entry.substring(0, entry.length() - 2);
-        if (endung.equals("ir")) {
-            if (stamm.endsWith("a")) {
-                stamm = stamm.substring(0, stamm.length() - 1);
-                verbClass = VerbClass.AIR;
-            } else {
-                verbClass = VerbClass.IR;
 
-                // Verben auf -gir
+        if (entry.length() > 3) {
+            String endung = entry.substring(entry.length() - 2);
+            String stamm = entry.substring(0, entry.length() - 2);
+            if (endung.equals("ir")) {
+                if (stamm.endsWith("a")) {
+                    stamm = stamm.substring(0, stamm.length() - 1);
+                    verbClass = VerbClass.AIR;
+                } else {
+                    verbClass = VerbClass.IR;
+
+                    // Verben auf -gir
+                    if (stamm.endsWith("g")) {
+                        addConjugations(stamm + "i", verbClass);
+                    }
+                    // Verben auf -glir
+                    else if (stamm.endsWith("gl")) {
+                        addConjugations(stamm + "i", verbClass);
+                    }
+                }
+            } else if (endung.equals("er")) {
+                verbClass = VerbClass.ER;
+
+                // Verben auf -ger
                 if (stamm.endsWith("g")) {
+                    addVF(stamm, "V_GVRB");
                     addConjugations(stamm + "i", verbClass);
                 }
-                // Verben auf -glir
-                else if (stamm.endsWith("gl")) {
-                    addConjugations(stamm + "i", verbClass);
+
+            } else if (endung.equals("ar")) {
+                verbClass = VerbClass.AR;
+
+                // Verben auf -giar
+                if (stamm.endsWith("gi")) {
+                    addVF(stamm.substring(0, stamm.length() - 1), "V_GVRB");
+                    addConjugations(stamm, verbClass);
                 }
-            }
-        } else if (endung.equals("er")) {
-            verbClass = VerbClass.ER;
+                // Verben auf -gliar
+                else if (stamm.endsWith("gli")) {
+                    addVF(stamm.substring(0, stamm.length() - 1), "V_GVRB");
+                    addConjugations(stamm, verbClass);
+                }
+                // Verben auf -iar
+                else if (stamm.endsWith("i")) {
+                    String iarStamm = stamm.substring(0, stamm.length() - 1);
 
-            // Verben auf -ger
-            if (stamm.endsWith("g")) {
-                addVF(stamm, "V_GVRB");
-                addConjugations(stamm + "i", verbClass);
+                    addConjugations(iarStamm + "aj", verbClass);
+                    // 1. und 2. Person Plural
+                    addConjugations(stamm + "i", verbClass);
+
+                }
+            } else {
+                System.out.println("unbekanntes Verb - falsche Endung: " + endung);
+                return;
             }
 
-        } else if (endung.equals("ar")) {
-            verbClass = VerbClass.AR;
-
-            // Verben auf -giar
-            if (stamm.endsWith("gi")) {
-                addVF(stamm.substring(0, stamm.length() - 1), "V_GVRB");
-                addConjugations(stamm, verbClass);
+            // zusätzliche Formen mit i anstatt j
+            if (stamm.endsWith("j")) {
+                addVF(stamm.substring(0, stamm.length() - 1) + "i", "V_GVRB");
             }
-            // Verben auf -gliar
-            else if (stamm.endsWith("gli")) {
-                addVF(stamm.substring(0, stamm.length() - 1), "V_GVRB");
-                addConjugations(stamm, verbClass);
-            }
-            // Verben auf -iar
-            else if (stamm.endsWith("i")) {
-            	String iarStamm = stamm.substring(0, stamm.length() - 1);
-            	
-                addConjugations(iarStamm + "aj", verbClass);
-                // 1. und 2. Person Plural
-                addConjugations(stamm + "i", verbClass);
-               
-            }
-        } else {
-            System.out.println("unbekanntes Verb - falsche Endung: " + endung);
-            return;
-        }
-        
-        // zusätzliche Formen mit i anstatt j
-        if (stamm.endsWith("j")) {
-            addVF(stamm.substring(0, stamm.length() - 1) + "i", "V_GVRB");
-        }
 
-        addConjugations(stamm, verbClass);
+            addConjugations(stamm, verbClass);
 
-        // Reflexivpronomen vor Verben beginnend mit einem Vokal
-        // produziert massiv und unsinnig über, aber nur diejenigen zu generieren, die grammatisch sinnvoll sind, könnte unübersichtlich werden
-        if (startsWithVocal(stamm)) {
-            addConjugations("m'" + stamm, verbClass);
-            addConjugations("t'" + stamm, verbClass);
-            addConjugations("s'" + stamm, verbClass);
+            // Reflexivpronomen vor Verben beginnend mit einem Vokal
+            // produziert massiv und unsinnig über, aber nur diejenigen zu generieren, die grammatisch sinnvoll sind, könnte unübersichtlich werden
+            if (startsWithVocal(stamm)) {
+                addConjugations("m'" + stamm, verbClass);
+                addConjugations("t'" + stamm, verbClass);
+                addConjugations("s'" + stamm, verbClass);
+            }
         }
     }
 
