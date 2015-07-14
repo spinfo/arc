@@ -28,8 +28,8 @@ public class ValladerTest {
     public static void init() throws Exception {
 
         mongoClient = new MongoClient("localhost", 27017);
-        db = mongoClient.getDB("arc");
-        dictCollection = db.getCollection("nvs_20150203");
+        db = mongoClient.getDB("dicts");
+        dictCollection = db.getCollection("vallader");
 
     }
 
