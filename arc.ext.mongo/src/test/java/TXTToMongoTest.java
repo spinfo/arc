@@ -50,6 +50,26 @@ public class TXTToMongoTest {
 
     }
 
+
+   //@Ignore
+    @Test
+    public void testValladerToMongo() throws IOException {
+
+        String txtFile = "../arc.data/input/finalParsingResults-20150708.txt";
+        String dbName = "dicts";
+        String collectionName = "vallader";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(
+                txtFile), StandardCharsets.UTF_8));
+
+        parser.txtToMongo(br, collection, "vallader");
+
+    }
+
+
     @Ignore
     @Test
     public void testGetLemmas() throws IOException {
