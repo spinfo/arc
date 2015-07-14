@@ -35,7 +35,7 @@ public class TaggerConfig extends Properties /* Inherits implementation of Seria
   SEARCH = "qn",
   TAG_SEPARATOR = "/",
   TOKENIZE = "true",
-  DEBUG = "false",
+  DEBUG = "true",
   ITERATIONS = "100",
   ARCH = "",
   WORD_FUNCTION = "",

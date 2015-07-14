@@ -1824,23 +1824,22 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
      * @throws IOException If any file problems
      */
     public static void main(String[] args) throws Exception {
+
+
 //        args = new String[6];
 //        args[0] = "-prop";
-//        args[1] = "models/sursilvan.tagger.props";
+//        args[1] = "models/sursilvan.tagger10.props";
 //        args[2] = "-model";
-//        args[3] = "sursilvan1.tagger";
+//        args[3] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/fromstand/sursilvan10.tagger";
 //        args[4] = "-trainFile";
-//        args[5] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/forstand/training_1.txt";
+//        args[5] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/forstand/training_10.txt";
 
 
         args = new String[4];
         args[0] = "-model";
-        args[1] = "sursilvan1.tagger";
+        args[1] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/fromstand/sursilvan10.tagger";
         args[2] = "-testFile";
-        args[3] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/forstand/test_1.txt";
-
-
-
+        args[3] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/forstand/test_10.txt";
 
 
         TaggerConfig config = new TaggerConfig(args);

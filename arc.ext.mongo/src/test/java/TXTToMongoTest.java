@@ -1,31 +1,25 @@
-package de.uni_koeln.spinfo.arc.parser;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+import de.uni_koeln.spinfo.arc.utils.DictUtils;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+/**
+ * Created by franciscomondaca on 13/7/15.
+ */
+public class TXTToMongoTest {
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
-
-import de.uni_koeln.spinfo.arc.utils.DictUtils;
-
-public class NVSParserTest {
-    private static NVSParser parser;
+    private static TXTToMongo parser;
     private static BufferedReader br;
     private static MongoClient mongoClient;
 
@@ -33,8 +27,27 @@ public class NVSParserTest {
     public static void initialize() throws UnsupportedEncodingException,
             FileNotFoundException, UnknownHostException {
 
-        parser = new NVSParser();
+        parser = new TXTToMongo();
         mongoClient = new MongoClient("localhost", 27017);
+    }
+
+
+    @Ignore
+    @Test
+    public void testNVSToMongo() throws IOException {
+
+        String txtFile = "";
+        String dbName = "";
+        String collectionName = "";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(
+                txtFile), StandardCharsets.UTF_8));
+
+        parser.txtToMongo(br, collection, "sursilvan");
+
     }
 
     @Ignore
@@ -60,23 +73,6 @@ public class NVSParserTest {
 
     // Transforms a single txt-file into Mongo
 
-    @Ignore
-    @Test
-    public void testNVSToMongo() throws IOException {
-
-        String txtFile = "";
-        String dbName = "";
-        String collectionName = "";
-
-        DB db = mongoClient.getDB(dbName);
-        DBCollection collection = db.getCollection(collectionName);
-
-        br = new BufferedReader(new InputStreamReader(new FileInputStream(
-                txtFile), StandardCharsets.UTF_8));
-
-        parser.nvsToMongo(br, collection);
-
-    }
 
     @Ignore
     @Test

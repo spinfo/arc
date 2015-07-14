@@ -31,7 +31,7 @@ public class Vallader_VFGenerator {
         return count;
     }
 
-    public Map<String, TreeSet<String>> generateVollForms(DBCollection collection)
+    public Map<String, TreeSet<String>> generateFullforms(DBCollection collection)
             throws UnknownHostException {
         DBCursor cursor = collection.find();
         count = 0;
