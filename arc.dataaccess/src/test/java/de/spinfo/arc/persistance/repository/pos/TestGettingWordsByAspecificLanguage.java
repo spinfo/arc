@@ -4,14 +4,19 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
 import de.spinfo.arc.annotationmodel.annotation.PageRange;
 import de.spinfo.arc.data.*;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
+import de.uni_koeln.spinfo.arc.matcher.Token;
+import de.uni_koeln.spinfo.arc.utils.CrossvalidationGroupBuilder;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
-import de.uni_koeln.spinfo.core.helpers.crossvalidation.CrossvalidationGroupBuilder;
-import de.uni_koeln.spinfo.core.helpers.crossvalidation.TrainingTestSets;
+
+import de.uni_koeln.spinfo.arc.utils.TrainingTestSets;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -28,10 +33,6 @@ public class TestGettingWordsByAspecificLanguage {
     static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
     static WordQueries wordQueries = new WordQueries();
     static IOMongo ioMongo = new IOMongo();
-
-//    static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
-//    static WordQueries wordQueries = new WordQueries();
-//    static WordUpdater wordUpdater = new WordUpdater();
 
 
     private static MongoClient mongoClient;
@@ -62,6 +63,8 @@ public class TestGettingWordsByAspecificLanguage {
         FileUtils.printList(entries, FileUtils.outputPath, "golden");
 
     }
+
+
 
 
     @Test
@@ -287,7 +290,7 @@ public class TestGettingWordsByAspecificLanguage {
 
     }
 
-
+    //use for getting all the words from the RC
     @Test
     public void testGetWords() throws IOException {
 
@@ -495,6 +498,69 @@ public class TestGettingWordsByAspecificLanguage {
         System.out.println("TOKENS: " + tokens.size());
         Set<String> types = new TreeSet<>(tokens);
         System.out.println("TYPES: " + types.size());
+
+    }
+
+
+
+
+    @Test
+    public void testWordstoFile() throws Exception {
+
+        String sursilvan = "Sursilvan";
+
+        List<WordImpl> gw = getWordsByLanguage(sursilvan);
+
+        List<Token> tokens = getListOfTokens(gw);
+
+        FileUtils.writeList(tokens, "words_");
+    }
+
+
+    /**
+     * Returns a list of all words containing in ALL working units if they match the given lanuage param
+     *
+     * @param language the language to lok for among all workingUnits
+     * @return the words of ALL working units which have this kind of Language as range defined
+     */
+    private static List<WordImpl> getWordsByLanguage(String language) {
+        List<WordImpl> toReturn = new ArrayList<>();
+        List<WorkingUnit> workingUnitsWhichHaveAtLeastOneRangeOfSearchedLanguage
+                = wuQueries.getWorkingUnitsWithLanguage(language);
+        for (WorkingUnit workingUnit : workingUnitsWhichHaveAtLeastOneRangeOfSearchedLanguage) {
+            List<LanguageRange> languageRanges = workingUnit.getLanguages();
+            for (LanguageRange languageRange : languageRanges) {
+                if (language.equals(languageRange.getTitle())) {
+
+                    System.out.println(workingUnit.getTitle() + "\t" + languageRange.getStart() + "\t" + languageRange.getEnd() + "\t" + languageRange.getTitle());
+                    List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(languageRange);
+                    toReturn.addAll(wordsOfLang);
+                }
+            }
+        }
+        return toReturn;
+    }
+
+
+    private static List<Token> getListOfTokens(List<WordImpl> words) throws Exception {
+
+        List<Token> tokens = new ArrayList<>();
+
+        for (WordImpl word : words) {
+
+            Token token = new Token();
+            token.setIndex(word.getIndex());
+            token.setToken(word.getFirstAnnotation().getForm());
+
+
+            tokens.add(token);
+
+
+        }
+
+
+        return tokens;
+
 
     }
 

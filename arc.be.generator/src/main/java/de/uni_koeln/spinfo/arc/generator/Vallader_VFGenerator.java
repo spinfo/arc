@@ -43,7 +43,7 @@ public class Vallader_VFGenerator {
             DBObject pos = (BasicDBObject) doc.get("pos");
             String eagles_pos = (String) pos.get("eagles_pos");
 
-            System.out.println("Entry: "+entry + "| POS: "+entry + "| eaglesPOS: " + eagles_pos);
+            System.out.println("Entry: " + entry + "| POS: " + entry + "| eaglesPOS: " + eagles_pos);
 
             if (eagles_pos != null) {
                 if (eagles_pos.equals("V_GVRB")) {
@@ -354,10 +354,9 @@ public class Vallader_VFGenerator {
             addVF(entry + "a", "ADJ");
             // f pl
             addVF(entry + "as", "ADJ");
-            // TODO: Was für Formen sind das im Sutsilvan? Welche Brücksichtigen?
-            //addVF(entry+"amaing", "ADV");
+            addVF(entry + "amaing", "ADV");
         }
-        //addVF(entry+"maing", "ADV");
+        addVF(entry + "maing", "ADV");
 
         generateSpecialFemininForms(entry, "ADJ");
     }
@@ -624,7 +623,6 @@ public class Vallader_VFGenerator {
         addVF("tai", "PRON_PER");
 
         // reflexiv
-        //TODO: Reflexivpronomen? Es gibt noch kein eigenes pos PRON_REF
         addVF("am", "PRON_REF");
         addVF("at", "PRON_REF");
         addVF("as", "PRON_REF");
@@ -795,7 +793,7 @@ public class Vallader_VFGenerator {
     /**
      * VIELE Verben auf -ar bzw. -ir erhalten im indikativen und konjunktiven Präsens die Erweiterung -esch- bzw. -isch-.
      * Im Wörterbuch wird die 3. Ps in Klammern, z. B. -ischa, angegeben.
-     * <p/>
+     * <p>
      * In dieser Methode wir von ALLEN Verben auf -ar und -ir solche augmentativen Formen gebildet
      */
     private void addPraesensAugmentativ(String stamm,
@@ -826,11 +824,11 @@ public class Vallader_VFGenerator {
         } else {        // (verbClass == verbClass.IR)
             addVF(stamm + "in", pos);        // 1. Ps Pl
             addVF(stamm + "is", pos);        // 2. Ps Pl
-            
+
             // Inversion
             addVF(stamm + "ina", pos);
         }
-        
+
         // Inversion
         addVF(stamm + "a'l", pos);
         addVF(stamm + "'la", pos);
@@ -848,7 +846,7 @@ public class Vallader_VFGenerator {
         addVF(stamm + "ast", pos);        // 2. Ps Sg
         addVF(stamm + "an", pos);        // 1. Ps Pl, 3. Ps Pl
         addVF(stamm + "at", pos);        // 2. Ps Pl
-        
+
         // Inversion
         addVF(stamm + "a'l", pos);
         addVF(stamm + "'la", pos);
@@ -867,7 +865,7 @@ public class Vallader_VFGenerator {
         addVF(stamm + "a", pos);        // 3. Ps Sg
         addVF(stamm + "an", pos);        // 1. Ps Pl, 3. Ps Pl
         addVF(stamm + "at", pos);        // 2. Ps Pl
-        
+
         // Inversion
         addVF(stamm + "aja", pos);
         addVF(stamm + "à'l", pos);
@@ -894,18 +892,18 @@ public class Vallader_VFGenerator {
         addVF(stamm + "ast", pos);        // 2. Ps Sg
         addVF(stamm + "an", pos);        // 1. Ps Pl, 3. Ps Pl
         addVF(stamm + "at", pos);        // 2. Ps Pl
-        
+
         // Inversion
         addVF(stamm + "a", pos);
         addVF(stamm + "'la", pos);
         addVF(stamm + "na", pos);
-       
+
     }
 
     private void addIrregularVerbs() {
-    	
-    	String stamm = "";
-    	
+
+        String stamm = "";
+
         // esser
         // infinitiv
         addVF("esser", "V_ESSER");
@@ -999,7 +997,7 @@ public class Vallader_VFGenerator {
         addKonjunktivPraesens("stett", VerbClass.AR, "V_GVRB");
         // Konjunktiv Imperfekt
         addKonjunktivImperfekt("st", VerbClass.AR, "V_GVRB");
- 
+
 
         // ir
         // infinitiv
@@ -1083,7 +1081,7 @@ public class Vallader_VFGenerator {
         // Konjunktiv Präsens
         addKonjunktivPraesens("dett", VerbClass.AR, "V_GVRB");
         // Konjunktiv Imperfekt - regelmäßig
-       
+
 
         // dir
         // infinitiv
@@ -1113,7 +1111,7 @@ public class Vallader_VFGenerator {
         addKonjunktivPraesens("di", VerbClass.IR, "V_GVRB");
         // Konjunktiv Imperfekt
         addKonjunktivImperfekt("dsch", VerbClass.AR, "V_GVRB");
-      
+
 
         // modale Verben
 
@@ -1257,7 +1255,7 @@ public class Vallader_VFGenerator {
         addKonjunktivPraesens("sapch", VerbClass.AIR, "V_MOD");
         // Konjunktiv Imperfekt
         addKonjunktivImperfekt(stamm, VerbClass.AIR, "V_MOD");
-    
+
         // Defektive Modalverben
         // dovair
         // Indikativ Präsens

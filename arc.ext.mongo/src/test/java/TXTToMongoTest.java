@@ -34,7 +34,7 @@ public class TXTToMongoTest {
 
     @Ignore
     @Test
-    public void testNVSToMongo() throws IOException {
+    public void testSursilvanToMongo() throws IOException {
 
         String txtFile = "";
         String dbName = "";
@@ -55,7 +55,7 @@ public class TXTToMongoTest {
     @Test
     public void testValladerToMongo() throws IOException {
 
-        String txtFile = "../arc.data/input/finalParsingResultBrackets.txt";
+        String txtFile = "../arc.data/input/tscharner-20140715_20140923-20150318-20150716.txt";
         String dbName = "dicts";
         String collectionName = "vallader";
 

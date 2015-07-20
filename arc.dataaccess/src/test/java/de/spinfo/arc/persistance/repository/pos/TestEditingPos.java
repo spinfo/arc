@@ -203,7 +203,6 @@ public class TestEditingPos {
 
     }
 
-    //Temporary solution in order top avoid mutual dependence in maven
     private static List<Token> getListOfTokens(String fileName) throws Exception {
 
         ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(FileUtils.outputPath + fileName));
