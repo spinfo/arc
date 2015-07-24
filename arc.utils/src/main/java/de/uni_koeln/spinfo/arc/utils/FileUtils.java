@@ -2,7 +2,11 @@ package de.uni_koeln.spinfo.arc.utils;
 
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -192,6 +196,26 @@ public class FileUtils {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.GERMANY);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         return dateFormat.format(date);
+    }
+
+    /**
+     * Reads a File with UTF-8 Charsets, normalizes it according to NFC and returns it as a List of lines
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
+    public static List<String> fileToList(String filePath) throws IOException {
+
+        ArrayList<String> normalized = new ArrayList<String>();
+
+        ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8);
+
+        for (String s : lines) {
+
+            s = Normalizer.normalize(s, Normalizer.Form.NFC);
+            normalized.add(s);
+        }
+        return normalized;
     }
 
 

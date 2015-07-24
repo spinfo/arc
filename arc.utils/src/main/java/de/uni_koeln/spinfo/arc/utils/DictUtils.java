@@ -1,6 +1,7 @@
 package de.uni_koeln.spinfo.arc.utils;
 
 import com.mongodb.*;
+import org.springframework.util.*;
 
 import java.io.*;
 import java.net.UnknownHostException;
@@ -117,6 +118,32 @@ public class DictUtils {
 
 	}
 
+	public static List<String> addTags(List<String> list) throws IOException {
+
+		List<String> taggedList = new ArrayList<String>();
+
+		for (String s : list) {
+
+			StringBuilder builder = new StringBuilder();
+			builder.append("<E>");
+			builder.append(s);
+			builder.append("</E>");
+
+			taggedList.add(builder.toString());
+		}
+
+		return taggedList;
+
+	}
+
+
+
+	/**
+	 * deprecated, use FileUtils fileToList instead!
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 */
 	public static List<String> txtToList(String filePath) throws IOException {
 
 		List<String> list = new ArrayList<String>();
@@ -651,6 +678,86 @@ public class DictUtils {
 
 	public static void removeUnclosedParenthesis(String nvs_0_200,
 			String output_path, String nvs_0_200_pp) {
+	}
+
+	public static List<String> removeCapLetterEntries(List<String> list) {
+
+		List<String> capLetterEntriesRemoved = new ArrayList<String>();
+
+		Pattern capLetterStart = Pattern.compile("^[A-Z]");
+
+		for (String s : list) {
+
+			Matcher matcher = capLetterStart.matcher(s);
+
+			if (!matcher.lookingAt()) {
+				capLetterEntriesRemoved.add(s);
+			}
+		}
+		return capLetterEntriesRemoved;
+	}
+
+	public static List<String> bracketCorrection(String inputFilePath, String outputPath, String fileName) throws IOException {
+		List<String> inputList = FileUtils.fileToList(inputFilePath);
+		return bracketCorrection(inputList, outputPath, fileName);
+	}
+
+	public static List<String> bracketCorrection(List<String> inputList, String output_data_path, String fileName) throws IOException {
+
+		//List<String> entries = DictUtils.txtToList(inputFilePath);
+		List<String> correctedEntries = new ArrayList<String>();
+
+		// for Debug and statistics only
+		List<String> corrected = new ArrayList<String>();
+
+
+		for(String entry : inputList){
+			int openingbrackets = StringUtils.countOccurrencesOf(entry, "(");
+			int closingbrackets = StringUtils.countOccurrencesOf(entry, ")");
+
+			int dif = openingbrackets - closingbrackets;
+
+			if (dif > 0) {
+				//System.out.println(entry);
+				corrected.add(entry);
+				for(int i = 0; i < dif; i++) {
+					entry = entry + ")";
+				}
+				corrected.add(entry);
+			}
+			correctedEntries.add(entry);
+
+		}
+		DictUtils.printList(corrected,output_data_path,"infoOutputBrackets");
+		System.out.println("Es wurden in " + corrected.size()/2 + " Zeilen fehlende schließende Klammern ergänzt.");
+		DictUtils.printList(correctedEntries,output_data_path,fileName);
+
+		return correctedEntries;
+	}
+
+	public static List<String> removeIndentedLines (String inFilePath) throws IOException {
+
+		List<String> entryList = FileUtils.fileToList(inFilePath);
+		List<String> resultList = new ArrayList<String>();
+
+		String currentLine;
+
+		// Pattern for lines starting with 3 or more blanks
+		Pattern pattern = Pattern.compile("^(<E>)?  [ ]+");
+
+		for (String entry : entryList) {
+
+			// Create matcher object
+			Matcher matcher = pattern.matcher(entry);
+
+			// Check if the matcher's prefix match with the matcher's pattern
+			if (!matcher.lookingAt()) {
+				// add line to list
+				resultList.add(entry);
+			}
+		}
+
+		return resultList;
 	}
 
 }

@@ -1,10 +1,11 @@
 package de.uni_koeln.spinfo.arc.ext.puter.proc.antlr4;
 
 import de.uni_koeln.spinfo.arc.ext.vallader.proc.pdftextstream.PdfXStreamExtractor;
-import de.uni_koeln.spinfo.arc.puter.gramm.PuterBaseListener;
-import de.uni_koeln.spinfo.arc.puter.gramm.PuterLexer;
-import de.uni_koeln.spinfo.arc.puter.gramm.PuterParser;
+import de.uni_koeln.spinfo.arc.ext.puter.gramm.PuterBaseListener;
+import de.uni_koeln.spinfo.arc.ext.puter.gramm.PuterLexer;
+import de.uni_koeln.spinfo.arc.ext.puter.gramm.PuterParser;
 import de.uni_koeln.spinfo.arc.utils.DictUtils;
+import de.uni_koeln.spinfo.arc.utils.FileUtils;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -27,33 +28,32 @@ public class ProcessPuter {
     public static String input_data_path = "../arc.data/puter/input/";
     public static String puter_input = ProcessPuter.input_data_path + "tscharner-20150114_20150318_20150326.pdf";
 
-    public void extractionWorkflow() throws IOException {
+    public void extractionWorkflow(String fileNamePrefix) throws IOException {
 
+        // PDF Extraction
         PdfXStreamExtractor pdfExt = new PdfXStreamExtractor();
-        pdfExt.extractWithPDFTextStream(puter_input,this.output_data_path,"PuterPdfExtraction");
+        pdfExt.extractWithPDFTextStream(puter_input,this.output_data_path, fileNamePrefix+"_PdfExtraction");
 
-        String inputFilePath = this.output_data_path + "PuterPdfExtraction.txt";
+        String inputFilePath = this.output_data_path + fileNamePrefix +"_PdfExtraction.txt";
 
-        bracketCorrection(output_data_path + "PuterPdfExtraction.txt", ProcessPuter.output_data_path, "PuterBracketsCorrected");
-        System.out.println("bracketCorrection durchgeführt.");
-        List<String> taggedEntries = DictUtils.addTags(ProcessPuter.output_data_path + "/PuterBracketsCorrected.txt");
-        System.out.println("Einträge mit Tags versehen.");
-        DictUtils.printList(taggedEntries,ProcessPuter.output_data_path,"taggedPuterEntries");
+        List<String> workflowList = new ArrayList<>();
+
+        // Preprocessing
+        workflowList = DictUtils.bracketCorrection(inputFilePath, ProcessPuter.output_data_path, fileNamePrefix+"_BracketsCorrected");
+        /* Check */ System.out.println("bracketCorrection durchgeführt.");
+        workflowList = DictUtils.addTags(workflowList);
+          /* Check */ System.out.println("Einträge mit Tags versehen.");
+        DictUtils.printList(workflowList,ProcessPuter.output_data_path,fileNamePrefix+"_taggedEntries");
 
         statistics(inputFilePath);
 
-        ParsedToLists parsedToLists = parsePuterListReturn(this.output_data_path + "/taggedPuterEntries.txt", "parsedPuterBrackets", output_data_path);
+        // Parsing
+        ParsedToLists parsedToLists = parsePuter(output_data_path+fileNamePrefix+"_taggedEntries.txt", output_data_path, fileNamePrefix+"_parsed");
         List<String> entries = parsedToLists.getEntries();
         List<String> errors = parsedToLists.getErrors();
         List<String> complexEntries = parsedToLists.getComplexEntries();
 
         System.out.println("Entries enthält " + complexEntries.size() + " Enträge mit mehreren Genusformen");
-        DictUtils.printList(complexEntries, this.output_data_path, "complexEntries");
-
-        // Fehler vor der Korrektur
-        DictUtils.printList(parsedToLists.getErrors(),this.output_data_path, "errorsBeforeCorrectionBrackets");
-
-
 
         // Umgang mit Einträgen mit mehreren Genus
         List<String> processedComplexEntries = processComplexEntries(complexEntries);
@@ -61,32 +61,82 @@ public class ProcessPuter {
         entries.addAll(processedComplexEntries);
 
         // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
-        cleanErrors(parsedToLists.getErrors(), this.output_data_path, "correctedErrorsBrackets");
-        ParsedToLists secondIterationParsing = parsePuterListReturn(this.output_data_path + "/correctedErrorsBrackets.txt", "parsedPuter2ndIterationBrackets", this.output_data_path);
+        cleanErrors(errors, this.output_data_path, fileNamePrefix+"_correctedErrors");
+        ParsedToLists secondIterationParsing = parsePuter(this.output_data_path + fileNamePrefix +"_correctedErrors.txt", this.output_data_path, fileNamePrefix + "_parsed2ndIteration");
         System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
         entries.addAll(secondIterationParsing.getEntries());
-        DictUtils.printList(secondIterationParsing.getEntries(),this.output_data_path,"savedEntries");
-        DictUtils.printList(secondIterationParsing.getErrors(),this.output_data_path,"remainingErrors");
+        DictUtils.printList(secondIterationParsing.getEntries(),this.output_data_path, fileNamePrefix + "_savedEntries");
+        DictUtils.printList(secondIterationParsing.getErrors(),this.output_data_path, fileNamePrefix + "_remainingErrors");
 
         System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
-        DictUtils.printList(entries,this.output_data_path, "finalParsingResultBrackets");
+        DictUtils.printList(entries,this.output_data_path, fileNamePrefix + "_finalResult");
 
     }
 
+    public void parsingWorkflow(String inputFilePath, String fileNamePrefix) throws IOException {
+
+        List<String> workflowList = new ArrayList<>();
+
+        workflowList = DictUtils.bracketCorrection(inputFilePath, ProcessPuter.output_data_path, fileNamePrefix + "_BracketsCorrected");
+        /* Check */ System.out.println("bracketCorrection durchgeführt.");
+        workflowList = DictUtils.addTags(workflowList);
+          /* Check */ System.out.println("Einträge mit Tags versehen.");
+        DictUtils.printList(workflowList,ProcessPuter.output_data_path,fileNamePrefix+"_taggedEntries");
+
+        statistics(inputFilePath);
+
+        ParsedToLists parsedToLists = parsePuter(output_data_path+fileNamePrefix+"_taggedEntries.txt", output_data_path, fileNamePrefix+"_parsed");
+        List<String> entries = parsedToLists.getEntries();
+        List<String> errors = parsedToLists.getErrors();
+        List<String> complexEntries = parsedToLists.getComplexEntries();
+
+        System.out.println("Entries enthält " + complexEntries.size() + " Enträge mit mehreren Genusformen");
+
+        // Umgang mit Einträgen mit mehreren Genus
+        List<String> processedComplexEntries = processComplexEntries(complexEntries);
+        System.out.println(processedComplexEntries.size() +" Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
+        entries.addAll(processedComplexEntries);
+
+        // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
+        cleanErrors(errors, this.output_data_path, fileNamePrefix+"_correctedErrors");
+        ParsedToLists secondIterationParsing = parsePuter(this.output_data_path + fileNamePrefix +"_correctedErrors.txt", this.output_data_path, fileNamePrefix + "_parsed2ndIteration");
+        System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
+        entries.addAll(secondIterationParsing.getEntries());
+        DictUtils.printList(secondIterationParsing.getEntries(),this.output_data_path, fileNamePrefix + "_savedEntries");
+        DictUtils.printList(secondIterationParsing.getErrors(),this.output_data_path, fileNamePrefix + "_remainingErrors");
+
+        System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
+        DictUtils.printList(entries,this.output_data_path, fileNamePrefix + "_finalResult");
+
+    }
+
+
+
     private void statistics(String inputFilePath) throws IOException {
         List<String> originalFileAsList = new ArrayList<String>();
-        Path file = Paths.get(this.output_data_path + "taggedPuterEntries.txt");
+        Path file = Paths.get(inputFilePath);
         DictUtils.getLines(originalFileAsList, file);
         System.out.println("\n" +
                 "\nDie eingelesene Datei hatte " + originalFileAsList.size() + " Zeilen");
 
-        List<String> linesWithoutStartingBlanks;
-        linesWithoutStartingBlanks = new ArrayList<String>();
+        List<String> linesWithoutStartingBlanks = new ArrayList<String>();
+
+        // Pattern for lines starting with 3 or more blanks
+        Pattern pattern = Pattern.compile("^(<E>)?[ ]+");
 
         for (String line: originalFileAsList) {
-            if(!line.startsWith("<E> ")) {
+
+            // Create matcher object
+            Matcher matcher = pattern.matcher(line);
+
+            // Check if the matcher's prefix match with the matcher's pattern
+            if (!matcher.lookingAt()) {
+                // add line to list
                 linesWithoutStartingBlanks.add(line);
             }
+            /*if(!line.startsWith("<E> ")) {
+                linesWithoutStartingBlanks.add(line);
+            }*/
         }
         System.out.println("Die eingelesene Datei hatte " + linesWithoutStartingBlanks.size() + " Zeilen, die nicht mit einem Leerzeichen beginnen.");
     }
@@ -143,7 +193,7 @@ public class ProcessPuter {
         return builder.toString();
     }
 
-    public void parsePuter(String file, String newFile, String outputpath)
+ /*   public void parsePuter(String file, String newFile, String outputpath)
             throws IOException {
 
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
@@ -170,13 +220,13 @@ public class ProcessPuter {
         DictUtils.printList(errors, outputpath, newFile + "_errors");
         System.out.println("errors: " + errors.size());
 
-    }
+    }*/
 
-    ParsedToLists parsePuterListReturn(String file, String newFile, String outputpath)
+    ParsedToLists parsePuter(String inputFilePath, String outputpath, String fileName)
             throws IOException {
 
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
-                new FileInputStream(file), "UTF8"));
+                new FileInputStream(inputFilePath), "UTF8"));
 
         PuterLexer lexer = new PuterLexer(input);
 
@@ -194,16 +244,16 @@ public class ProcessPuter {
 
         // PostProcs
         ArrayList<String> lemmas = loader.lemmas;
-        ArrayList<String> errors = getErrorLines(file, loader.errorLines);
+        ArrayList<String> errors = getErrorLines(inputFilePath, loader.errorLines);
         ArrayList<String> complexLemmas = filterComplexEntries(lemmas);
 
         // Output
 
-        DictUtils.printList(lemmas, outputpath, newFile);
+        DictUtils.printList(lemmas, outputpath, fileName);
         System.out.println("lemmas: " + lemmas.size());
-        DictUtils.printList(errors, outputpath, newFile + "_errors");
+        DictUtils.printList(errors, outputpath, fileName + "_errors");
         System.out.println("errors: " + loader.errorLines.size());
-        DictUtils.printList(complexLemmas, outputpath, newFile + "_complexLemmas");
+        DictUtils.printList(complexLemmas, outputpath, fileName + "_complexLemmas");
         System.out.println("complexLemmas: " + complexLemmas.size());
 
         return new ParsedToLists(lemmas, errors, complexLemmas);
@@ -463,37 +513,8 @@ public class ProcessPuter {
 
     }
 
-    public List<String> bracketCorrection(String inputFilePath, String output_data_path, String fileName) throws IOException {
 
-        List<String> entries = DictUtils.txtToList(inputFilePath);
-        List<String> correctedEntries = new ArrayList<String>();
-        List<String> corrected = new ArrayList<String>();
 
-        Iterator<String> entryIterator = entries.iterator();
-
-        for(String entry : entries){
-            int openingbrackets = StringUtils.countOccurrencesOf(entry, "(");
-            int closingbrackets = StringUtils.countOccurrencesOf(entry, ")");
-
-            int dif = openingbrackets - closingbrackets;
-
-            if (dif > 0) {
-                //System.out.println(entry);
-                corrected.add(entry);
-                for(int i = 0; i < dif; i++) {
-                    entry = entry + ")";
-                }
-                corrected.add(entry);
-            }
-            correctedEntries.add(entry);
-
-        }
-        DictUtils.printList(corrected,output_data_path,"infoOutputBrackets");
-        System.out.println("Es wurden in " + corrected.size()/2 + " Zeilen fehlende schließende Klammern ergänzt.");
-        DictUtils.printList(correctedEntries,output_data_path,fileName);
-
-        return correctedEntries;
-    }
 
 
 }
