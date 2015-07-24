@@ -34,7 +34,7 @@ public class Puter_VFGenerator {
 			return count;
 	}
 
-	public Map<String, TreeSet<String>> generateVollForms(DBCollection collection)
+	public Map<String, TreeSet<String>> generateFullForms(DBCollection collection)
 				throws UnknownHostException {
 			DBCursor cursor = collection.find();
 			count = 0;
@@ -60,10 +60,11 @@ public class Puter_VFGenerator {
 					}
 					addVF(entry, eagles_pos);
 					addIrregularVerbs();
-//					addPrepositions();
+					addPrepositions();
 					addPrep_Art();
 					addPronouns();
-//					addConjunctions();
+					addConjunctions();
+					addInterjections();
 					addArticles();
 //					addIrregularAdjectives();
 					
@@ -71,6 +72,196 @@ public class Puter_VFGenerator {
 			}
 			return vollForms;
 		}
+
+	private void addInterjections() {
+
+		addVF("au", "INT");
+		addVF("oh", "INT");
+		addVF("aia", "INT");
+		addVF("oi", "INT");
+		addVF("u", "INT");
+		addVF("uah", "INT");
+		addVF("juhè", "INT");
+		addVF("juhui", "INT");
+		addVF("juhuhu", "INT");
+		addVF("o", "INT");
+		addVF("hai", "INT");
+		addVF("hahaha", "INT");
+		addVF("öi", "INT");
+		addVF("hopla", "INT");
+		addVF("hui", "INT");
+		addVF("stramino", "INT");
+		addVF("perbacca", "INT");
+		addVF("arsü", "INT");
+		addVF("tschà", "INT");
+		addVF("hü", "INT");
+		addVF("hop", "INT");
+		addVF("dai", "INT");
+		addVF("halt", "INT");
+		addVF("vè", "INT");
+		addVF("bombom", "INT");
+		addVF("Olà", "INT");
+
+		addVF("vau-vau", "INT");
+		addVF("mu", "INT");
+		addVF("me-me", "INT");
+		addVF("brrr", "INT");
+		addVF("zaccate", "INT");
+		addVF("ssst", "INT");
+		addVF("tacate", "INT");
+		addVF("tictac", "INT");
+		addVF("clipclap", "INT");
+		addVF("bimbam", "INT");
+		addVF("pamfati", "INT");
+		addVF("patipum", "INT");
+		addVF("plumf", "INT");
+		addVF("prum", "INT");
+
+	}
+
+	private void addConjunctions() {
+
+		// koordinierende Konjunktionen
+		addVF("alura", "CONJ_C");
+		addVF("e", "CONJ_C");
+		addVF("eir", "CONJ_C");
+		addVF("inpü", "CONJ_C");
+		addVF("pü", "CONJ_C");
+		addVF("inavanunt", "CONJ_C");
+		addVF("nu", "CONJ_C");addVF("ne", "CONJ_C");
+		addVF("na", "CONJ_C");addVF("be", "CONJ_C");
+		addVF("ma", "CONJ_C");addVF("eir", "CONJ_C");
+		addVF("pü", "CONJ_C");addVF("cha", "CONJ_C");
+		addVF("e", "CONJ_C");addVF("pü", "CONJ_C");
+
+		addVF("u", "CONJ_C");
+		addVF("bain", "CONJ_C");
+		addVF("alura", "CONJ_C");
+		addVF("scha", "CONJ_C");
+		addVF("na", "CONJ_C");
+		addVF("uschigliö", "CONJ_C");
+		addVF("bod", "CONJ_C");
+		addVF("per", "CONJ_C");addVF("port", "CONJ_C");
+
+		addVF("ma", "CONJ_C");
+		addVF("mo", "CONJ_C");
+		addVF("percunter", "CONJ_C");
+		addVF("però", "CONJ_C");
+		addVF("invezza", "CONJ_C");
+		addVF("tuottüna", "CONJ_C");
+		addVF("be", "CONJ_C");
+		addVF("impè", "CONJ_C");
+		addVF("listess", "CONJ_C");
+		addVF("bainschi", "CONJ_C");
+
+		addVF("dimena", "CONJ_C");
+		addVF("uschè", "CONJ_C");
+		addVF("so", "CONJ_C");
+		addVF("perque", "CONJ_C");
+		addVF("perche", "CONJ_C");
+
+		// subordinierende Konjunktionen
+		addVF("cha", "CONJ_S");
+		addVF("apaina", "CONJ_S");
+		addVF("aunz", "CONJ_S");
+		addVF("cur", "CONJ_S");
+		addVF("dalum", "CONJ_S");
+		addVF("daspö", "CONJ_S");
+		addVF("fin", "CONJ_S");
+		addVF("fintaunt", "CONJ_S");
+		addVF("intaunt", "CONJ_S");
+		addVF("oussa", "CONJ_S");
+		addVF("zinva", "CONJ_S");
+		addVF("spettand", "CONJ_S");
+		addVF("udind", "CONJ_S");
+		addVF("aviant", "CONJ_S");addVF("vis", "CONJ_S");
+
+		addVF("cu", "CONJ_S");
+		addVF("scu", "CONJ_S");
+		addVF("inna", "CONJ_S");
+		addVF("dinnoder", "CONJ_S");
+		addVF("na", "CONJ_S");
+		addVF("sainza", "CONJ_S");
+		addVF("dschand", "CONJ_S");
+		addVF("pretendand", "CONJ_S");
+
+		addVF("cumbian", "CONJ_S");
+		addVF("cuntuot", "CONJ_S");
+		addVF("da", "CONJ_S");addVF("möd", "CONJ_S");
+		addVF("maniera", "CONJ_S");
+		addVF("gia", "CONJ_S");
+		addVF("in", "CONJ_S");addVF("cas", "CONJ_S");
+		addVF("scha", "CONJ_S");
+		addVF("oramai", "CONJ_S");
+		addVF("premiss", "CONJ_S");
+		addVF("per", "CONJ_S");
+		addVF("perche", "CONJ_S");
+		addVF("schabain", "CONJ_S");
+		addVF("tauntpü", "CONJ_S");
+		addVF("uschè", "CONJ_S");
+		addVF("siand", "CONJ_S");
+		addVF("saviand", "CONJ_S");
+		addVF("sperand", "CONJ_S");
+		addVF("aviand", "CONJ_S");addVF("savien", "CONJ_S");
+		addVF("sperocha", "CONJ_S");
+	}
+
+	private void addPrepositions() {
+
+		addVF("a", "PREP");
+		addVF("ad", "PREP");
+		addVF("a prô da", "PREP");
+
+		addVF("aint", "PREP");
+		addVF("aunz", "PREP");
+		addVF("avaunt", "PREP");
+
+		addVF("cun", "PREP");
+		addVF("cunter", "PREP");
+		addVF("da", "PREP");
+		addVF("dad", "PREP");
+		addVF("dasper", "PREP");
+		addVF("sper", "PREP");
+		addVF("daspö", "PREP");
+		addVF("davart", "PREP");
+		addVF("davaunt", "PREP");
+		addVF("davons", "PREP");
+		addVF("düraunt", "PREP");
+		addVF("fin", "PREP");
+
+		addVF("in", "PREP");
+		addVF("infra", "PREP");
+		addVF("intuorn", "PREP");
+		addVF("iver", "PREP");
+		addVF("per", "PREP");
+		addVF("sainza", "PREP");
+		addVF("seguond", "PREP");
+		addVF("suainter", "PREP");
+		addVF("sün", "PREP");
+		addVF("sül", "PREP");
+		addVF("suot", "PREP");
+		addVF("sur", "PREP");
+		addVF("tar", "PREP");
+
+		addVF("tenor", "PREP");
+		addVF("traunter", "PREP");
+		addVF("tres", "PREP");
+		addVF("ultra", "PREP");
+		addVF("vers", "PREP");
+		addVF("vi", "PREP");
+		addVF("zieva", "PREP");
+		addVF("nodvart", "PREP");
+		addVF("vidvart", "PREP");
+		addVF("giosom", "PREP");
+
+		addVF("süsom", "PREP");
+		addVF("nosom", "PREP");
+		addVF("visom", "PREP");
+		addVF("aintasom", "PREP");
+		addVF("ourasom", "PREP");
+
+	}
+
 		
 	private void generateSubstantiveForms(String entry) {
 			

@@ -27,6 +27,88 @@ public class ProcessVallader {
     public static String input_data_path = "../arc.data/input/";
     public static String vallader_input = ProcessVallader.input_data_path + "tscharner-20140715_20140923-20150318.pdf";
 
+    // Neue Methoden aus ProcessPuter übernommen
+    public void extractionWorkflow(String fileNamePrefix) throws IOException {
+
+        PdfXStreamExtractor pdfExt = new PdfXStreamExtractor();
+        pdfExt.extractWithPDFTextStream(vallader_input,this.output_data_path, fileNamePrefix+"_PdfExtraction");
+
+        String inputFilePath = this.output_data_path + fileNamePrefix +"_PdfExtraction.txt";
+
+        List<String> workflowList = new ArrayList<>();
+
+        workflowList = DictUtils.bracketCorrection(inputFilePath, output_data_path, fileNamePrefix + "_BracketsCorrected");
+        /* Check */ System.out.println("bracketCorrection durchgeführt.");
+        workflowList = DictUtils.addTags(workflowList);
+          /* Check */ System.out.println("Einträge mit Tags versehen.");
+        DictUtils.printList(workflowList,output_data_path,fileNamePrefix+"_taggedEntries");
+
+        statistics(inputFilePath);
+
+        ParsedToLists parsedToLists = parseVallader(output_data_path + fileNamePrefix + "_taggedEntries.txt", output_data_path, fileNamePrefix + "_parsed");
+        List<String> entries = parsedToLists.getEntries();
+        List<String> errors = parsedToLists.getErrors();
+        List<String> complexEntries = parsedToLists.getComplexEntries();
+
+        System.out.println("Entries enthält " + complexEntries.size() + " Enträge mit mehreren Genusformen");
+
+        // Umgang mit Einträgen mit mehreren Genus
+        List<String> processedComplexEntries = processComplexEntries(complexEntries);
+        System.out.println(processedComplexEntries.size() +" Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
+        entries.addAll(processedComplexEntries);
+
+        // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
+        cleanErrors(errors, this.output_data_path, fileNamePrefix+"_correctedErrors");
+        ParsedToLists secondIterationParsing = parseVallader(this.output_data_path + fileNamePrefix + "_correctedErrors.txt", this.output_data_path, fileNamePrefix + "_parsed2ndIteration");
+        System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
+        entries.addAll(secondIterationParsing.getEntries());
+        DictUtils.printList(secondIterationParsing.getEntries(),this.output_data_path, fileNamePrefix + "_savedEntries");
+        DictUtils.printList(secondIterationParsing.getErrors(),this.output_data_path, fileNamePrefix + "_remainingErrors");
+
+        System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
+        DictUtils.printList(entries,this.output_data_path, fileNamePrefix + "_finalResult");
+
+    }
+
+    public void parsingWorkflow(String inputFilePath, String fileNamePrefix) throws IOException {
+
+        List<String> workflowList = new ArrayList<>();
+
+        workflowList = DictUtils.removeIndentedLines(inputFilePath);
+        workflowList = DictUtils.bracketCorrection(workflowList, output_data_path, fileNamePrefix + "_BracketsCorrected");
+        /* Check */ System.out.println("bracketCorrection durchgeführt.");
+        workflowList = DictUtils.addTags(workflowList);
+          /* Check */ System.out.println("Einträge mit Tags versehen.");
+        DictUtils.printList(workflowList,output_data_path,fileNamePrefix+"_taggedEntries");
+
+        statistics(inputFilePath);
+
+        ParsedToLists parsedToLists = parseVallader(output_data_path + fileNamePrefix + "_taggedEntries.txt", output_data_path, fileNamePrefix + "_parsed");
+        List<String> entries = parsedToLists.getEntries();
+        List<String> errors = parsedToLists.getErrors();
+        List<String> complexEntries = parsedToLists.getComplexEntries();
+
+        System.out.println("Entries enthält " + complexEntries.size() + " Enträge mit mehreren Genusformen");
+
+        // Umgang mit Einträgen mit mehreren Genus
+        List<String> processedComplexEntries = processComplexEntries(complexEntries);
+        System.out.println(processedComplexEntries.size() +" Einträge wurden zusätzlich aus komplexen Einträgen gewonnen");
+        entries.addAll(processedComplexEntries);
+
+        // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
+        cleanErrors(errors, this.output_data_path, fileNamePrefix+"_correctedErrors");
+        ParsedToLists secondIterationParsing = parseVallader(this.output_data_path + fileNamePrefix + "_correctedErrors.txt", this.output_data_path, fileNamePrefix + "_parsed2ndIteration");
+        System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
+        entries.addAll(secondIterationParsing.getEntries());
+        DictUtils.printList(secondIterationParsing.getEntries(),this.output_data_path, fileNamePrefix + "_savedEntries");
+        DictUtils.printList(secondIterationParsing.getErrors(),this.output_data_path, fileNamePrefix + "_remainingErrors");
+
+        System.out.println("Es wurden nach 2 Durchgängen " + entries.size()+ " Einträge korrekt geparst");
+        DictUtils.printList(entries,this.output_data_path, fileNamePrefix + "_finalResult");
+
+    }
+    // Neue Methoden aus Puter ENDE
+
     public void extractionWorkflow() throws IOException {
 
         PdfXStreamExtractor pdfExt = new PdfXStreamExtractor();
@@ -35,13 +117,17 @@ public class ProcessVallader {
         String inputFilePath = output_data_path + "ValladerPdfExtraction.txt";
 
         statistics(inputFilePath);
+        // remove indendetLines
+        List<String> reducedLines = DictUtils.removeIndentedLines(output_data_path + "ValladerPdfExtraction.txt");
+        DictUtils.printList(reducedLines, output_data_path, "reducedValladerPdfExtraction");
+        // end remove indendet Lines
 
-        bracketCorrection(output_data_path + "ValladerPdfExtraction.txt", output_data_path, "ValladerBracketsCorrected");
+        DictUtils.bracketCorrection(output_data_path + "reducedValladerPdfExtraction.txt", output_data_path, "ValladerBracketsCorrected");
         List<String> taggedEntries = DictUtils.addTags(output_data_path +"/ValladerBracketsCorrected.txt");
         DictUtils.printList(taggedEntries,output_data_path,"taggedValladerEntries");
 
 
-        ParsedToLists parsedToLists = parseValladerListReturn(output_data_path + "/taggedValladerEntries.txt", "parsedValladerBrackets", ProcessVallader.output_data_path);
+        ParsedToLists parsedToLists = parseVallader(output_data_path + "/taggedValladerEntries.txt", "parsedValladerBrackets", ProcessVallader.output_data_path);
         List<String> entries = parsedToLists.getEntries();
         List<String> errors = parsedToLists.getErrors();
         List<String> complexEntries = parsedToLists.getComplexEntries();
@@ -61,7 +147,7 @@ public class ProcessVallader {
 
         // Umgang mit Parsingfehlern: Korrekturen und erneut parsen
         cleanErrors(parsedToLists.getErrors(), output_data_path, "correctedErrorsBrackets");
-        ParsedToLists secondIterationParsing = parseValladerListReturn(ProcessVallader.output_data_path + "/correctedErrorsBrackets.txt", "parsedVallader2ndIterationBrackets", ProcessVallader.output_data_path);
+        ParsedToLists secondIterationParsing = parseVallader(ProcessVallader.output_data_path + "/correctedErrorsBrackets.txt", "parsedVallader2ndIterationBrackets", ProcessVallader.output_data_path);
         System.out.println("Der zweite Durchgang erbrachte " + secondIterationParsing.getEntries().size() + " weitere korrekt geparste Einträge");
         entries.addAll(secondIterationParsing.getEntries());
         DictUtils.printList(secondIterationParsing.getEntries(),output_data_path,"savedEntries");
@@ -82,10 +168,22 @@ public class ProcessVallader {
         List<String> linesWithoutStartingBlanks;
         linesWithoutStartingBlanks = new ArrayList<String>();
 
+        // Pattern for lines starting with 3 or more blanks
+        Pattern pattern = Pattern.compile("^(<E>)?[ ]+");
+
         for (String line: originalFileAsList) {
-            if(!line.startsWith("<E> ")) {
+
+            // Create matcher object
+            Matcher matcher = pattern.matcher(line);
+
+            // Check if the matcher's prefix match with the matcher's pattern
+            if (!matcher.lookingAt()) {
+                // add line to list
                 linesWithoutStartingBlanks.add(line);
             }
+            /*if(!line.startsWith("<E> ")) {
+                linesWithoutStartingBlanks.add(line);
+            }*/
         }
         System.out.println("Die eingelesene Datei hatte " + linesWithoutStartingBlanks.size() + " Zeilen, die nicht mit einem Leerzeichen beginnen.");
     }
@@ -134,6 +232,8 @@ public class ProcessVallader {
         return entryList;
     }
 
+
+
     private String addTags(String string) {
         StringBuilder builder = new StringBuilder();
         builder.append("<E>");
@@ -142,7 +242,7 @@ public class ProcessVallader {
         return builder.toString();
     }
 
-    public void parseVallader(String file, String newFile, String outputpath)
+/*    public void parseVallader(String file, String newFile, String outputpath)
             throws IOException {
 
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
@@ -169,13 +269,13 @@ public class ProcessVallader {
         DictUtils.printList(errors, outputpath, newFile + "_errors");
         System.out.println("errors: " + errors.size());
 
-    }
+    }*/
 
-    public ParsedToLists parseValladerListReturn(String file, String newFile, String outputpath)
+    public ParsedToLists parseVallader(String inputFilePath, String outputpath, String newFile)
             throws IOException {
 
         ANTLRInputStream input = new ANTLRInputStream(new InputStreamReader(
-                new FileInputStream(file), "UTF8"));
+                new FileInputStream(inputFilePath), "UTF8"));
 
         ValladerLexer lexer = new ValladerLexer(input);
 
@@ -193,7 +293,7 @@ public class ProcessVallader {
 
         // PostProcs
         ArrayList<String> lemmas = loader.lemmas;
-        ArrayList<String> errors = getErrorLines(file, loader.errorLines);
+        ArrayList<String> errors = getErrorLines(inputFilePath, loader.errorLines);
         ArrayList<String> complexLemmas = filterComplexEntries(lemmas);
 
         // Output
@@ -461,38 +561,4 @@ public class ProcessVallader {
         DictUtils.printList(notCorrectedList, ProcessVallader.output_data_path, "notCorrectedErrors");
 
     }
-
-    public List<String> bracketCorrection(String inputFilePath, String output_data_path, String fileName) throws IOException {
-
-        List<String> entries = DictUtils.txtToList(inputFilePath);
-        List<String> correctedEntries = new ArrayList<String>();
-        List<String> corrected = new ArrayList<String>();
-
-        Iterator<String> entryIterator = entries.iterator();
-
-        for(String entry : entries){
-            int openingbrackets = StringUtils.countOccurrencesOf(entry,"(");
-            int closingbrackets = StringUtils.countOccurrencesOf(entry, ")");
-
-            int dif = openingbrackets - closingbrackets;
-
-            if (dif > 0) {
-                //System.out.println(entry);
-                corrected.add(entry);
-                for(int i = 0; i < dif; i++) {
-                    entry = entry + ")";
-                }
-                corrected.add(entry);
-            }
-            correctedEntries.add(entry);
-
-        }
-        DictUtils.printList(corrected,ProcessVallader.output_data_path,"infoOutputBrackets");
-        System.out.println("Es wurden in " + corrected.size()/2 + " Zeilen fehlende schließende Klammern ergänzt.");
-        DictUtils.printList(correctedEntries,ProcessVallader.output_data_path,fileName);
-
-        return correctedEntries;
-    }
-
-
 }
