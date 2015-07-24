@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author geduldia
- *         <p/>
+ *         <p>
  *         Das ist die 'Mutter'-Klasse zu den Idiom-spezifischen Taggern
  *         Im Konstrukter MUSS eine VF-Liste übergeben werden und der CollectionName (für die Ausgabe in der .txt-datei)
  */
@@ -35,13 +35,13 @@ public abstract class POSMatcher implements Serializable {
      * - ein Boolean der sich merkt, ob der vorherige Token am Satzende stand
      * - der Name der zu Grunde gelegten Collection
      * - vier booleans die speichern, welche Wortarten 'per Hand' nachgetaggt werden sollen
-     * <p/>
+     * <p>
      * Es können nachgetagg werden:
      * 1. Namen = Großgeschrieben, aber nicht am Satzanfang
      * 2. Infinitivverben = Endung auf -ar, -er oder -ir
      * 3. Adverbien = Wörter mit der Idiomspezifischen Adverbendung (wird in der entsprechenden Subklasse definiert)
      * 4. Indikativ Imperfekt Verbformen = Wörter mit der idiomspezifischen IndImperfekt-Endung (wird in der entsprechenden Subklasse definiert)
-     * <p/>
+     * <p>
      * Die Boolean-Werte werden über die Methode configure() festgelegt
      */
     private Map<String, TreeSet<String>> fullForms = new TreeMap<String, TreeSet<String>>();
@@ -94,8 +94,10 @@ public abstract class POSMatcher implements Serializable {
     }
 
 
-    public ArrayList<Token> matchTokensWithPOS(List<Token> tokens) {
+    public List<Token> matchTokensWithPOS(List<Token> tokens, String idiom) throws IOException {
         ArrayList<Token> matches = new ArrayList<>();
+        ArrayList<Token> not_matched = new ArrayList<>();
+
         this.currentDot = false;
         this.previousDot = false;
         for (Token nextToken : tokens) {
@@ -108,8 +110,14 @@ public abstract class POSMatcher implements Serializable {
                 token.setPos(tags);
                 token.setIndex(nextToken.getIndex());
                 matches.add(token);
+            } else {
+                not_matched.add(nextToken);
+
+
             }
         }
+
+        FileUtils.printList(not_matched, FileUtils.outputPath, idiom + "_notmatched");
 
         return matches;
 

@@ -152,7 +152,6 @@ public class FileUtils {
 //        }
 
 
-
         for (List<String> list : sentences) {
 
             for (String s : list) {
@@ -218,6 +217,33 @@ public class FileUtils {
         }
         return normalized;
     }
+
+
+    public static Map<String, TreeSet<String>> readFullForms(String fileName)
+            throws Exception {
+
+        ObjectInputStream inputStream = new ObjectInputStream(
+                new FileInputStream(FileUtils.outputPath + fileName));
+
+        Map<String, TreeSet<String>> fullForms = (Map<String, TreeSet<String>>) inputStream
+                .readObject();
+        inputStream.close();
+        return fullForms;
+    }
+
+    public static <K, V> void writeFullforms(Map<K, V> fullForms, String idiom)
+            throws IOException {
+
+        ObjectOutputStream outputStream = new ObjectOutputStream(
+                new FileOutputStream(FileUtils.outputPath + idiom + "fullforms_"
+                        + FileUtils.getISO8601StringForCurrentDate()));
+
+        outputStream.writeObject(fullForms);
+
+        outputStream.close();
+
+    }
+
 
 
 }

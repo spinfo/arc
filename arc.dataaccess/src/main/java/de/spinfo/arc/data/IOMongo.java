@@ -817,6 +817,30 @@ public class IOMongo {
         return sursilvanTokens;
     }
 
+
+    public List<WordImpl> valladerTokensInRange(
+            List<LanguageRange> languageRange) {
+
+        List<WordImpl> valladerTokens = new ArrayList<>();
+
+        for (LanguageRange lr : languageRange) {
+
+            if (lr.getTitle().equals("Vallader")) {
+
+                List<WordImpl> wordsOfLang = wordQueries.getWordsByRange(lr);
+                for (WordImpl val : wordsOfLang) {
+
+                    valladerTokens.add(val);
+                }
+
+            }
+        }
+
+        return valladerTokens;
+    }
+
+
+
     public void getModel(Map<Integer, String> goldenMap) throws IOException {
 
         File file = new File(FileUtils.outputPath + "model"
