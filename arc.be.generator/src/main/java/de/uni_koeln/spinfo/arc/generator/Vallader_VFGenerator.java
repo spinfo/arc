@@ -6,9 +6,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,11 +63,99 @@ public class Vallader_VFGenerator {
                 addPronouns();
                 addConjunctions();
                 addArticles();
-                //	addAdjectives();
+                addAdjectives();
 
             }
         }
         return vollForms;
+    }
+
+    private void addAdjectives() {
+
+
+        addVF("clap", "ADJ");
+        addVF("tim", "ADJ");
+        addVF("schnat", "ADJ");
+        addVF("vaira", "ADJ");
+        addVF("giuven", "ADJ");
+        addVF("giuvens", "ADJ");
+        addVF("giuven", "ADJ");
+        addVF("giuvna", "ADJ");
+        addVF("giuvnas", "ADJ");
+        addVF("insalà", "ADJ");
+        addVF("insalàs", "ADJ");
+        addVF("insalada", "ADJ");
+        addVF("insaladas", "ADJ");
+        addVF("nöbel", "ADJ");
+        addVF("nöbels", "ADJ");
+        addVF("nobla", "ADJ");
+        addVF("noblas", "ADJ");
+        addVF("pover", "ADJ");
+        addVF("povers", "ADJ");
+        addVF("povra", "ADJ");
+        addVF("povras", "ADJ");
+        addVF("vegl", "ADJ");
+        addVF("veglia", "ADJ");
+        addVF("vegls", "ADJ");
+        addVF("veglias", "ADJ");
+        addVF("larg", "ADJ");
+        addVF("largs", "ADJ");
+        addVF("largia", "ADJ");
+        addVF("largias", "ADJ");
+
+
+
+        addVF("quist", "ADJ_DEM");
+        addVF("quists", "ADJ_DEM");
+        addVF("quista", "ADJ_DEM");
+        addVF("quistas", "ADJ_DEM");
+        addVF("quel", "ADJ_DEM");
+        addVF("quels", "ADJ_DEM");
+        addVF("quella", "ADJ_DEM");
+        addVF("quellas", "ADJ_DEM");
+
+
+        Set<String> adjs = new HashSet<>();
+
+        adjs.add("bun");
+        adjs.add("bel");
+        adjs.add("banadi");
+        adjs.add("brav");
+        adjs.add("spür");
+        adjs.add("schet");
+        adjs.add("tschert");
+        adjs.add("tal");
+        adjs.add("ter");
+        adjs.add("char");
+        adjs.add("cuntschaint");
+        adjs.add("cuort");
+        adjs.add("different");
+        adjs.add("dret");
+        adjs.add("fin");
+        adjs.add("fos");
+        adjs.add("inter");
+        adjs.add("lung");
+        adjs.add("nouv");
+        adjs.add("schür");
+        adjs.add("trid");
+        adjs.add("trist");
+        adjs.add("vast");
+
+
+        for (String s : adjs) {
+            //Add fem
+            adjs.add(s + "a");
+            //Add plural
+            adjs.add(s + "s");
+
+        }
+
+        //Add to VFL
+        for (String s : adjs) {
+            addVF(s, "ADJ");
+        }
+
+
     }
 
     private void generateSubstantiveForms(String entry) {
