@@ -823,7 +823,6 @@ public class Puter_VFGenerator {
 			addVF("tai", "PRON_PER");
 			
 			// reflexiv
-			//TODO: Reflexivpronomen? Es gibt noch kein eigenes pos PRON_REF
 			addVF("am", "PRON_REF");
 			addVF("at", "PRON_REF");
 			addVF("as", "PRON_REF");
