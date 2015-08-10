@@ -60,12 +60,12 @@ public class Vallader_VFGenerator {
                 }
                 addVF(entry, eagles_pos);
                 addIrregularVerbs();
-//				addPrepositions();
+                addPrepositions();
                 addPrep_Art();
                 addPronouns();
-//				addConjunctions();
+                addConjunctions();
                 addArticles();
-//				addAdjectives();
+                //	addAdjectives();
 
             }
         }
@@ -321,6 +321,63 @@ public class Vallader_VFGenerator {
         addSubstantivPluralAndOtherSuffixes(femEntry);
 
     }
+
+
+    private void addPrepositions() {
+
+        addVF("a", "PREP");
+        addVF("ad", "PREP");
+        addVF("aint", "PREP");
+        addVF("ant", "PREP");
+        addVF("cun", "PREP");
+        addVF("cunter", "PREP");
+        addVF("da", "PREP");
+        addVF("dad", "PREP");
+        addVF("d'", "PREP");
+        addVF("dasper", "PREP");
+        addVF("daspö", "PREP");
+        addVF("davo", "PREP");
+        addVF("davant", "PREP");
+        addVF("davart", "PREP");
+        addVF("davent", "PREP");
+        addVF("immez", "PREP");
+        addVF("impè", "PREP");
+        addVF("in", "PREP");
+        addVF("infin", "PREP");
+        addVF("intuorn", "PREP");
+        addVF("invers", "PREP");
+        addVF("malgrà", "PREP");
+        addVF("sur", "PREP");
+        addVF("suot", "PREP");
+        addVF("sainza", "PREP");
+        addVF("lung", "PREP");
+        addVF("per", "PREP");
+        addVF("pro", "PREP");
+
+
+    }
+
+
+    private void addConjunctions() {
+
+        //Most conjunctions are composed of two words
+
+        addVF("adonta", "CONJ_S");
+        addVF("afin", "CONJ_S");
+        addVF("avant", "CONJ_S");
+        addVF("chi", "CONJ_S");
+        addVF("cha", "CONJ_S");
+        addVF("impè", "CONJ_S");
+        addVF("o", "CONJ_S");
+        addVF("obain", "CONJ_S");
+
+
+        addVF("e", "CONJ_C");
+        addVF("ed", "CONJ_C");
+
+
+    }
+
 
     private void addSubstantivPluralAndOtherSuffixes(String entry) {
         // feminin plural

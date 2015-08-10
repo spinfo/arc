@@ -26,6 +26,7 @@ public class ValladerMatcher extends POSMatcher {
     }
 
 
+
     @Override
     public boolean isAdverb(String token) {
         if (token.endsWith("maing")) {
@@ -33,4 +34,6 @@ public class ValladerMatcher extends POSMatcher {
         }
         return false;
     }
+
+
 }
