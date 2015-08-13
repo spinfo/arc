@@ -735,10 +735,16 @@ public class DictUtils {
 		return correctedEntries;
 	}
 
-	public static List<String> removeIndentedLines (String inFilePath) throws IOException {
+	public static List<String> removeIndentedLines (String inFilePath, String outputPath, String fileName) throws IOException {
 
 		List<String> entryList = FileUtils.fileToList(inFilePath);
+		return removeIndentedLines(entryList, outputPath, fileName);
+	}
+
+	public static List<String> removeIndentedLines (List<String> entryList, String outputPath, String fileName) throws IOException {
+
 		List<String> resultList = new ArrayList<String>();
+		List<String> dumpedList = new ArrayList<String>();
 
 		String currentLine;
 
@@ -754,10 +760,129 @@ public class DictUtils {
 			if (!matcher.lookingAt()) {
 				// add line to list
 				resultList.add(entry);
+			} else {
+				dumpedList.add(entry);
 			}
 		}
 
+		DictUtils.printList(dumpedList,outputPath,fileName);
 		return resultList;
+	}
+
+	public static List<String> splitTwoColumnLines (String inFilePath, String outputPath, String fileName) throws IOException {
+
+		List<String> entryList = FileUtils.fileToList(inFilePath);
+		return splitTwoColumnLines(entryList, outputPath, fileName);
+	}
+
+	public static List<String> splitTwoColumnLines (List<String> entryList, String outputPath, String fileName) throws IOException {
+
+		List<String> resultList = new ArrayList<String>();
+
+		for (String entry : entryList) {
+
+			String[] splits = entry.split("[ ]{4,}");
+			for (int i = 0; i < splits.length; i++) {
+				resultList.add(splits[i]);
+			}
+		}
+
+		DictUtils.printList(resultList, outputPath, fileName);
+		return resultList;
+	}
+
+	public static void separateLemmasShorterThan(String filePath,String outPath, int lemmalength) throws IOException {
+		List<String> shortLemmas = new ArrayList<String>();
+		List<String> longerLemmas = new ArrayList<String>();
+
+		List<String> extraction = FileUtils.fileToList(filePath);
+		for (String entry : extraction) {
+			String[] entryComps = entry.split("\\$");
+
+			if (entryComps[0].length() < lemmalength) {
+				shortLemmas.add(entry);
+			} else {
+				longerLemmas.add(entry);
+			}
+		}
+
+		printList(longerLemmas, outPath, "lemmasLongerThan"+lemmalength);
+		printList(shortLemmas, outPath, "lemmasShorterThan"+lemmalength);
+	}
+
+	public static void separateLemmasWithLengthOf(String filePath,String outPath, int lemmalength) throws IOException {
+		List<String> shortLemmas = new ArrayList<String>();
+		List<String> longerLemmas = new ArrayList<String>();
+
+		List<String> extraction = FileUtils.fileToList(filePath);
+		for (String entry : extraction) {
+			String[] entryComps = entry.split("\\$");
+
+			if (entryComps[0].length() == lemmalength) {
+				shortLemmas.add(entry);
+			} else {
+				longerLemmas.add(entry);
+			}
+		}
+
+		printList(longerLemmas, outPath, "lemmasWithLengthOf"+lemmalength);
+		printList(shortLemmas, outPath, "lemmasWithOtherLengthsThan"+lemmalength);
+	}
+
+	public static void findGermanLemmas(String germanwordlistPath, String rumantschDictPath, String outPath) throws IOException {
+		List<String> germanWords = FileUtils.fileToList(germanwordlistPath);
+		System.out.println(germanWords.size());
+		List<String> rumantschWords= new ArrayList<String>();
+
+
+		System.out.println(germanWords.get(25)+ germanWords.get(25).length());
+
+		List<String> rumantschDict = FileUtils.fileToList(rumantschDictPath);
+		for (String entry : rumantschDict) {
+			String[] entryComps = entry.split("\\$");
+
+			rumantschWords.add(entryComps[0]);
+		}
+		System.out.println("RumantschWordsList erzeugt");
+
+		DictUtils.printList(rumantschWords, outPath, "RumantschWordList");
+
+		List<String> removedWords = new ArrayList<String>();
+		removedWords.addAll(rumantschWords);
+
+		System.out.println("Start removeAll");
+		System.out.println("rumantschWords before:" +rumantschWords.size());
+		rumantschWords.removeAll(germanWords);
+		System.out.println("rumantschWords after:" +rumantschWords.size());
+		DictUtils.printList(rumantschWords, outPath, "retainedRumantschWords");
+		System.out.println("removeAll fertig");
+
+		System.out.println("Start retainAll");
+		System.out.println("removedWords before:" +removedWords.size());
+		removedWords.removeAll(rumantschWords);
+		System.out.println("removedWords after:" +removedWords.size());
+		DictUtils.printList(removedWords, outPath, "removedGermanWords");
+		System.out.println("retainAll fertig");
+
+	}
+
+	public static void removeGermanLemmas(String foundGermanWordsListPath, String rumantschDictPath, String outPath) throws IOException {
+		List<String> foundGermanWords = FileUtils.fileToList(foundGermanWordsListPath);
+
+		List<String> rumantschDict = FileUtils.fileToList(rumantschDictPath);
+		System.out.println("rumantschDict has " + rumantschDict.size() + " enties.");
+		List<String> resultDict = new ArrayList<String>();
+
+		for (String entry : rumantschDict) {
+			String[] entryComps = entry.split("\\$");
+			if (!foundGermanWords.contains(entryComps[0])) {
+				resultDict.add(entry);
+			} else {
+				System.out.println(entry + "wird entfernt.");
+			}
+		}
+		System.out.println("resultDict has " + resultDict.size() + " enties. These are " + (rumantschDict.size()-resultDict.size()) + "less entries.");
+		DictUtils.printList(resultDict, outPath, "GermanLemmasRemoved");
 	}
 
 }

@@ -74,7 +74,7 @@ public class ProcessVallader {
 
         List<String> workflowList = new ArrayList<>();
 
-        workflowList = DictUtils.removeIndentedLines(inputFilePath);
+        workflowList = DictUtils.removeIndentedLines(inputFilePath, output_data_path, fileNamePrefix+"dumpedLines");
         workflowList = DictUtils.bracketCorrection(workflowList, output_data_path, fileNamePrefix + "_BracketsCorrected");
         /* Check */ System.out.println("bracketCorrection durchgeführt.");
         workflowList = DictUtils.addTags(workflowList);
@@ -118,7 +118,7 @@ public class ProcessVallader {
 
         statistics(inputFilePath);
         // remove indendetLines
-        List<String> reducedLines = DictUtils.removeIndentedLines(output_data_path + "ValladerPdfExtraction.txt");
+        List<String> reducedLines = DictUtils.removeIndentedLines(output_data_path + "ValladerPdfExtraction.txt",output_data_path,"dumpedLines");
         DictUtils.printList(reducedLines, output_data_path, "reducedValladerPdfExtraction");
         // end remove indendet Lines
 

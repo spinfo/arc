@@ -251,5 +251,15 @@ public class ProcessVallader_Test {
         processor.parsingWorkflow(processor.output_data_path+"Extraction2_PdfExtraction.txt","reducedParsing");
     }
 
+    @Test
+    public void findGermanLemmas_Test() throws IOException {
+        DictUtils.findGermanLemmas(processor.input_data_path + "german.txt", processor.output_data_path + "tscharner-20140715_20140923-20150318-20150716.txt", processor.output_data_path);
+    }
+
+    @Test
+    public void removeGermanLemmas_Test() throws IOException {
+        DictUtils.removeGermanLemmas(processor.output_data_path+"removedGermanWords_manuell.txt", processor.output_data_path+"tscharner-20140715_20140923-20150318-20150716.txt", processor.output_data_path);
+    }
+
 
 }

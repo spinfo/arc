@@ -39,8 +39,10 @@ public class ProcessPuter {
         List<String> workflowList = new ArrayList<>();
 
         // Preprocessing
+
         workflowList = DictUtils.bracketCorrection(inputFilePath, ProcessPuter.output_data_path, fileNamePrefix+"_BracketsCorrected");
-        /* Check */ System.out.println("bracketCorrection durchgeführt.");
+         /* Check */ System.out.println("bracketCorrection durchgeführt.");
+        workflowList = DictUtils.removeIndentedLines(workflowList, output_data_path, fileNamePrefix+"dumpedLines");
         workflowList = DictUtils.addTags(workflowList);
           /* Check */ System.out.println("Einträge mit Tags versehen.");
         DictUtils.printList(workflowList,ProcessPuter.output_data_path,fileNamePrefix+"_taggedEntries");
@@ -79,6 +81,7 @@ public class ProcessPuter {
 
         workflowList = DictUtils.bracketCorrection(inputFilePath, ProcessPuter.output_data_path, fileNamePrefix + "_BracketsCorrected");
         /* Check */ System.out.println("bracketCorrection durchgeführt.");
+        //workflowList = DictUtils.removeIndentedLines(workflowList, output_data_path, fileNamePrefix+"dumpedLines");
         workflowList = DictUtils.addTags(workflowList);
           /* Check */ System.out.println("Einträge mit Tags versehen.");
         DictUtils.printList(workflowList,ProcessPuter.output_data_path,fileNamePrefix+"_taggedEntries");
@@ -492,7 +495,7 @@ public class ProcessPuter {
             Matcher posMatcher = posPattern.matcher(errorEntry);
             if(posMatcher.find()){
                 //System.out.println("found pos" + posMatcher.group(1)+posMatcher.group(2));
-                corrected = posMatcher.replaceFirst(posMatcher.group(1)+" "+posMatcher.group(2)+" ");
+                corrected = posMatcher.replaceFirst(posMatcher.group(1)+" "+posMatcher.group(2)+" "+posMatcher.group(3));
             }
 
             if (!corrected.equals("")){
