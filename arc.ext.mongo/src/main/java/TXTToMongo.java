@@ -187,7 +187,107 @@ public class TXTToMongo {
 
     private DBObject puterEntryToMongoObject(String[] nvs_line) {
 
-        return null;
+        BasicDBObject entry = new BasicDBObject();
+
+        BasicDBObject pos = new BasicDBObject();
+
+        String lemma = nvs_line[0];
+
+        lemma = lemma.replace("*", "");
+
+        entry.put("entry", lemma);
+
+        String nvs_pos = nvs_line[1];
+
+        System.out.println(nvs_line[0] + ", " + nvs_line[1]);
+
+        String eagles_pos = null;
+
+        switch (nvs_pos) {
+
+            // ADJ
+            case "adj":
+            case "adj invar":
+            case "adj/adv":
+                eagles_pos = "ADJ";
+                break;
+            case "adj invar/num":
+                eagles_pos = "ADJ_NUM";
+                break;
+
+            // ADV
+            case "adv":
+                eagles_pos = "ADV";
+                break;
+            // INT
+            case "interj":
+                eagles_pos = "INT";
+                break;
+
+            // NN
+            case "m":
+            case "f":
+            case "fcoll":
+            case "fpl":
+            case "coll":
+            case "mpl":
+            case "m f":
+            case "mf":
+            case "/":
+            case "m,f":
+            case "p sg":
+                eagles_pos = "NN";
+                break;
+
+            // PREP
+            case "prep":
+                eagles_pos = "PREP";
+                break;
+
+            // CARDINAL_NUMBERS
+            case "invar/num":
+                eagles_pos = "C_NUM";
+                break;
+
+            // PRON
+            case "pron":
+                eagles_pos = "PRON";
+                break;
+            case "pron pers":
+                eagles_pos = "PRON_PER";
+                break;
+            case "pron pers/refl":
+                eagles_pos = "PRON_REF";
+                break;
+
+            case "pron indef.":
+                eagles_pos = "PRON_IES";
+                break;
+
+
+            // V_GVRB
+            case "tr":
+            case "tr ind":
+            case "intr":
+            case "mtr":
+            case "intr/tr":
+            case "intr(tr)":
+                eagles_pos = "V_GVRB";
+                break;
+            default:
+                break;
+        }
+
+        // Add nvs_pos info
+        pos.put("puter_pos", nvs_line[1]);
+        // Add eagles_pos info
+        if (eagles_pos != null) {
+            pos.put("eagles_pos", eagles_pos);
+        }
+
+        entry.put("pos", pos);
+
+        return entry;
     }
 
 

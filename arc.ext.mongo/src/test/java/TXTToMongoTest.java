@@ -31,6 +31,25 @@ public class TXTToMongoTest {
         mongoClient = new MongoClient("localhost", 27017);
     }
 
+    //@Ignore
+    @Test
+    public void testPuterToMongo() throws IOException {
+
+        String txtFile = "../arc.data/puter/output/final/tscharner-20150114_20150318_20150326_20150812.txt";
+        String dbName = "dicts";
+        String collectionName = "puter";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(
+                txtFile), StandardCharsets.UTF_8));
+
+        parser.txtToMongo(br, collection, "puter");
+
+    }
+
+
 
     @Ignore
     @Test

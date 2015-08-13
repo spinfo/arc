@@ -73,6 +73,7 @@ ALT: '(' LETTER+ ')';
 
 REF : '\u25ba'; //reference symbol |>
 RE: '~' -> skip;
+TREMA: '\u0308' -> skip;
 
 fragment CAPLETTER : [A-Z] |'\u00c0'|'\u00c8'|'\u00d2'|'\u00d6'|'\u00dc';
 fragment LETTER : [a-z]|'\u00f6'|'\u00fc'|'\u00e0'|'\u00e8'|'\u00f2'|
