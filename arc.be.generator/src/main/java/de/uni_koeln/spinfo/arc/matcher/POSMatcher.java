@@ -741,4 +741,7 @@ public abstract class POSMatcher implements Serializable {
 
     abstract boolean isIndImperfect(String token);
 
+   // abstract boolean isAdjektive(String token);
+
+
 }

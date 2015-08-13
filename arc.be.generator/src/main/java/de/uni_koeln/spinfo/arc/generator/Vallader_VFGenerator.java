@@ -6,9 +6,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -60,16 +58,104 @@ public class Vallader_VFGenerator {
                 }
                 addVF(entry, eagles_pos);
                 addIrregularVerbs();
-//				addPrepositions();
+                addPrepositions();
                 addPrep_Art();
                 addPronouns();
-//				addConjunctions();
+                addConjunctions();
                 addArticles();
-//				addAdjectives();
+                addAdjectives();
 
             }
         }
         return vollForms;
+    }
+
+    private void addAdjectives() {
+
+
+        addVF("clap", "ADJ");
+        addVF("tim", "ADJ");
+        addVF("schnat", "ADJ");
+        addVF("vaira", "ADJ");
+        addVF("giuven", "ADJ");
+        addVF("giuvens", "ADJ");
+        addVF("giuven", "ADJ");
+        addVF("giuvna", "ADJ");
+        addVF("giuvnas", "ADJ");
+        addVF("insalà", "ADJ");
+        addVF("insalàs", "ADJ");
+        addVF("insalada", "ADJ");
+        addVF("insaladas", "ADJ");
+        addVF("nöbel", "ADJ");
+        addVF("nöbels", "ADJ");
+        addVF("nobla", "ADJ");
+        addVF("noblas", "ADJ");
+        addVF("pover", "ADJ");
+        addVF("povers", "ADJ");
+        addVF("povra", "ADJ");
+        addVF("povras", "ADJ");
+        addVF("vegl", "ADJ");
+        addVF("veglia", "ADJ");
+        addVF("vegls", "ADJ");
+        addVF("veglias", "ADJ");
+        addVF("larg", "ADJ");
+        addVF("largs", "ADJ");
+        addVF("largia", "ADJ");
+        addVF("largias", "ADJ");
+
+
+
+        addVF("quist", "ADJ_DEM");
+        addVF("quists", "ADJ_DEM");
+        addVF("quista", "ADJ_DEM");
+        addVF("quistas", "ADJ_DEM");
+        addVF("quel", "ADJ_DEM");
+        addVF("quels", "ADJ_DEM");
+        addVF("quella", "ADJ_DEM");
+        addVF("quellas", "ADJ_DEM");
+
+
+        Set<String> adjs = new HashSet<>();
+
+        adjs.add("bun");
+        adjs.add("bel");
+        adjs.add("banadi");
+        adjs.add("brav");
+        adjs.add("spür");
+        adjs.add("schet");
+        adjs.add("tschert");
+        adjs.add("tal");
+        adjs.add("ter");
+        adjs.add("char");
+        adjs.add("cuntschaint");
+        adjs.add("cuort");
+        adjs.add("different");
+        adjs.add("dret");
+        adjs.add("fin");
+        adjs.add("fos");
+        adjs.add("inter");
+        adjs.add("lung");
+        adjs.add("nouv");
+        adjs.add("schür");
+        adjs.add("trid");
+        adjs.add("trist");
+        adjs.add("vast");
+
+
+        for (String s : adjs) {
+            //Add fem
+            adjs.add(s + "a");
+            //Add plural
+            adjs.add(s + "s");
+
+        }
+
+        //Add to VFL
+        for (String s : adjs) {
+            addVF(s, "ADJ");
+        }
+
+
     }
 
     private void generateSubstantiveForms(String entry) {
@@ -321,6 +407,63 @@ public class Vallader_VFGenerator {
         addSubstantivPluralAndOtherSuffixes(femEntry);
 
     }
+
+
+    private void addPrepositions() {
+
+        addVF("a", "PREP");
+        addVF("ad", "PREP");
+        addVF("aint", "PREP");
+        addVF("ant", "PREP");
+        addVF("cun", "PREP");
+        addVF("cunter", "PREP");
+        addVF("da", "PREP");
+        addVF("dad", "PREP");
+        addVF("d'", "PREP");
+        addVF("dasper", "PREP");
+        addVF("daspö", "PREP");
+        addVF("davo", "PREP");
+        addVF("davant", "PREP");
+        addVF("davart", "PREP");
+        addVF("davent", "PREP");
+        addVF("immez", "PREP");
+        addVF("impè", "PREP");
+        addVF("in", "PREP");
+        addVF("infin", "PREP");
+        addVF("intuorn", "PREP");
+        addVF("invers", "PREP");
+        addVF("malgrà", "PREP");
+        addVF("sur", "PREP");
+        addVF("suot", "PREP");
+        addVF("sainza", "PREP");
+        addVF("lung", "PREP");
+        addVF("per", "PREP");
+        addVF("pro", "PREP");
+
+
+    }
+
+
+    private void addConjunctions() {
+
+        //Most conjunctions are composed of two words
+
+        addVF("adonta", "CONJ_S");
+        addVF("afin", "CONJ_S");
+        addVF("avant", "CONJ_S");
+        addVF("chi", "CONJ_S");
+        addVF("cha", "CONJ_S");
+        addVF("impè", "CONJ_S");
+        addVF("o", "CONJ_S");
+        addVF("obain", "CONJ_S");
+
+
+        addVF("e", "CONJ_C");
+        addVF("ed", "CONJ_C");
+
+
+    }
+
 
     private void addSubstantivPluralAndOtherSuffixes(String entry) {
         // feminin plural
