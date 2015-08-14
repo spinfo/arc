@@ -385,7 +385,7 @@ public abstract class POSMatcher implements Serializable {
                         posSet.add("ADV");
 
                     } else if
-                            (isIndImperfect(token)) {
+                            (isIndicativeImperfect(token)) {
                         posSet.add("V_GVRB");
 
                     } else {
@@ -643,7 +643,7 @@ public abstract class POSMatcher implements Serializable {
                     }
                 }
                 if (tagIndImperfect) {
-                    if (isIndImperfect(nextToken)) {
+                    if (isIndicativeImperfect(nextToken)) {
                         indImperfectForms.add(nextToken);
                         //5
                         bw_tags.append(nextToken + "\t" + "G_GVRB_5" + "\n");
@@ -739,7 +739,7 @@ public abstract class POSMatcher implements Serializable {
 
     abstract boolean isAdverb(String token);
 
-    abstract boolean isIndImperfect(String token);
+    abstract boolean isIndicativeImperfect(String token);
 
    // abstract boolean isAdjektive(String token);
 

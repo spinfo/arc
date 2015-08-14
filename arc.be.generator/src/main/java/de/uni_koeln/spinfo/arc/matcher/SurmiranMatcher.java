@@ -25,7 +25,7 @@ public class SurmiranMatcher extends POSMatcher {
 	}
 
 	@Override
-	boolean isIndImperfect(String token) {
+	boolean isIndicativeImperfect(String token) {
 		if (token.endsWith("iva") || token.endsWith("ivas")
 				|| token.endsWith("ivan") || token.endsWith("eva")
 				|| token.endsWith("evas") || token.endsWith("evan")

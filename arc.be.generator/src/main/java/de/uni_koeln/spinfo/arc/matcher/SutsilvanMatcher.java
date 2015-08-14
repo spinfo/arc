@@ -20,7 +20,7 @@ public class SutsilvanMatcher extends POSMatcher {
 	}
 
 	@Override
-	boolean isIndImperfect(String token) {
+	boolean isIndicativeImperfect(String token) {
 		if (token.endsWith("ava") || token.endsWith("avas")
 				|| token.endsWith("avan") || token.endsWith("eva")
 				|| token.endsWith("evas") || token.endsWith("evan")) {

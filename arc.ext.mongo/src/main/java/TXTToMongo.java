@@ -249,10 +249,10 @@ public class TXTToMongo {
                 eagles_pos = "C_NUM";
                 break;
 
-            // PRON
-            case "pron":
-                eagles_pos = "PRON";
-                break;
+//            // PRON
+//            case "pron":
+//                eagles_pos = "PRON";
+//                break;
             case "pron pers":
                 eagles_pos = "PRON_PER";
                 break;
@@ -398,19 +398,19 @@ public class TXTToMongo {
                 eagles_pos = "C_NUM";
                 break;
 
-            // PRON
-            case "pron":
-                eagles_pos = "PRON";
-                break;
+//            // PRON
+//            case "pron":
+//                eagles_pos = "PRON";
+//                break;
             case "pron.pers.":
             case "pron.pers":
             case "pron.pers.obj":
                 eagles_pos = "PRON_PER";
                 break;
-            case "pron.impers.":
-            case "pron.impers":
-                eagles_pos = "PRON";
-                break;
+//            case "pron.impers.":
+//            case "pron.impers":
+//                eagles_pos = "PRON";
+//                break;
             case "pron.indef.":
             case "pron.indef":
                 eagles_pos = "PRON_IES";
@@ -423,13 +423,13 @@ public class TXTToMongo {
             case "pron.interrog":
                 eagles_pos = "PRON_IES";
                 break;
-            case "pron.ord.":
-            case "pron.ord":
-                eagles_pos = "PRON";
-                break;
+//            case "pron.ord.":
+//            case "pron.ord":
+//                eagles_pos = "PRON";
+//                break;
             case "pron.refl.":
             case "pron.refl":
-                eagles_pos = "PRON";
+                eagles_pos = "PRON_REFL";
                 break;
 
             // V_GVRB
@@ -525,10 +525,10 @@ public class TXTToMongo {
                 eagles_pos = "C_NUM";
                 break;
 
-            // PRON
-            case "pron":
-                eagles_pos = "PRON";
-                break;
+//            // PRON
+//            case "pron":
+//                eagles_pos = "PRON";
+//                break;
             case "pron pers":
                 eagles_pos = "PRON_PER";
                 break;

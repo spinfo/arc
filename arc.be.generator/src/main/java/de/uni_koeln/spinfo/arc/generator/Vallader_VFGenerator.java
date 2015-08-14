@@ -141,17 +141,19 @@ public class Vallader_VFGenerator {
         adjs.add("trist");
         adjs.add("vast");
 
+        Set<String> adjsToReturn = new HashSet<>();
+        adjsToReturn.addAll(adjs);
 
         for (String s : adjs) {
             //Add fem
-            adjs.add(s + "a");
+            adjsToReturn.add(s + "a");
             //Add plural
-            adjs.add(s + "s");
+            adjsToReturn.add(s + "s");
 
         }
 
         //Add to VFL
-        for (String s : adjs) {
+        for (String s : adjsToReturn) {
             addVF(s, "ADJ");
         }
 
@@ -453,12 +455,16 @@ public class Vallader_VFGenerator {
         addVF("avant", "CONJ_S");
         addVF("chi", "CONJ_S");
         addVF("cha", "CONJ_S");
+        addVF("ch'", "CONJ_S");
         addVF("impè", "CONJ_S");
         addVF("o", "CONJ_S");
         addVF("obain", "CONJ_S");
+        addVF("u", "CONJ_S");
 
 
         addVF("e", "CONJ_C");
+        addVF("ed", "CONJ_C");
+        addVF("è", "CONJ_C");
         addVF("ed", "CONJ_C");
 
 
@@ -770,11 +776,16 @@ public class Vallader_VFGenerator {
         addVF("at", "PRON_REF");
         addVF("as", "PRON_REF");
         addVF("ans", "PRON_REF");
+        addVF("'s", "PRON_REF");
         addVF("i's", "PRON_REF");
         addVF("nu'm", "PRON_REF");
         addVF("nu't", "PRON_REF");
         addVF("nu's", "PRON_REF");
         addVF("nu'ns", "PRON_REF");
+        addVF("m'", "PRON_REF");
+        addVF("t'", "PRON_REF");
+        addVF("s'", "PRON_REF");
+
 
         //relativ
         addVF("chi", "PRON_REL");

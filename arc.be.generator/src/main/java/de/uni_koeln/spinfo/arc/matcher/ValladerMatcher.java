@@ -15,11 +15,9 @@ public class ValladerMatcher extends POSMatcher {
 
 
     @Override
-    public boolean isIndImperfect(String token) {
-        if (token.endsWith("a") || token.endsWith("ast")
-                || token.endsWith("an") || token.endsWith("at")
-                || token.endsWith("a'l") || token.endsWith("'la")
-                || token.endsWith("na")) {
+    public boolean isIndicativeImperfect(String token) {
+        if (token.endsWith("iva") || token.endsWith("ivast")
+                || token.endsWith("ivan") || token.endsWith("ivat")) {
             return true;
         }
         return false;

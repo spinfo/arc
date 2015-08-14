@@ -25,7 +25,7 @@ public class ValladerTest {
 
 
     String date = FileUtils.getISO8601StringForCurrentDate();
-    private static String pathToTokensFromDB = "../../arc.data/output/vallader_words_2015-07-20T16:18:03Z";
+    private static String pathToTokensFromDB = "../../arc.data/output/Vallader_words_2015-08-14T15:07:48Z";
     private static MongoClient mongoClient;
     private static DBCollection dictCollection;
     private static DB db;
@@ -42,7 +42,7 @@ public class ValladerTest {
 
 
     @Test
-    public void testVFGenerator() throws UnknownHostException {
+    public void showStats() throws UnknownHostException {
 
         Vallader_VFGenerator vfg = new Vallader_VFGenerator();
 
@@ -58,8 +58,7 @@ public class ValladerTest {
 
         Map<String, TreeSet<String>> fullForms = generatefullForms();
         FileUtils.writeFullforms(fullForms, "vallader_");
-        FileUtils.printMap(fullForms, "../arc.data/output/", "vallader_fullForms_"
-                + date);
+        FileUtils.printMap(fullForms, "../arc.data/output/", "vallader_fullForms_");
 
     }
 
@@ -79,7 +78,7 @@ public class ValladerTest {
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("vallader_fullforms_2015-07-20T16:20:18Z");
+        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("vallader_fullforms_2015-08-14T17:20:57Z");
 
         POSMatcher matcher = new ValladerMatcher(fullForms,
                 dictCollection.getFullName());
