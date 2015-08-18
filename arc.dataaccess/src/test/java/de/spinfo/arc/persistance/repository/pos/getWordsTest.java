@@ -26,13 +26,13 @@ public class getWordsTest {
     @Test
     public void testWordstoFile() throws Exception {
 
-        String sursilvan = "Vallader";
+        String language = "Puter";
 
-        List<WordImpl> gw = getWordsByLanguage(sursilvan);
+        List<WordImpl> gw = getWordsByLanguage(language);
 
         List<Token> tokens = getListOfTokens(gw);
 
-        FileUtils.writeList(tokens, "vallader_words_");
+        FileUtils.writeList(tokens, language +"_words_");
     }
 
 

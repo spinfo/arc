@@ -4,6 +4,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import de.uni_koeln.spinfo.arc.matcher.POSMatcher;
+import de.uni_koeln.spinfo.arc.matcher.PuterMatcher;
 import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.matcher.ValladerMatcher;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
@@ -19,16 +20,15 @@ import java.util.Map;
 import java.util.TreeSet;
 
 /**
- * Created by franciscomondaca on 13/7/15.
+ * Created by franciscomondaca on 14/8/15.
  */
-public class ValladerTest {
-
+public class PuterTest {
 
     String date = FileUtils.getISO8601StringForCurrentDate();
-    private static String pathToTokensFromDB = "../../arc.data/output/Vallader_words_2015-08-14T15:07:48Z";
     private static MongoClient mongoClient;
     private static DBCollection dictCollection;
     private static DB db;
+    private static String pathToTokensFromDB = "../../arc.data/output/Puter_words_2015-08-14T15:09:05Z";
 
 
     @BeforeClass
@@ -36,7 +36,7 @@ public class ValladerTest {
 
         mongoClient = new MongoClient("localhost", 27017);
         db = mongoClient.getDB("dicts");
-        dictCollection = db.getCollection("vallader");
+        dictCollection = db.getCollection("puter");
 
     }
 
@@ -44,12 +44,12 @@ public class ValladerTest {
     @Test
     public void showStats() throws UnknownHostException {
 
-        Vallader_VFGenerator vfg = new Vallader_VFGenerator();
+        Puter_VFGenerator pfg = new Puter_VFGenerator();
 
-        Map<String, TreeSet<String>> VFs = vfg.generateFullforms(dictCollection);
+        Map<String, TreeSet<String>> VFs = pfg.generateFullForms(dictCollection);
 
-        System.out.println(vfg.getNumberOfDBEntries());
-        System.out.println(vfg.getNumberOfVFEntries());
+        System.out.println(pfg.getNumberOfDBEntries());
+        System.out.println(pfg.getNumberOfVFEntries());
     }
 
     //@Ignore
@@ -57,8 +57,8 @@ public class ValladerTest {
     public void getFullForms() throws Exception {
 
         Map<String, TreeSet<String>> fullForms = generatefullForms();
-        FileUtils.writeFullforms(fullForms, "vallader_");
-        FileUtils.printMap(fullForms, "../arc.data/output/", "vallader_fullForms_");
+        FileUtils.writeFullforms(fullForms, "puter_");
+        FileUtils.printMap(fullForms, "../arc.data/output/", "puter_fullForms_");
 
     }
 
@@ -66,35 +66,36 @@ public class ValladerTest {
     private static Map<String, TreeSet<String>> generatefullForms()
             throws UnknownHostException {
 
-        // Get Fullforms from Vallader_VFGenerator
-        Vallader_VFGenerator gen = new Vallader_VFGenerator();
+        // Get Fullforms from Generator
+        Puter_VFGenerator gen = new Puter_VFGenerator();
         Map<String, TreeSet<String>> fullForms = gen
-                .generateFullforms(dictCollection);
+                .generateFullForms(dictCollection);
 
         return fullForms;
 
     }
 
+
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("vallader_fullforms_2015-08-14T17:20:57Z");
+        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("puter_fullforms_2015-08-14T17:26:15Z");
 
-        POSMatcher matcher = new ValladerMatcher(fullForms,
+        POSMatcher matcher = new PuterMatcher(fullForms,
                 dictCollection.getFullName());
         matcher.configure(new Boolean[]{true, true, true, true});
 
-        List<Token> valladertokens = getListOfTokens(pathToTokensFromDB);
+        List<Token> putertokens = getListOfTokens(pathToTokensFromDB);
 
         ArrayList<Token> matches = (ArrayList<Token>) matcher
-                .matchTokensWithPOS(valladertokens, "vallader");
+                .matchTokensWithPOS(putertokens, "puter");
 
 
-        System.out.println("VALLADER_TOKENS: " + valladertokens.size());
-        System.out.println("MATCHES: " + matches.size() + "\t - " + matches.size() * 100 / valladertokens.size()+"%");
+        System.out.println("PUTER_TOKENS: " + putertokens.size());
+        System.out.println("MATCHES: " + matches.size() + "\t - " + matches.size() * 100 / putertokens.size() + "%");
 
-        FileUtils.writeList(matches, "vallader_matchedWords_");
-        FileUtils.printList(matches, FileUtils.outputPath, "vallader_matchedWords_");
+        FileUtils.writeList(matches, "puter_matchedWords_");
+        FileUtils.printList(matches, FileUtils.outputPath, "puter_matchedWords_");
     }
 
 
@@ -111,5 +112,6 @@ public class ValladerTest {
         return tokens;
 
     }
+
 
 }

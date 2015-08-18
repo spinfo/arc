@@ -17,7 +17,7 @@ public class SursilvanMatcher extends POSMatcher {
 	}
 
 	@Override
-	public boolean isIndImperfect(String token) {
+	public boolean isIndicativeImperfect(String token) {
 		if (token.endsWith("avel") || token.endsWith("avas")
 				|| token.endsWith("ava") || token.endsWith("avan")
 				|| token.endsWith("evel") || token.endsWith("evas")

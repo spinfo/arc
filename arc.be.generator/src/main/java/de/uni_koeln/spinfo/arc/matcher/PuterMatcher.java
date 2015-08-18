@@ -4,12 +4,13 @@ import java.util.Map;
 import java.util.TreeSet;
 
 /**
- * Created by franciscomondaca on 20/7/15.
+ * Created by franciscomondaca on 14/8/15.
  */
-public class ValladerMatcher extends POSMatcher {
+public class PuterMatcher extends POSMatcher {
 
-    public ValladerMatcher(Map<String, TreeSet<String>> fullForms,
-                           String collectionName) {
+
+    public PuterMatcher(Map<String, TreeSet<String>> fullForms,
+                        String collectionName) {
         super(fullForms, collectionName);
     }
 
@@ -32,6 +33,5 @@ public class ValladerMatcher extends POSMatcher {
         }
         return false;
     }
-
 
 }
