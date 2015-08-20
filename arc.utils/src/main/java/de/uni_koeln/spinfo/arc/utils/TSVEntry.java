@@ -1,5 +1,8 @@
 package de.uni_koeln.spinfo.arc.utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Andreas on 19.08.2015.
  */
@@ -12,7 +15,7 @@ public class TSVEntry {
     public TSVEntry(String rStichwort, String rGenus, String rGrammatik) {
         this.rStichwort = rStichwort;
         this.rGenus = rGenus;
-        this.rGrammatik = rGrammatik;
+        this.rGrammatik = processPos(rGrammatik);
     }
 
     public String getrStichwort() {
@@ -45,6 +48,20 @@ public class TSVEntry {
             System.out.println(rGrammatik + ", " + rGenus);
             pos = "n/a";
         }
+        return pos;
+    }
+
+    private String processPos(String pos) {
+
+        Pattern pattern = Pattern.compile("(^I*V?I{0,3}\\.[ ]+)(.*)");
+
+        // Create matcher object
+        Matcher matcher = pattern.matcher(pos);
+
+        if (matcher.lookingAt()) {
+            pos = matcher.group(2);
+        }
+
         return pos;
     }
 

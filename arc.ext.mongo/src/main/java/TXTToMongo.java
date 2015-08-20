@@ -293,7 +293,166 @@ public class TXTToMongo {
 
     private DBObject surmiranEntryToMongoObject(String[] nvs_line) {
 
-        return null;
+        BasicDBObject entry = new BasicDBObject();
+
+        BasicDBObject pos = new BasicDBObject();
+
+        String lemma = nvs_line[0];
+
+        lemma = lemma.replace("*", "");
+
+        entry.put("entry", lemma);
+
+        String nvs_pos = nvs_line[1];
+
+        System.out.println(nvs_line[0] + ", " + nvs_line[1]);
+
+        String eagles_pos = null;
+
+        switch (nvs_pos) {
+
+            // ADJ
+            case "adj":
+            case "adi":
+            case "adj/adverb":
+            case "adj/pronom":
+                eagles_pos = "ADJ";
+                break;
+            case "adj/numeral":
+            case "adj numeral":
+                eagles_pos = "ADJ_NUM";
+                break;
+            case "adj indefinit":
+            case "adj/pronom indefinit":
+                eagles_pos = "ADJ_IND";
+                break;
+            case "adj interrogativ":
+            case "adj/pronom interrogativ":
+                eagles_pos = "ADJ_IES";
+                break;
+            case "adj demonstrativ":
+                eagles_pos = "ADJ_DEM";
+                break;
+            case "adj possessiv":
+                eagles_pos = "ADJ_POS";
+                break;
+
+
+            // ADV
+            case "adv":
+            case "adverb":
+            case "adverb/conjunczium":
+            case "adverb/prep":
+            case "adverb pronom":
+            case "adverb interrogativ":
+            case "adverb/pronom indefinit":
+            case "adv relativ":
+            case "adv interrog":
+                eagles_pos = "ADV";
+                break;
+            case "adv pron":
+                eagles_pos = "ADV_PRON";
+                break;
+
+            // INT
+            case "interjecziun":
+                eagles_pos = "INT";
+                break;
+
+            // NN
+            case "m":
+            case "f":
+            case "m ,f":
+            case "m,f":
+            case "m,f.pl":
+            case "m,n":
+            case "m.pl":
+            case "n":
+            case "n,m":
+            case "f.pl":
+            case "fcoll":
+            case "pl":
+                eagles_pos = "NN";
+                break;
+
+            // PREP
+            case "prep":
+            case "prep/conjuncziun":
+            case "prep/adverb":
+                eagles_pos = "PREP";
+                break;
+            case "prep+artetgel":
+                eagles_pos = "PREP_ART";
+                break;
+
+          // CARDINAL_NUMBERS
+            case "num":
+            case "num ord":
+            case "numeral":
+            case "numeral/pronom":
+                eagles_pos = "C_NUM";
+                break;
+
+            // PRON
+            case "pronom persuna / persunal":
+            case "pronom ":
+            case "pronom persuna / persunal 3a pl cumplemaint indirect":
+            case "pronom persuna / persunal indefinit":
+            case "pronom persuna / persunal pl ":
+                eagles_pos = "PRON_PER";
+                break;
+            case "pronom reflexiv":
+                eagles_pos = "PRON_REF";
+                break;
+            case "pronom interrogativ":
+                eagles_pos = "PRON_IES";
+                break;
+
+            case "pron indefinit":
+                eagles_pos = "PRON_IND";
+                break;
+            case "pronom possessiv":
+                eagles_pos = "PRON_POS";
+                break;
+            case "pronom rel":
+                eagles_pos = "PRON_REL";
+                break;
+            case "pronom demonstrativ":
+            case "pronom demonstrativ impersunal":
+            case "pronom demonstrativ neutr":
+                eagles_pos = "PRON_DEM";
+                break;
+
+
+            // V_GVRB
+            case "tr":
+            case "tr indirect":
+            case "tr indirect/int":
+            case "tr/impersunal":
+            case "tr/tr indirect":
+            case "tr/modal":
+            case "int":
+            case "int/impersunal":
+            case "int/tr":
+            case "int/tr indirect":
+            case "refl":
+            case "reflexiv":
+                eagles_pos = "V_GVRB";
+                break;
+            default:
+                break;
+        }
+
+        // Add nvs_pos info
+        pos.put("puter_pos", nvs_line[1]);
+        // Add eagles_pos info
+        if (eagles_pos != null) {
+            pos.put("eagles_pos", eagles_pos);
+        }
+
+        entry.put("pos", pos);
+
+        return entry;
     }
 
 
