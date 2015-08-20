@@ -102,6 +102,11 @@ public class ProcessPuter_Test {
         DictUtils.splitTwoColumnLines(ProcessPuter.output_data_path+"puter_normalized.txt", ProcessPuter.output_data_path,"puter_splittedLines");
     }
 
+    @Test
+    public void replaceDots_Test() throws IOException {
+        DictUtils.replaceDots(processor.input_data_path + "tscharner-20150114_20150318_20150326_20150812.txt", processor.output_data_path,"tscharner-20150114_20150318_20150326_20150818");
+    }
+
 
 
 }

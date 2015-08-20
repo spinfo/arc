@@ -460,7 +460,130 @@ public class TXTToMongo {
 
     private DBObject sutsilvanEntryToMongoObject(String[] nvs_line) {
 
-        return null;
+        BasicDBObject entry = new BasicDBObject();
+
+        BasicDBObject pos = new BasicDBObject();
+
+        String lemma = nvs_line[0];
+
+        lemma = lemma.replace("*", "");
+
+        entry.put("entry", lemma);
+
+        String nvs_pos = nvs_line[1];
+
+        System.out.println(nvs_line[0] + ", " + nvs_line[1]);
+
+        String eagles_pos = null;
+
+        switch (nvs_pos) {
+
+            // ADJ
+            case "adj":
+            case "adj invar":
+            case "adj adv":
+            case "adj prep":
+            case "adj pron":
+                eagles_pos = "ADJ";
+                break;
+            case "adj invar/num":
+                eagles_pos = "ADJ_NUM";
+                break;
+            case "adj indef":
+                eagles_pos = "ADJ_IND";
+                break;
+            case "adj interrog":
+                eagles_pos = "ADJ_IES";
+                break;
+
+            // ADV
+            case "adv":
+            case "adv interrog":
+                eagles_pos = "ADV";
+                break;
+            case "adv pron":
+                eagles_pos = "ADV_PRON";
+                break;
+            // INT
+            case "interj":
+                eagles_pos = "INT";
+                break;
+
+            // NN
+            case "m":
+            case "f":
+            case "f m":
+            case "m(f)":
+            case "m,f":
+            case "n":
+            case "pl":
+                eagles_pos = "NN";
+                break;
+
+            // PREP
+            case "prep":
+            case "prep adj":
+            case "prep adv":
+                eagles_pos = "PREP";
+                break;
+
+          /*  // CARDINAL_NUMBERS
+            case "invar/num":
+                eagles_pos = "C_NUM";
+                break;
+*/
+//            // PRON
+            case "pron pers":
+            case "pron ":
+            case "pron pl":
+            case "pron pl pl":
+                eagles_pos = "PRON_PER";
+                break;
+            case "pron pers/refl":
+                eagles_pos = "PRON_REF";
+                break;
+            case "pron interrog":
+            case "pron interrog pl":
+                eagles_pos = "PRON_IES";
+                break;
+
+            case "pron indef":
+                eagles_pos = "PRON_IND";
+                break;
+            case "pron poss":
+            case "pron poss pl":
+            case "pron poss pl pl":
+                eagles_pos = "PRON_POS";
+                break;
+            case "pron refl":
+                eagles_pos = "PRON_REF";
+                break;
+
+
+            // V_GVRB
+            case "tr":
+            case "tr adv":
+            case "tr prep":
+            case "tr/int":
+            case "int":
+            case "int prep":
+            case "refl":
+                eagles_pos = "V_GVRB";
+                break;
+            default:
+                break;
+        }
+
+        // Add nvs_pos info
+        pos.put("puter_pos", nvs_line[1]);
+        // Add eagles_pos info
+        if (eagles_pos != null) {
+            pos.put("eagles_pos", eagles_pos);
+        }
+
+        entry.put("pos", pos);
+
+        return entry;
     }
 
 
@@ -548,6 +671,7 @@ public class TXTToMongo {
             case "mtr":
             case "intr/tr":
             case "intr(tr)":
+            case "n/a":
                 eagles_pos = "V_GVRB";
                 break;
             default:
