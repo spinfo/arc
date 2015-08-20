@@ -507,6 +507,22 @@ public class Vallader_VFGenerator {
         }
         addVF(entry + "maing", "ADV");
 
+        // augmentativ
+        addVF(entry + "un", "ADJ");
+        addVF(entry + "una", "ADJ");
+        // diminutiv m
+        addVF(entry + "in", "ADJ");
+        addVF(entry + "ina", "ADJ");
+        addVF(entry + "et", "ADJ");
+        addVF(entry + "etta", "ADJ");
+        // pegiorativ m
+        addVF(entry + "ottel", "ADJ");
+        addVF(entry + "otla", "ADJ");
+        addVF(entry + "uord", "ADJ");
+        addVF(entry + "uorda", "ADJ");
+        addVF(entry + "atsch", "ADJ");
+        addVF(entry + "atscha", "ADJ");
+
         generateSpecialFemininForms(entry, "ADJ");
     }
 

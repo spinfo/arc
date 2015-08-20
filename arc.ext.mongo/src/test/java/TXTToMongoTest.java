@@ -55,7 +55,7 @@ public class TXTToMongoTest {
     @Test
     public void testValladerToMongo() throws IOException {
 
-        String txtFile = "../arc.data/input/tscharner-20140715_20140923-20150318-20150813.txt";
+        String txtFile = "../arc.data/input/tscharner-20140715_20140923-20150318-20150818.txt";
         String dbName = "dicts";
         String collectionName = "vallader";
 
@@ -69,12 +69,30 @@ public class TXTToMongoTest {
 
     }
 
+    //@Ignore
+    @Test
+    public void testSutsilvanToMongo() throws IOException {
+
+        String txtFile = "../arc.data/input/sutsilvan.txt";
+        String dbName = "dicts";
+        String collectionName = "sutsilvan";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(
+                txtFile), StandardCharsets.UTF_8));
+
+        parser.txtToMongo(br, collection, "sutsilvan");
+
+    }
+
 
     //@Ignore
     @Test
     public void testPuterToMongo() throws IOException {
 
-        String txtFile = "../arc.data/input/tscharner-20150114_20150318_20150326_20150812.txt";
+        String txtFile = "../arc.data/puter/input/tscharner-20150114_20150318_20150326_20150812.txt";
         String dbName = "dicts";
         String collectionName = "puter";
 

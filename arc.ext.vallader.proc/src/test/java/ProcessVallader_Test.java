@@ -261,5 +261,10 @@ public class ProcessVallader_Test {
         DictUtils.removeGermanLemmas(processor.output_data_path+"removedGermanWords_manuell.txt", processor.output_data_path+"tscharner-20140715_20140923-20150318-20150716.txt", processor.output_data_path);
     }
 
+    @Test
+    public void replaceDots_Test() throws IOException {
+        DictUtils.replaceDots(processor.input_data_path + "tscharner-20140715_20140923-20150318-20150813.txt", processor.output_data_path,"tscharner-20140715_20140923-20150318-20150818");
+    }
+
 
 }

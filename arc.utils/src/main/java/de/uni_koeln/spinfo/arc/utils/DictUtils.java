@@ -885,4 +885,47 @@ public class DictUtils {
 		DictUtils.printList(resultDict, outPath, "GermanLemmasRemoved");
 	}
 
+	public static void replaceDots(String inFilePath, String outPath, String fileName) throws IOException {
+
+		List<String> dict = FileUtils.fileToList(inFilePath);
+		List<String> newDict = new ArrayList<String>();
+
+		for (String fullentry : dict) {
+			String[] entry = fullentry.split("\\$");
+
+			entry[0] = entry[0].replaceAll("ạ", "a");
+			entry[0] = entry[0].replaceAll("ḅ", "b");
+			//entry[0].replaceAll("ḍ", "c");
+			entry[0] = entry[0].replaceAll("ḍ", "d");
+			entry[0] = entry[0].replaceAll("ẹ", "e");
+			//entry[0].replaceAll("ḅ", "f");
+			//entry[0].replaceAll("ḅ", "g");
+
+			entry[0] = entry[0].replaceAll("ḥ", "h");
+			entry[0] = entry[0].replaceAll("ị", "i");
+			//entry[0].replaceAll("ḅ", "j");
+			entry[0] = entry[0].replaceAll("ḳ", "k");
+			entry[0] = entry[0].replaceAll("ḷ", "l");
+			entry[0] = entry[0].replaceAll("ṃ", "m");
+			entry[0] = entry[0].replaceAll("ṇ", "n");
+			entry[0] = entry[0].replaceAll("ọ", "o");
+			//entry[0].replaceAll("ḅ", "p");
+			//entry[0].replaceAll("ḅ", "q");
+			entry[0] = entry[0].replaceAll("ṛ", "r");
+			entry[0] = entry[0].replaceAll("ṣ", "s");
+			entry[0] = entry[0].replaceAll("ṭ", "t");
+			entry[0] = entry[0].replaceAll("ụ", "u");
+			entry[0] = entry[0].replaceAll("ṿ", "v");
+			entry[0] = entry[0].replaceAll("ẉ", "w");
+			//entry[0].replaceAll("ḅ", "x");
+			//entry[0].replaceAll("ḅ", "y");
+			entry[0] = entry[0].replaceAll("ẓ", "z");
+
+			// was ist mit dem kombinierenden Zeichen . (U+0323) kommt es überhaupt vor?
+			newDict.add(entry[0]+"$"+entry[1]);
+		}
+
+		DictUtils.printList(newDict, outPath, fileName);
+	}
+
 }

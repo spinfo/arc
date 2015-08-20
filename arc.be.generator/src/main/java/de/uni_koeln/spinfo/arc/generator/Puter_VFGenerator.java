@@ -44,7 +44,7 @@ public class Puter_VFGenerator {
 
             DBObject pos = (BasicDBObject) doc.get("pos");
             String eagles_pos = (String) pos.get("eagles_pos");
-            System.out.println("Entry: " + entry + "| POS: " + entry + "| eaglesPOS: " + eagles_pos);
+            //System.out.println("Entry: " + entry + "| POS: " + entry + "| eaglesPOS: " + eagles_pos);
 
             if (eagles_pos != null) {
                 if (eagles_pos.equals("V_GVRB")) {
@@ -939,13 +939,13 @@ public class Puter_VFGenerator {
                     addConjugations(stamm + "i", verbClass);
                 }
 
+                if (stamm.endsWith("j")) {
+                    addVF(stamm.substring(0, stamm.length() - 1) + "i", "V_GVRB");
+                }
+
             } else {
                 System.out.println("unbekanntes Verb - falsche Endung: " + endung);
                 return;
-            }
-
-            if (stamm.endsWith("j")) {
-                addVF(stamm.substring(0, stamm.length() - 1) + "i", "V_GVRB");
             }
 
             addConjugations(stamm, verbClass);
