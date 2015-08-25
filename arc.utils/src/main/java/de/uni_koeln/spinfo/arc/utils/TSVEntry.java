@@ -1,5 +1,7 @@
 package de.uni_koeln.spinfo.arc.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,10 +14,15 @@ public class TSVEntry {
     String rGenus;
     String rGrammatik;
 
+    private static Pattern romanPattern = Pattern.compile("(^I*V?I{0,3}\\.[ ]+)(.*)");
+    private static Pattern bracketPattern = Pattern.compile("([\\(\\[])(.*)([\\)\\]])");
+
     public TSVEntry(String rStichwort, String rGenus, String rGrammatik) {
+
         this.rStichwort = rStichwort;
         this.rGenus = rGenus;
         this.rGrammatik = processPos(rGrammatik);
+
     }
 
     public String getrStichwort() {
@@ -31,10 +38,9 @@ public class TSVEntry {
     }
 
     public String print() {
-        String lemma = reduceStichwort();
         String pos = getPos();
 
-        return lemma+"$"+pos;
+        return rStichwort+"$"+pos;
     }
 
     public String getPos() {
@@ -45,7 +51,7 @@ public class TSVEntry {
         } else if (!rGenus.isEmpty()) {
             pos = rGenus;
         } else {
-            System.out.println(rGrammatik + ", " + rGenus);
+            //System.out.println(rGrammatik + ", " + rGenus);
             pos = "n/a";
         }
         return pos;
@@ -53,10 +59,8 @@ public class TSVEntry {
 
     private String processPos(String pos) {
 
-        Pattern pattern = Pattern.compile("(^I*V?I{0,3}\\.[ ]+)(.*)");
-
         // Create matcher object
-        Matcher matcher = pattern.matcher(pos);
+        Matcher matcher = romanPattern.matcher(pos);
 
         if (matcher.lookingAt()) {
             pos = matcher.group(2);
@@ -67,13 +71,18 @@ public class TSVEntry {
 
     public String reduceStichwort() {
 
+        Matcher matcher = bracketPattern.matcher(rStichwort);
+        rStichwort = matcher.replaceAll("");
+
         if(rStichwort.contains(",")) {
             String[] splits = rStichwort.split(",");
             rStichwort = splits[0];
         }
+
         if(rStichwort.contains(" ")) {
-            String[] splits = rStichwort.split(" ");
-            rStichwort = splits[0];
+            return null;
+        } else if (rStichwort.isEmpty()) {
+            return null;
         }
         return rStichwort;
     }

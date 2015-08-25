@@ -5,6 +5,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import de.uni_koeln.spinfo.arc.matcher.POSMatcher;
 import de.uni_koeln.spinfo.arc.matcher.SurmiranMatcher;
+import de.uni_koeln.spinfo.arc.utils.FileUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -13,6 +15,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.*;
+
+import static de.uni_koeln.spinfo.arc.generator.ValladerTest.*;
 
 /**
  * @author geduldia
@@ -24,6 +28,21 @@ import java.util.*;
 
 public class SurmiranTest {
 
+    String date = FileUtils.getISO8601StringForCurrentDate();
+    private static String pathToTokensFromDB = "";
+    private static MongoClient mongoClient;
+    private static DBCollection dictCollection;
+    private static DB db;
+
+    @BeforeClass
+    public static void init() throws Exception {
+
+        mongoClient = new MongoClient("localhost", 27017);
+        db = mongoClient.getDB("dicts");
+        dictCollection = db.getCollection("surmiran");
+
+    }
+
     /**
      * Testet den Surmiran_VFGenerator (angewendet auf das Signorelli_Lexikon)
      * Ausgabe: Anzahl Stammformen (in der DB-Collection)
@@ -31,7 +50,6 @@ public class SurmiranTest {
      *
      * @throws UnknownHostException
      */
-
     @Test
     public void testVFGenerator() throws UnknownHostException {
         Surmiran_VFGenerator vfg = new Surmiran_VFGenerator();
@@ -50,6 +68,19 @@ public class SurmiranTest {
         }
         System.out.println(vfg.getNumberOfDBEntries());
         System.out.println(vfg.getNumberOfVFEntries());
+    }
+
+    @Test
+    public void showStats() throws IOException {
+
+        Surmiran_VFGenerator sfg = new Surmiran_VFGenerator();
+
+        Map<String, TreeSet<String>> VFs = sfg.generateVollForms(dictCollection);
+
+        System.out.println(sfg.getNumberOfDBEntries());
+        System.out.println(sfg.getNumberOfVFEntries());
+
+        ValladerTest.extendedStats(VFs);
     }
 
     /**

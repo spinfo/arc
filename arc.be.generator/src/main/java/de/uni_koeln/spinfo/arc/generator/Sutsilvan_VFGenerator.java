@@ -1621,7 +1621,7 @@ public class Sutsilvan_VFGenerator {
 		} else if (endung.equals("ir")) {
 			verbClass = VerbClass.IR;
 		} else {
-			System.out.println("unbekanntes Verb - falsche Endung: " + endung);
+			System.out.println("unbekanntes Verb "+entry+" - falsche Endung: -" + endung+ "-");
 			return;
 		}
 		// Partizip

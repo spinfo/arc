@@ -15,6 +15,7 @@ public class TSVReader {
 
     private List<TSVEntry> entryList;
     private Map<String, TreeSet<String>> entryMap;
+    List<String> multiTokenEntries = new ArrayList<String>();
 
     public void readTSV(String filePath) throws IOException {
 
@@ -38,26 +39,31 @@ public class TSVReader {
         toEntryMap();
     }
 
-    private void toEntryMap() {
+    private void toEntryMap() throws IOException {
 
         entryMap = new TreeMap<String, TreeSet<String>>();
 
 
         for(TSVEntry entry : entryList) {
             String lemma = entry.reduceStichwort();
-            String pos = entry.getPos();
+            if (lemma != null) {
+                String pos = entry.getPos();
 
-            if(entryMap.containsKey(lemma)) {
-                TreeSet<String> posSet = entryMap.get(lemma);
-                posSet.add(pos);
-                entryMap.put(lemma,posSet);
+                if(entryMap.containsKey(lemma)) {
+                    TreeSet<String> posSet = entryMap.get(lemma);
+                    posSet.add(pos);
+                    entryMap.put(lemma,posSet);
+                } else {
+                    TreeSet<String> posSet = new TreeSet<>();
+                    posSet.add(pos);
+                    entryMap.put(lemma,posSet);
+                }
             } else {
-                TreeSet<String> posSet = new TreeSet<>();
-                posSet.add(pos);
-                entryMap.put(lemma,posSet);
+                multiTokenEntries.add(entry.getrStichwort());
             }
         }
-
+        System.out.println("multiTokenEntries: " + multiTokenEntries.size());
+        DictUtils.printList(multiTokenEntries, output_data_path, "multiTokenEntries");
     }
 
     public void printEntryMap(String outputPath, String fileName) throws IOException {
@@ -83,7 +89,7 @@ public class TSVReader {
             txtOutput.add(entry.print());
         }
 
-        DictUtils.printList(txtOutput, outputPath,fileName);
+        DictUtils.printList(txtOutput, outputPath, fileName);
     }
 
     public void posStats(String outputPath, String fileName) throws IOException {

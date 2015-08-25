@@ -56,7 +56,7 @@ public class ValladerTest {
         extendedStats(VFs);
     }
 
-    private void extendedStats(Map<String, TreeSet<String>> vFs) throws IOException {
+    public static void extendedStats(Map<String, TreeSet<String>> vFs) throws IOException {
 
         List<String> nn = new ArrayList<String>();
         List<String> v_gvrb = new ArrayList<String>();
