@@ -6,7 +6,6 @@ import com.mongodb.MongoClient;
 import de.uni_koeln.spinfo.arc.matcher.POSMatcher;
 import de.uni_koeln.spinfo.arc.matcher.PuterMatcher;
 import de.uni_koeln.spinfo.arc.matcher.Token;
-import de.uni_koeln.spinfo.arc.matcher.ValladerMatcher;
 import de.uni_koeln.spinfo.arc.utils.DictUtils;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
 import org.junit.BeforeClass;
@@ -48,7 +47,7 @@ public class PuterTest {
 
         Puter_VFGenerator pfg = new Puter_VFGenerator();
 
-        Map<String, TreeSet<String>> VFs = pfg.generateFullForms(dictCollection);
+        Map<String, TreeSet<String>> VFs = pfg.generateFullforms(dictCollection);
 
         System.out.println(pfg.getNumberOfDBEntries());
         System.out.println(pfg.getNumberOfVFEntries());
@@ -60,9 +59,24 @@ public class PuterTest {
     @Test
     public void getFullForms() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = generatefullForms();
+        Map<String, TreeSet<String>> fullForms = generateFullforms();
+
+        fullForms = FileUtils.removeWhiteSpace(fullForms);
+
         FileUtils.writeFullforms(fullForms, "puter_");
         FileUtils.printMap(fullForms, "../arc.data/output/", "puter_fullForms_");
+
+    }
+
+    private static Map<String, TreeSet<String>> generateFullforms()
+            throws UnknownHostException {
+
+        // Get Fullforms from Generator
+        Puter_VFGenerator gen = new Puter_VFGenerator();
+        Map<String, TreeSet<String>> fullForms = gen
+                .generateFullforms(dictCollection);
+
+        return fullForms;
 
     }
 
@@ -138,29 +152,16 @@ public class PuterTest {
         System.out.println("andere: " + andere.size());
 
         DictUtils.printList(nn, FileUtils.outputPath + "/generator/", "puter_nn");
-        DictUtils.printList(v_gvrb, FileUtils.outputPath+"/generator/", "puter_v_gvrb");
-        DictUtils.printList(adj, FileUtils.outputPath+"/generator/", "puter_adj");
-        DictUtils.printList(adj_num, FileUtils.outputPath+"/generator/", "puter_adj_num");
-        DictUtils.printList(adv, FileUtils.outputPath+"/generator/", "puter_adv");
-        DictUtils.printList(iNT, FileUtils.outputPath+"/generator/", "puter_int");
-        DictUtils.printList(prep, FileUtils.outputPath+"/generator/", "puter_prep");
-        DictUtils.printList(c_num, FileUtils.outputPath+"/generator/", "puter_c_num");
-        DictUtils.printList(pron_per, FileUtils.outputPath+"/generator/", "puter_pron_per");
-        DictUtils.printList(pron_ref, FileUtils.outputPath+"/generator/", "puter_pron_ref");
-        DictUtils.printList(pron_ies, FileUtils.outputPath+"/generator/", "puter_pron_ies");
-
-    }
-
-
-    private static Map<String, TreeSet<String>> generatefullForms()
-            throws UnknownHostException {
-
-        // Get Fullforms from Generator
-        Puter_VFGenerator gen = new Puter_VFGenerator();
-        Map<String, TreeSet<String>> fullForms = gen
-                .generateFullForms(dictCollection);
-
-        return fullForms;
+        DictUtils.printList(v_gvrb, FileUtils.outputPath + "/generator/", "puter_v_gvrb");
+        DictUtils.printList(adj, FileUtils.outputPath + "/generator/", "puter_adj");
+        DictUtils.printList(adj_num, FileUtils.outputPath + "/generator/", "puter_adj_num");
+        DictUtils.printList(adv, FileUtils.outputPath + "/generator/", "puter_adv");
+        DictUtils.printList(iNT, FileUtils.outputPath + "/generator/", "puter_int");
+        DictUtils.printList(prep, FileUtils.outputPath + "/generator/", "puter_prep");
+        DictUtils.printList(c_num, FileUtils.outputPath + "/generator/", "puter_c_num");
+        DictUtils.printList(pron_per, FileUtils.outputPath + "/generator/", "puter_pron_per");
+        DictUtils.printList(pron_ref, FileUtils.outputPath + "/generator/", "puter_pron_ref");
+        DictUtils.printList(pron_ies, FileUtils.outputPath + "/generator/", "puter_pron_ies");
 
     }
 

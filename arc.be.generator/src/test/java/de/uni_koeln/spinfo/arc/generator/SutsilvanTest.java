@@ -59,7 +59,7 @@ public class SutsilvanTest {
 
         DBCollection collection = db.getCollection(/**------> Hier fehlt noch die Angabe des Collectionnames (Eichenhofer)**/"");
 
-        Map<String, TreeSet<String>> VFs = vfg.generateVollForms(collection);
+        Map<String, TreeSet<String>> VFs = vfg.generateFullforms(collection);
 
         System.out.println(vfg.getNumberOfDBEntries());
         System.out.println(vfg.getNumberOfVFEntries());
@@ -70,12 +70,38 @@ public class SutsilvanTest {
 
         Sutsilvan_VFGenerator sfg = new Sutsilvan_VFGenerator();
 
-        Map<String, TreeSet<String>> VFs = sfg.generateVollForms(dictCollection);
+        Map<String, TreeSet<String>> VFs = sfg.generateFullforms(dictCollection);
 
         System.out.println(sfg.getNumberOfDBEntries());
         System.out.println(sfg.getNumberOfVFEntries());
 
         ValladerTest.extendedStats(VFs);
+    }
+
+
+    //@Ignore
+    @Test
+    public void getFullForms() throws Exception {
+
+        Map<String, TreeSet<String>> fullForms = generateFullforms();
+
+        fullForms = FileUtils.removeWhiteSpace(fullForms);
+
+        FileUtils.writeFullforms(fullForms, "puter_");
+        FileUtils.printMap(fullForms, "../arc.data/output/", "puter_fullForms_");
+
+    }
+
+    private static Map<String, TreeSet<String>> generateFullforms()
+            throws UnknownHostException {
+
+        // Get Fullforms from Generator
+        Sutsilvan_VFGenerator gen = new Sutsilvan_VFGenerator();
+        Map<String, TreeSet<String>> fullForms = gen
+                .generateFullforms(dictCollection);
+
+        return fullForms;
+
     }
 
     /**
@@ -104,7 +130,7 @@ public class SutsilvanTest {
         // Get Fullforms from Sutsilvan-Generator
         Sutsilvan_VFGenerator gen = new Sutsilvan_VFGenerator();
         Map<String, TreeSet<String>> generatedVollForms = gen
-                .generateVollForms(collection);
+                .generateFullforms(collection);
         //create Tagger
         POSMatcher tagger = new SutsilvanMatcher(generatedVollForms, collection.getFullName());
         tagger.configure(new Boolean[]{true, true, true, true});

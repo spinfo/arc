@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.*;
 
-import static de.uni_koeln.spinfo.arc.generator.ValladerTest.*;
-
 /**
  * @author geduldia
  *         <p/>
@@ -59,7 +57,7 @@ public class SurmiranTest {
         DB db = mongoClient.getDB("arc");
 
         DBCollection collection = db.getCollection(    /**------> Hier fehlt noch die Angabe des Collectionnames (Signorelli)**/"");
-        Map<String, TreeSet<String>> VFs = vfg.generateVollForms(collection);
+        Map<String, TreeSet<String>> VFs = vfg.generateFullforms(collection);
         for (String entry : VFs.keySet()) {
             System.out.println(entry + ":  ");
             for (String Pos : VFs.get(entry)) {
@@ -75,13 +73,38 @@ public class SurmiranTest {
 
         Surmiran_VFGenerator sfg = new Surmiran_VFGenerator();
 
-        Map<String, TreeSet<String>> VFs = sfg.generateVollForms(dictCollection);
+        Map<String, TreeSet<String>> VFs = sfg.generateFullforms(dictCollection);
 
         System.out.println(sfg.getNumberOfDBEntries());
         System.out.println(sfg.getNumberOfVFEntries());
 
         ValladerTest.extendedStats(VFs);
     }
+
+
+    //@Ignore
+    @Test
+    public void getFullForms() throws Exception {
+
+        Map<String, TreeSet<String>> fullForms = generateFullforms();
+        fullForms = FileUtils.removeWhiteSpace(fullForms);
+
+        FileUtils.writeFullforms(fullForms, "surmiran_");
+        FileUtils.printMap(fullForms, "../arc.data/output/", "surmiran_fullForms_");
+
+    }
+
+    private static Map<String, TreeSet<String>> generateFullforms()
+            throws UnknownHostException {
+
+        // Get Fullforms from Generator
+        Surmiran_VFGenerator gen = new Surmiran_VFGenerator();
+        Map<String, TreeSet<String>> fullForms = gen.generateFullforms(dictCollection);
+
+        return fullForms;
+
+    }
+
 
     /**
      * testet den SurmiranTagger
@@ -109,7 +132,7 @@ public class SurmiranTest {
         // Get Fullforms from Surmiran-Generator
         Surmiran_VFGenerator gen = new Surmiran_VFGenerator();
         Map<String, TreeSet<String>> generatedVollForms = gen
-                .generateVollForms(collection);
+                .generateFullforms(collection);
         //create Tagger
         POSMatcher tagger = new SurmiranMatcher(generatedVollForms, collection.getFullName());
         tagger.configure(new Boolean[]{true, true, true, true});

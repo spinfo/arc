@@ -128,7 +128,8 @@ public class SursilvanTest {
     @Test
     public void getFullForms() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = generatefullForms();
+        Map<String, TreeSet<String>> fullForms = generateFullforms();
+        fullForms = FileUtils.removeWhiteSpace(fullForms);
         FileUtils.writeFullforms(fullForms, "Sursilvan");
         FileUtils.printMap(fullForms, "../../arc.data/output/", "fullForms"
                 + date);
@@ -187,7 +188,7 @@ public class SursilvanTest {
 
     }
 
-    private static Map<String, TreeSet<String>> generatefullForms()
+    private static Map<String, TreeSet<String>> generateFullforms()
             throws UnknownHostException {
 
         // Get Fullforms from Sursilvan-Generator

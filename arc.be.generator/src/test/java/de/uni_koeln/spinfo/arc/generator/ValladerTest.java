@@ -56,6 +56,17 @@ public class ValladerTest {
         extendedStats(VFs);
     }
 
+    //@Ignore
+    @Test
+    public void getFullForms() throws Exception {
+
+        Map<String, TreeSet<String>> fullForms = generateFullforms();
+        fullForms = FileUtils.removeWhiteSpace(fullForms);
+        FileUtils.writeFullforms(fullForms, "vallader_");
+        FileUtils.printMap(fullForms, "../arc.data/output/", "vallader_fullForms_");
+
+    }
+
     public static void extendedStats(Map<String, TreeSet<String>> vFs) throws IOException {
 
         List<String> nn = new ArrayList<String>();
@@ -140,27 +151,19 @@ public class ValladerTest {
 
     }
 
-    //@Ignore
-    @Test
-    public void getFullForms() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = generatefullForms();
-        FileUtils.writeFullforms(fullForms, "vallader_");
-        FileUtils.printMap(fullForms, "../arc.data/output/", "vallader_fullForms_");
-
-    }
 
     //@Ignore
     @Test
     public void writeFullFormsTxt() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = generatefullForms();
+        Map<String, TreeSet<String>> fullForms = generateFullforms();
         FileUtils.writeFullformsTxT(fullForms, "vallader_fullForms.txt");
 
     }
 
 
-    private static Map<String, TreeSet<String>> generatefullForms()
+    private static Map<String, TreeSet<String>> generateFullforms()
             throws UnknownHostException {
 
         // Get Fullforms from Vallader_VFGenerator
