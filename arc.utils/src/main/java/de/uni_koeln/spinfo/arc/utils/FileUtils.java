@@ -245,5 +245,17 @@ public class FileUtils {
     }
 
 
+    public static void writeFullformsTxT(Map<String, TreeSet<String>> fullForms, String fileName) throws IOException {
 
+        List<String> txtOutput = new ArrayList<String>();
+
+        for(Map.Entry<String, TreeSet<String>> mapEntry : fullForms.entrySet()){
+            String lemma = mapEntry.getKey();
+            for (String pos : mapEntry.getValue()) {
+                txtOutput.add(lemma+"$"+pos);
+            }
+        }
+
+        DictUtils.printList(txtOutput, outputPath,fileName);
+    }
 }
