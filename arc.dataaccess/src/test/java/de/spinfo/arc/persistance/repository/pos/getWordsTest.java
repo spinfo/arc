@@ -16,17 +16,16 @@ import java.util.List;
 /**
  * Created by franciscomondaca on 20/7/15.
  */
-public class getWordsTest {
+public class GetWordsTest {
 
 
     static WorkingUnitQueries wuQueries = new WorkingUnitQueries();
     static WordQueries wordQueries = new WordQueries();
 
-
     @Test
     public void testWordstoFile() throws Exception {
 
-        String language = "Puter";
+        String language = "Sutsilvan";
 
         List<WordImpl> gw = getWordsByLanguage(language);
 
