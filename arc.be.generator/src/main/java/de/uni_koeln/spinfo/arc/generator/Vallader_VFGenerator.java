@@ -37,11 +37,11 @@ public class Vallader_VFGenerator {
             count++;
 
             String entry = (String) doc.get("entry");
-            System.out.println();
+            //System.out.println();
             DBObject pos = (BasicDBObject) doc.get("pos");
             String eagles_pos = (String) pos.get("eagles_pos");
 
-            System.out.println("Entry: " + entry + "| POS: " + entry + "| eaglesPOS: " + eagles_pos);
+            //System.out.println("Entry: " + entry + "| POS: " + entry + "| eaglesPOS: " + eagles_pos);
 
             if (eagles_pos != null) {
                 if (eagles_pos.equals("V_GVRB")) {
@@ -897,6 +897,11 @@ public class Vallader_VFGenerator {
                 addVF(stamm.substring(0, stamm.length() - 1) + "i", "V_GVRB");
             }
 
+            if(stamm.equals("desid")) {
+                System.out.println(stamm+ ",  "+ verbClass);
+            } else if(stamm.equals("desider")) {
+                System.out.println(stamm+ ",  "+ verbClass);
+            }
             addConjugations(stamm, verbClass);
 
             // Reflexivpronomen vor Verben beginnend mit einem Vokal

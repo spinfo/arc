@@ -150,6 +150,15 @@ public class ValladerTest {
 
     }
 
+    //@Ignore
+    @Test
+    public void writeFullFormsTxt() throws Exception {
+
+        Map<String, TreeSet<String>> fullForms = generatefullForms();
+        FileUtils.writeFullformsTxT(fullForms, "vallader_fullForms.txt");
+
+    }
+
 
     private static Map<String, TreeSet<String>> generatefullForms()
             throws UnknownHostException {

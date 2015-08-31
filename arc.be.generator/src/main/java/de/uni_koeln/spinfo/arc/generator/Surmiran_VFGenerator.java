@@ -459,6 +459,12 @@ public class Surmiran_VFGenerator {
 		else{
 			addVF(entry+"tsch", "NN");
 		}
+
+		// Diminutivformen
+		addVF(entry+"ign", "NN");
+		addVF(entry+"igna", "NN");
+		addVF(entry+"et", "NN");
+		addVF(entry+"etta", "NN");
 	}
 
 	private void generateVerbForms(String entry) {
