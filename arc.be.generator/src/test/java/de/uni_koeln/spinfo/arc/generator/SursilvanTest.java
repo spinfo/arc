@@ -118,7 +118,7 @@ public class SursilvanTest {
 
 
         System.out.println("SURSILVAN_TOKENS: " + sursilvanTokens.size());
-        System.out.println("MATCHES: " + matches.size() + "\t - " + matches.size() * 100 / sursilvanTokens.size()+"%");
+        System.out.println("MATCHES: " + matches.size() + "\t - " + matches.size() * 100 / sursilvanTokens.size() + "%");
 
         FileUtils.writeList(matches, "sursilvan_matchedWords_");
         FileUtils.printList(matches, FileUtils.outputPath, "sursilvan_matchedWords_");
@@ -129,7 +129,6 @@ public class SursilvanTest {
     public void getFullForms() throws Exception {
 
         Map<String, TreeSet<String>> fullForms = generateFullforms();
-        fullForms = FileUtils.removeWhiteSpace(fullForms);
         FileUtils.writeFullforms(fullForms, "Sursilvan");
         FileUtils.printMap(fullForms, "../../arc.data/output/", "fullForms"
                 + date);
@@ -195,6 +194,9 @@ public class SursilvanTest {
         Sursilvan_VFGenerator gen = new Sursilvan_VFGenerator();
         Map<String, TreeSet<String>> fullForms = gen
                 .generateFullforms(nvs_collection);
+
+
+        fullForms.remove("");
 
         return fullForms;
 

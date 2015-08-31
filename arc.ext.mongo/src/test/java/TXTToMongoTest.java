@@ -50,24 +50,6 @@ public class TXTToMongoTest {
 
     }
 
-    //@Ignore
-    @Test
-    public void testSurmiranToMongo() throws IOException {
-
-        String txtFile = "../arc.data/output/surmiran_condensed_new.txt";
-        String dbName = "dicts";
-        String collectionName = "surmiran";
-
-        DB db = mongoClient.getDB(dbName);
-        DBCollection collection = db.getCollection(collectionName);
-
-        br = new BufferedReader(new InputStreamReader(new FileInputStream(
-                txtFile), StandardCharsets.UTF_8));
-
-        parser.txtToMongo(br, collection, "surmiran");
-
-    }
-
 
     //@Ignore
     @Test
@@ -87,11 +69,30 @@ public class TXTToMongoTest {
 
     }
 
+
+    //@Ignore
+    @Test
+    public void testSurmiranToMongo() throws IOException {
+
+        String txtFile = "../arc.data/input/surmiran_digital-20150831.txt";
+        String dbName = "dicts";
+        String collectionName = "surmiran";
+
+        DB db = mongoClient.getDB(dbName);
+        DBCollection collection = db.getCollection(collectionName);
+
+        br = new BufferedReader(new InputStreamReader(new FileInputStream(
+                txtFile), StandardCharsets.UTF_8));
+
+        parser.txtToMongo(br, collection, "surmiran");
+
+    }
+
     //@Ignore
     @Test
     public void testSutsilvanToMongo() throws IOException {
 
-        String txtFile = "../arc.data/output/sutsilvan_condensed_new.txt";
+        String txtFile = "../arc.data/input/sutsilvan_digital-20150831.txt";
         String dbName = "dicts";
         String collectionName = "sutsilvan";
 
@@ -110,7 +111,7 @@ public class TXTToMongoTest {
     @Test
     public void testPuterToMongo() throws IOException {
 
-        String txtFile = "../arc.data/puter/input/tscharner-20150114_20150318_20150326_20150812.txt";
+        String txtFile = "../arc.data/input/puter.txt";
         String dbName = "dicts";
         String collectionName = "puter";
 

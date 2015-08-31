@@ -4,15 +4,14 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import de.uni_koeln.spinfo.arc.matcher.POSMatcher;
+import de.uni_koeln.spinfo.arc.matcher.SurmiranMatcher;
 import de.uni_koeln.spinfo.arc.matcher.SutsilvanMatcher;
+import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.UnknownHostException;
 import java.util.*;
 
@@ -27,7 +26,7 @@ import java.util.*;
 public class SutsilvanTest {
 
     String date = FileUtils.getISO8601StringForCurrentDate();
-    private static String pathToTokensFromDB = "";
+    private static String pathToTokensFromDB = "../../arc.data/output/Sutsilvan_words_2015-08-31T14:21:09Z";
     private static MongoClient mongoClient;
     private static DBCollection dictCollection;
     private static DB db;
@@ -75,7 +74,7 @@ public class SutsilvanTest {
         System.out.println(sfg.getNumberOfDBEntries());
         System.out.println(sfg.getNumberOfVFEntries());
 
-        ValladerTest.extendedStats(VFs);
+       // ValladerTest.extendedStats(VFs);
     }
 
 
@@ -85,10 +84,9 @@ public class SutsilvanTest {
 
         Map<String, TreeSet<String>> fullForms = generateFullforms();
 
-        fullForms = FileUtils.removeWhiteSpace(fullForms);
 
-        FileUtils.writeFullforms(fullForms, "puter_");
-        FileUtils.printMap(fullForms, "../arc.data/output/", "puter_fullForms_");
+        FileUtils.writeFullforms(fullForms, "sutsilvan_");
+        FileUtils.printMap(fullForms, "../arc.data/output/", "sutsilvan_fullForms_");
 
     }
 
@@ -100,9 +98,37 @@ public class SutsilvanTest {
         Map<String, TreeSet<String>> fullForms = gen
                 .generateFullforms(dictCollection);
 
+        fullForms.remove("");
+
+
         return fullForms;
 
     }
+
+    @Test
+    public void testMatchTokensSerialized() throws Exception {
+
+        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("sutsilvan_fullforms_2015-08-31T17:05:40Z");
+
+        POSMatcher matcher = new SutsilvanMatcher(fullForms,
+                dictCollection.getFullName());
+        matcher.configure(new Boolean[]{true, true, true, true});
+
+        List<Token> sutsilvanTokens = getListOfTokens(pathToTokensFromDB);
+
+        ArrayList<Token> matches = (ArrayList<Token>) matcher
+                .matchTokensWithPOS(sutsilvanTokens, "sutsilvan");
+
+
+        System.out.println("SUTSILVAN_TOKENS: " + sutsilvanTokens.size());
+        System.out.println("MATCHES: " + matches.size() + "\t - " + matches.size() * 100 / sutsilvanTokens.size()+"%");
+
+        FileUtils.writeList(matches, "sutsilvan_matchedWords_");
+        FileUtils.printList(matches, FileUtils.outputPath, "sutsilvan_matchedWords_");
+    }
+
+
+
 
     /**
      * testet den SutsilvanTagger
@@ -137,6 +163,20 @@ public class SutsilvanTest {
         tagger.testRecall(pathToFile, sutsTokens, 50);
         Map<String, Set<String>> taggings = tagger.match(sutsTokens);
         in.close();
+    }
+
+    private static List<Token> getListOfTokens(String fileName)
+            throws Exception {
+
+        ObjectInputStream inputStream = new ObjectInputStream(
+                new FileInputStream(FileUtils.outputPath + fileName));
+
+        List<Token> tokens = (List<Token>) inputStream.readObject();
+
+        inputStream.close();
+
+        return tokens;
+
     }
 
 }

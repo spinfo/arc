@@ -30,8 +30,10 @@ public class TestEditingPos {
     private static WordUpdater wordUpdater;
     private static WordQueries wordQueries;
 
-    private String vallader = "vallader_matchedWords_2015-08-14T17:22:38Z";
-    private String puter = "puter_matchedWords_2015-08-14T17:27:12Z";
+    private String vallader = "vallader_matchedWords_2015-08-31T17:08:10Z";
+    private String puter = "puter_matchedWords_2015-08-31T17:06:52Z";
+    private String sutsilvan = "sutsilvan_matchedWords_2015-08-31T17:17:29Z";
+    private String surmiran = "surmiran_matchedWords_2015-08-31T17:13:30Z";
 
     @BeforeClass
     public static void init() {
@@ -40,10 +42,10 @@ public class TestEditingPos {
     }
 
 
-    //@Ignore
+   @Ignore
     @Test
     public void testAddPOSAlternatives() throws Exception {
-        List<Token> tokens = getListOfTokens(puter);
+        List<Token> tokens = getListOfTokens(surmiran);
         for (Token token : tokens) {
 
             long index = token.getIndex();
@@ -55,11 +57,12 @@ public class TestEditingPos {
     }
 
 
+
     //@Ignore
     @Test
     public void testWriteOnePOSFromAlternatives() throws Exception {
 
-        List<Token> tokens = getListOfTokens(puter);
+        List<Token> tokens = getListOfTokens(surmiran);
         for (Token token : tokens) {
 
             long index = token.getIndex();

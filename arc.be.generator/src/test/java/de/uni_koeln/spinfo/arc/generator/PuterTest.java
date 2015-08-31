@@ -61,8 +61,6 @@ public class PuterTest {
 
         Map<String, TreeSet<String>> fullForms = generateFullforms();
 
-        fullForms = FileUtils.removeWhiteSpace(fullForms);
-
         FileUtils.writeFullforms(fullForms, "puter_");
         FileUtils.printMap(fullForms, "../arc.data/output/", "puter_fullForms_");
 
@@ -75,6 +73,9 @@ public class PuterTest {
         Puter_VFGenerator gen = new Puter_VFGenerator();
         Map<String, TreeSet<String>> fullForms = gen
                 .generateFullforms(dictCollection);
+
+        //Workaround
+        fullForms.remove("");
 
         return fullForms;
 
@@ -169,7 +170,7 @@ public class PuterTest {
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("puter_fullforms_2015-08-14T17:26:15Z");
+        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("puter_fullforms_2015-08-31T17:04:48Z");
 
         POSMatcher matcher = new PuterMatcher(fullForms,
                 dictCollection.getFullName());

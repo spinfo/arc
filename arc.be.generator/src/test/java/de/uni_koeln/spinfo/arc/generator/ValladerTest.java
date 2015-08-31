@@ -61,7 +61,8 @@ public class ValladerTest {
     public void getFullForms() throws Exception {
 
         Map<String, TreeSet<String>> fullForms = generateFullforms();
-        fullForms = FileUtils.removeWhiteSpace(fullForms);
+
+
         FileUtils.writeFullforms(fullForms, "vallader_");
         FileUtils.printMap(fullForms, "../arc.data/output/", "vallader_fullForms_");
 
@@ -171,6 +172,8 @@ public class ValladerTest {
         Map<String, TreeSet<String>> fullForms = gen
                 .generateFullforms(dictCollection);
 
+        fullForms.remove("");
+
         return fullForms;
 
     }
@@ -178,7 +181,7 @@ public class ValladerTest {
     @Test
     public void testMatchTokensSerialized() throws Exception {
 
-        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("vallader_fullforms_2015-08-14T17:20:57Z");
+        Map<String, TreeSet<String>> fullForms = FileUtils.readFullForms("vallader_fullforms_2015-08-31T17:00:03Z");
 
         POSMatcher matcher = new ValladerMatcher(fullForms,
                 dictCollection.getFullName());
