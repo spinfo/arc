@@ -33,7 +33,7 @@ public class Puter_VFGenerator {
         return count;
     }
 
-    public Map<String, TreeSet<String>> generateFullForms(DBCollection collection)
+    public Map<String, TreeSet<String>> generateFullforms(DBCollection collection)
             throws UnknownHostException {
         DBCursor cursor = collection.find();
         count = 0;
@@ -944,7 +944,7 @@ public class Puter_VFGenerator {
                 }
 
             } else {
-                System.out.println("unbekanntes Verb - falsche Endung: " + endung);
+                System.out.println("unbekanntes Verb - falsche Endung: " + endung + "   "+ entry );
                 return;
             }
 
