@@ -60,7 +60,7 @@ public class FileUtils {
     public static <K, V> File printMap(Map<K, V> map, String destPath,
                                        String fileName) throws IOException {
 
-        File file = new File(destPath + fileName /*+ getISO8601StringForCurrentDate()*/ + ".txt");
+        File file = new File(destPath + fileName + getISO8601StringForCurrentDate() + ".txt");
         Writer out = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(file), "UTF8"));
 
@@ -200,6 +200,7 @@ public class FileUtils {
 
     /**
      * Reads a File with UTF-8 Charsets, normalizes it according to NFC and returns it as a List of lines
+     *
      * @param filePath
      * @return
      * @throws IOException
@@ -236,7 +237,7 @@ public class FileUtils {
 
         ObjectOutputStream outputStream = new ObjectOutputStream(
                 new FileOutputStream(FileUtils.outputPath + idiom + "fullforms_"
-                        /*+ FileUtils.getISO8601StringForCurrentDate()*/));
+                        + FileUtils.getISO8601StringForCurrentDate()));
 
         outputStream.writeObject(fullForms);
 
@@ -249,13 +250,19 @@ public class FileUtils {
 
         List<String> txtOutput = new ArrayList<String>();
 
-        for(Map.Entry<String, TreeSet<String>> mapEntry : fullForms.entrySet()){
+        for (Map.Entry<String, TreeSet<String>> mapEntry : fullForms.entrySet()) {
             String lemma = mapEntry.getKey();
             for (String pos : mapEntry.getValue()) {
-                txtOutput.add(lemma+"$"+pos);
+                txtOutput.add(lemma + "$" + pos);
             }
         }
 
-        DictUtils.printList(txtOutput, outputPath,fileName);
+        printList(txtOutput, outputPath, fileName);
     }
+
+
+
+
+
+
 }
