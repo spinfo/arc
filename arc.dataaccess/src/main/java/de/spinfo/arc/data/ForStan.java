@@ -3,7 +3,7 @@ package de.spinfo.arc.data;
 /**
  * Created by franciscomondaca on 26/3/15.
  */
-public class ForStand {
+public class ForStan {
 
    // private Integer index;
     private String form;

@@ -1837,9 +1837,9 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
 
         args = new String[4];
         args[0] = "-model";
-        args[1] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/fromstand/sursilvan10.tagger";
+        args[1] = "/../arc/arc.data/output/fromstan/sursilvan10.tagger";
         args[2] = "-testFile";
-        args[3] = "/Users/franciscomondaca/spinfo/repositories/arc/arc.data/output/forstand/test_10.txt";
+        args[3] = "/../arc/arc.data/output/forstan/test_10.txt";
 
 
         TaggerConfig config = new TaggerConfig(args);

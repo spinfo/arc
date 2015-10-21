@@ -16,7 +16,6 @@ import de.uni_koeln.spinfo.arc.utils.FileUtils;
 
 import de.uni_koeln.spinfo.arc.utils.TrainingTestSets;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -84,7 +83,7 @@ public class TestGettingWordsByAspecificLanguage {
     @Test
     public void getNOTTAGGED() throws Exception {
 
-        List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-05-12T10:21:44Z");
+        List<ForStan> sursilvantokens = ioMongo.getTokensForStand("golden2015-05-12T10:21:44Z");
         WorkingUnit workingUnit = wuQueries.getWorkingUnit("Band II");
 
         System.out.println(workingUnit.getStart());
@@ -93,7 +92,7 @@ public class TestGettingWordsByAspecificLanguage {
         List<String> not_tagged = new ArrayList<>();
 
 
-        for (ForStand s : sursilvantokens) {
+        for (ForStan s : sursilvantokens) {
 
             String pos = s.getPOS();
 
@@ -140,11 +139,11 @@ public class TestGettingWordsByAspecificLanguage {
     @Test
     public void testProcessNOTTagged() throws Exception {
 
-        List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-06-22T10:28:04Z");
-        List<ForStand> toReturn = new ArrayList<>();
+        List<ForStan> sursilvantokens = ioMongo.getTokensForStand("golden2015-06-22T10:28:04Z");
+        List<ForStan> toReturn = new ArrayList<>();
 
         int index = 0;
-        for (ForStand fs : sursilvantokens) {
+        for (ForStan fs : sursilvantokens) {
 
             if (fs.getPOS().equals("NOT_TAGGED")) {
 
@@ -155,7 +154,7 @@ public class TestGettingWordsByAspecificLanguage {
 
                 for (String s : array) {
 
-                    ForStand n = new ForStand();
+                    ForStan n = new ForStan();
                     n.setWord_index(fs.getWord_index());
                     //n.setIndex(index);
                     n.setForm(s);
@@ -170,7 +169,7 @@ public class TestGettingWordsByAspecificLanguage {
             } else {
 
 
-                ForStand n = new ForStand();
+                ForStan n = new ForStan();
                 n.setWord_index(fs.getWord_index());
                 //n.setIndex(index);
                 n.setForm(fs.getForm());
@@ -196,17 +195,17 @@ public class TestGettingWordsByAspecificLanguage {
         List<String> lines = Files.readAllLines(Paths.get(FileUtils.outputPath + "forstand_2015-05-13T11:23:02Z.txt"),
                 Charset.defaultCharset());
 
-        List<ForStand> withoutNulls = new ArrayList<>();
+        List<ForStan> withoutNulls = new ArrayList<>();
 
         //List<ForStand> sursilvantokens = ioMongo.getTokensForStand("golden2015-05-12T11:55:35Z");
 
-        List<ForStand> sursilvantokens = new ArrayList<>();
+        List<ForStan> sursilvantokens = new ArrayList<>();
 
         for (String s : lines) {
 
             String[] array = s.split("\\t");
 
-            ForStand fs = new ForStand();
+            ForStan fs = new ForStan();
             fs.setWord_index(Long.parseLong(array[0]));
             fs.setForm(array[1]);
             fs.setPOS(array[2]);
@@ -240,7 +239,7 @@ public class TestGettingWordsByAspecificLanguage {
         List<String> words = new ArrayList<>();
 
 
-        for (ForStand stand : sursilvantokens) {
+        for (ForStan stand : sursilvantokens) {
             words.add(stand.getForm().replaceAll("\\s+", "") + "|" + stand.getPOS());
 
 
