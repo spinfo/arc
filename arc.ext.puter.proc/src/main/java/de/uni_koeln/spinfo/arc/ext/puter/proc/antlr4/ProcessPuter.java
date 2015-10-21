@@ -1,11 +1,12 @@
 package de.uni_koeln.spinfo.arc.ext.puter.proc.antlr4;
 
 import de.uni_koeln.spinfo.arc.ext.vallader.proc.pdftextstream.PdfXStreamExtractor;
-import de.uni_koeln.spinfo.arc.ext.puter.gramm.PuterBaseListener;
-import de.uni_koeln.spinfo.arc.ext.puter.gramm.PuterLexer;
-import de.uni_koeln.spinfo.arc.ext.puter.gramm.PuterParser;
+
 import de.uni_koeln.spinfo.arc.utils.DictUtils;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
+import de.uni_koeln.spinfo.puter.gramm.PuterBaseListener;
+import de.uni_koeln.spinfo.puter.gramm.PuterLexer;
+import de.uni_koeln.spinfo.puter.gramm.PuterParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
