@@ -48,7 +48,7 @@ public class FileUtils {
 
     public static <T> void writeList(List<T> matchedWords, String fileName) throws IOException {
 
-        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + fileName + getISO8601StringForCurrentDate()));
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(outputPath + fileName));
 
         outputStream.writeObject(matchedWords);
 
