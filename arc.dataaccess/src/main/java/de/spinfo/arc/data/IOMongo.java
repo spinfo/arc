@@ -638,8 +638,8 @@ public class IOMongo {
         return entries;
     }
 
-    public List<ForStand> getTokensForStand(String fileName) throws Exception {
-        List<ForStand> list = new ArrayList<>();
+    public List<ForStan> getTokensForStand(String fileName) throws Exception {
+        List<ForStan> list = new ArrayList<>();
         List<Entry> getListOfTokens = readEntries(fileName);
         int i = 0;
 
@@ -670,7 +670,7 @@ public class IOMongo {
             }
 
             if (p_list.size() == 0) {
-                ForStand entry = new ForStand();
+                ForStan entry = new ForStan();
                 //               entry.setIndex(i);
                 entry.setWord_index(e.getIndex());
                 entry.setForm(buffer.toString());
@@ -682,7 +682,7 @@ public class IOMongo {
             } else {
 
                 if (p_list.size() == 1 && buffer.length() == 0) {
-                    ForStand p = new ForStand();
+                    ForStan p = new ForStan();
                     // p.setIndex(i);
                     p.setWord_index(e.getIndex());
                     p.setForm(form);
@@ -700,7 +700,7 @@ public class IOMongo {
                 for (int j = 0; j < p_list.size(); j++) {
 
                     if (p_list.get(j).getIndex() < firstChar) {
-                        ForStand p = new ForStand();
+                        ForStan p = new ForStan();
                         //  p.setIndex(i);
                         p.setWord_index(e.getIndex());
                         p.setForm(p_list.get(j).getForm());
@@ -712,7 +712,7 @@ public class IOMongo {
 
                 }
 
-                ForStand entry = new ForStand();
+                ForStan entry = new ForStan();
                 // entry.setIndex(i);
                 entry.setWord_index(e.getIndex());
                 entry.setForm(buffer.toString());
@@ -724,7 +724,7 @@ public class IOMongo {
                 for (int j = 0; j < p_list.size(); j++) {
 
                     if (p_list.get(j).getIndex() > lastChar) {
-                        ForStand p = new ForStand();
+                        ForStan p = new ForStan();
                         // p.setIndex(i);
                         p.setWord_index(e.getIndex());
                         p.setForm(p_list.get(j).getForm());
