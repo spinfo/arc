@@ -30,6 +30,14 @@
             <version>5.0.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.pdftextstream</groupId>
+            <artifactId>pdftextstream</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/PDFxStream.jar
+            </systemPath>
+        </dependency>
 
     </dependencies>
 
