@@ -3,13 +3,14 @@ package de.spinfo.arc.persistance.repository.pos;
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.spinfo.arc.data.IOMongo;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,23 @@ public class GetWordsTest {
 
         List<Token> tokens = getListOfTokens(gw);
 
-        FileUtils.writeList(tokens, language +"_words_");
+        FileUtils.writeList(tokens, language + "_words_");
     }
 
+    @Test
+    public void getAllWords() throws IOException{
+        List<WordImpl> query = wordQueries.getWords(0, 2775612);
+        List<String> forms = new ArrayList<>();
+        for (WordImpl wi : query) {
+            String form = wi.getAllFormsAnnotations().get(0).getForm();
+            if (!form.equals("@")) {
+                forms.add(form);
+            }
+
+        }
+
+         FileUtils.printList(forms, FileUtils.outputPath, "20141114_spielwiese_");
+    }
 
     /**
      * Returns a list of all words containing in ALL working units if they match the given lanuage param
