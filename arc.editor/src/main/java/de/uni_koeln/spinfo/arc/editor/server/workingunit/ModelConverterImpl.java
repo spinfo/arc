@@ -2,22 +2,23 @@ package de.uni_koeln.spinfo.arc.editor.server.workingunit;
 
 import java.util.Iterator;
 
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.Word;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.ChapterRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.FormAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.PageRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.PosAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.impl.ChapterRangeImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.impl.FormAnnotationImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.impl.LanguageRangeImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.impl.PageRangeImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.impl.PosAnnotationImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.impl.RectangleAnnotationImpl;
+import de.spinfo.arc.annotationmodel.annotatable.Word;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.annotationmodel.annotation.Annotation;
+import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
+import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
+import de.spinfo.arc.annotationmodel.annotation.PageRange;
+import de.spinfo.arc.annotationmodel.annotation.PosAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.impl.ChapterRangeImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.FormAnnotationImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.LanguageRangeImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.PageRangeImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.PosAnnotationImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.RectangleAnnotationImpl;
 import de.uni_koeln.spinfo.arc.dto.annotatable.WordDto;
 import de.uni_koeln.spinfo.arc.dto.annotatable.WorkingUnitDto;
 import de.uni_koeln.spinfo.arc.dto.annotatable.impl.WordDtoImpl;
@@ -50,10 +51,8 @@ public class ModelConverterImpl implements ModelConverter {
 			PageRange pr = new PageRangeImpl(prDto.getDate(), prDto.getScore(),
 					prDto.getUserId(), (int) prDto.getStart(),
 					(int) prDto.getEnd(), prDto.getUrl());
-			toBeReturned
-					.setAnnotationAsType(
-							de.uni_koeln.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes.PAGE_RANGE,
-							pr);
+			toBeReturned.setAnnotationAsType(
+					Annotation.AnnotationTypes.PAGE_RANGE, pr);
 		}
 		for (Iterator<ChapterRangeDto> iterator = workingUnitDto.getChapters()
 				.iterator(); iterator.hasNext();) {
@@ -62,10 +61,8 @@ public class ModelConverterImpl implements ModelConverter {
 					crDto.getScore(), crDto.getUserId(),
 					(int) crDto.getStart(), (int) crDto.getEnd(),
 					crDto.getTitle());
-			toBeReturned
-					.setAnnotationAsType(
-							de.uni_koeln.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes.CHAPTER_RANGE,
-							cr);
+			toBeReturned.setAnnotationAsType(
+					Annotation.AnnotationTypes.CHAPTER_RANGE, cr);
 		}
 		for (Iterator<LanguageRangeDto> iterator = workingUnitDto
 				.getLanguages().iterator(); iterator.hasNext();) {
@@ -74,10 +71,8 @@ public class ModelConverterImpl implements ModelConverter {
 					lrDto.getScore(), lrDto.getUserId(),
 					(int) lrDto.getStart(), (int) lrDto.getEnd(),
 					lrDto.getTitle());
-			toBeReturned
-					.setAnnotationAsType(
-							de.uni_koeln.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes.LANGUAGE_RANGE,
-							lr);
+			toBeReturned.setAnnotationAsType(
+					Annotation.AnnotationTypes.LANGUAGE_RANGE, lr);
 		}
 
 		return toBeReturned;

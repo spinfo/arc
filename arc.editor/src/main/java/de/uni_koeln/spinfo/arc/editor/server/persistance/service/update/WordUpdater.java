@@ -15,10 +15,10 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.Annotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.FormAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.PosAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.Annotation;
+import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.PosAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
 import de.uni_koeln.spinfo.arc.dto.annotation.PosAnnotationDto.PosTags;
 import de.uni_koeln.spinfo.arc.editor.server.persistance.config.MongoConfiguration;
 

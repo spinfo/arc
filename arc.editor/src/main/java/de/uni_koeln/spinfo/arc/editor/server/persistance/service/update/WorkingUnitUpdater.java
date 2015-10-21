@@ -12,10 +12,10 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.WriteResult;
 
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.Annotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.ChapterRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.LanguageRange;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.annotationmodel.annotation.Annotation;
+import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
 import de.uni_koeln.spinfo.arc.editor.server.persistance.config.MongoConfiguration;
 
 public class WorkingUnitUpdater {

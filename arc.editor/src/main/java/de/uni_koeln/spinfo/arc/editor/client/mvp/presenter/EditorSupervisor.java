@@ -1,8 +1,8 @@
 package de.uni_koeln.spinfo.arc.editor.client.mvp.presenter;
 
+import de.uni_koeln.spinfo.arc.dto.annotation.AnnotationDto.AnnotationTypes;
 import de.uni_koeln.spinfo.arc.dto.annotation.ChapterRangeDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.LanguageRangeDto;
-import de.uni_koeln.spinfo.arc.dto.annotation.AnnotationDto.AnnotationTypes;
 import de.uni_koeln.spinfo.arc.editor.client.mvp.views.RangeWidget;
 
 /**

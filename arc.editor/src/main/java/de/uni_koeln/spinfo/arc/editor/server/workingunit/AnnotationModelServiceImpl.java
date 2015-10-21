@@ -12,9 +12,9 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
 import de.uni_koeln.spinfo.arc.dto.annotatable.WorkingUnitDto;
 import de.uni_koeln.spinfo.arc.dto.annotatable.impl.WordDtoImpl;
 import de.uni_koeln.spinfo.arc.dto.annotatable.impl.WorkingUnitDtoImpl;

@@ -7,11 +7,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 
 import de.uni_koeln.spinfo.arc.dto.annotatable.WorkingUnitDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.AnnotationDto;
+import de.uni_koeln.spinfo.arc.dto.annotation.AnnotationDto.AnnotationTypes;
 import de.uni_koeln.spinfo.arc.dto.annotation.ChapterRangeDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.LanguageRangeDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.PageRangeDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.RangeAnnotationDto;
-import de.uni_koeln.spinfo.arc.dto.annotation.AnnotationDto.AnnotationTypes;
 import de.uni_koeln.spinfo.arc.editor.client.mvp.presenter.EditorSupervisor;
 import de.uni_koeln.spinfo.arc.editor.client.mvp.presenter.RangeEditorPresenter;
 import de.uni_koeln.spinfo.arc.editor.client.mvp.views.RangeEditorView;

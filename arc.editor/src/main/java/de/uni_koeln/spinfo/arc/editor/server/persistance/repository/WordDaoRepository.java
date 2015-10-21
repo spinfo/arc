@@ -3,7 +3,7 @@ package de.uni_koeln.spinfo.arc.editor.server.persistance.repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.Word;
+import de.spinfo.arc.annotationmodel.annotatable.Word;
 
 @Transactional
 public interface WordDaoRepository extends MongoRepository<Word, String> {

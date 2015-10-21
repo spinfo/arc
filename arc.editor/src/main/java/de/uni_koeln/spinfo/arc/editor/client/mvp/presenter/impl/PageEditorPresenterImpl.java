@@ -19,11 +19,11 @@ import com.google.gwt.user.client.ui.TextBox;
 
 import de.uni_koeln.spinfo.arc.dto.annotatable.WorkingUnitDto;
 import de.uni_koeln.spinfo.arc.dto.annotatable.impl.WordDtoImpl;
+import de.uni_koeln.spinfo.arc.dto.annotation.AnnotationDto.AnnotationTypes;
 import de.uni_koeln.spinfo.arc.dto.annotation.ChapterRangeDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.LanguageRangeDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.PosAnnotationDto;
 import de.uni_koeln.spinfo.arc.dto.annotation.RectangleAnnotationDto;
-import de.uni_koeln.spinfo.arc.dto.annotation.AnnotationDto.AnnotationTypes;
 import de.uni_koeln.spinfo.arc.dto.annotation.impl.PosAnnotationDtoImpl;
 import de.uni_koeln.spinfo.arc.dto.annotation.impl.RectangleAnnotationDtoImpl;
 import de.uni_koeln.spinfo.arc.editor.client.mvp.ClientSession;

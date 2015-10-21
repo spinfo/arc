@@ -9,9 +9,9 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
 import de.uni_koeln.spinfo.arc.editor.server.persistance.config.MongoConfiguration;
 import de.uni_koeln.spinfo.arc.editor.server.persistance.repository.WordImplDaoRepository;
 import de.uni_koeln.spinfo.arc.editor.server.persistance.repository.WorkingUnitDaoRepository;

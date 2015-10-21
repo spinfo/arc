@@ -1,12 +1,12 @@
 package de.uni_koeln.spinfo.arc.editor.server.workingunit;
 
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.Word;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.ChapterRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.FormAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.PosAnnotation;
-import de.uni_koeln.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
+import de.spinfo.arc.annotationmodel.annotatable.Word;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
+import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
+import de.spinfo.arc.annotationmodel.annotation.PosAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
 import de.uni_koeln.spinfo.arc.dto.annotatable.WordDto;
 import de.uni_koeln.spinfo.arc.dto.annotatable.WorkingUnitDto;
 import de.uni_koeln.spinfo.arc.dto.annotatable.impl.WordDtoImpl;
