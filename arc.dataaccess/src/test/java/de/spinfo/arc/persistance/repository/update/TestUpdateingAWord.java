@@ -1,6 +1,29 @@
 package de.spinfo.arc.persistance.repository.update;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import com.mongodb.WriteResult;
+
 import de.spinfo.arc.annotationmodel.annotatable.Word;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotation.Annotation;
@@ -16,23 +39,6 @@ import de.spinfo.arc.persistance.repository.WordImplDaoRepository;
 import de.spinfo.arc.persistance.repository.WorkingUnitDaoRepository;
 import de.spinfo.arc.persistance.repository.WorkingUnitImplDaoRepository;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(classes = {MongoConfiguration.class})

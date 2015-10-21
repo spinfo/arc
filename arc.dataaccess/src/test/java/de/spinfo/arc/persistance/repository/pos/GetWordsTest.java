@@ -1,5 +1,11 @@
 package de.spinfo.arc.persistance.repository.pos;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
@@ -7,12 +13,6 @@ import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.uni_koeln.spinfo.arc.matcher.Token;
 import de.uni_koeln.spinfo.arc.utils.FileUtils;
-import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by franciscomondaca on 20/7/15.

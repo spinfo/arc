@@ -1,15 +1,23 @@
 package de.spinfo.arc.oldmodel;
 
-import com.mongodb.*;
-import de.uni_koeln.spinfo.arc.utils.FileUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+
+import de.uni_koeln.spinfo.arc.utils.FileUtils;
 
 /**
  * Created by franciscomondaca on 7/10/15.

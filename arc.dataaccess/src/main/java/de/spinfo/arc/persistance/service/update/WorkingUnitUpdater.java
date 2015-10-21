@@ -1,13 +1,5 @@
 package de.spinfo.arc.persistance.service.update;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.WriteResult;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
-import de.spinfo.arc.annotationmodel.annotation.Annotation;
-import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
-import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -15,6 +7,16 @@ import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
+
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.annotationmodel.annotation.Annotation;
+import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
 
 public class WorkingUnitUpdater {
 	

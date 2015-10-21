@@ -1,21 +1,22 @@
 package de.spinfo.arc.persistance.service.query;
 
-import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.spinfo.arc.annotationmodel.annotation.RangeAnnotation;
-import de.spinfo.arc.annotationmodel.comparator.WordIndexComparator;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
-import de.spinfo.arc.persistance.repository.WordImplDaoRepository;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotation.RangeAnnotation;
+import de.spinfo.arc.annotationmodel.comparator.WordIndexComparator;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
+import de.spinfo.arc.persistance.repository.WordImplDaoRepository;
 
 public class WordQueries {
 	private final ApplicationContext ctx;

@@ -1,10 +1,10 @@
 package de.spinfo.arc.model2model;
 
+import java.net.UnknownHostException;
+
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
-
-import java.net.UnknownHostException;
 
 public class MongoDao {
 

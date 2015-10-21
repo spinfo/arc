@@ -1,8 +1,7 @@
 package de.spinfo.arc.persistance.repository;
 
-import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.spinfo.arc.model2model.ChrestomatieConst;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +12,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.model2model.ChrestomatieConst;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(classes = {MongoConfiguration.class})
 public class TestRepositoryWorkingUnit implements ChrestomatieConst {

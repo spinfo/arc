@@ -1,14 +1,8 @@
 package de.spinfo.arc.persistance.service.update;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.WriteResult;
-import de.spinfo.arc.annotationmodel.annotation.Annotation;
-import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
-import de.spinfo.arc.annotationmodel.annotation.PosAnnotation;
-import de.spinfo.arc.annotationmodel.annotation.PosAnnotation.PosTags;
-import de.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,8 +12,16 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.mongodb.core.query.Update.Position;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
+
+import de.spinfo.arc.annotationmodel.annotation.Annotation;
+import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.PosAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.PosAnnotation.PosTags;
+import de.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
 
 public class WordUpdater {
 	

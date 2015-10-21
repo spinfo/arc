@@ -2,16 +2,11 @@ package de.spinfo.arc.persistance.repository.query;
 
 //import static org.junit.Assert.assertEquals;
 
-import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.spinfo.arc.annotationmodel.annotation.PageRange;
-import de.spinfo.arc.annotationmodel.annotation.RangeAnnotation;
-import de.spinfo.arc.model2model.ChrestomatieConst;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
-import de.spinfo.arc.persistance.repository.WordImplDaoRepository;
-import de.spinfo.arc.persistance.repository.WorkingUnitDaoRepository;
-import de.spinfo.arc.persistance.repository.WorkingUnitImplDaoRepository;
-import de.spinfo.arc.persistance.service.query.WordQueries;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,10 +17,16 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotation.PageRange;
+import de.spinfo.arc.annotationmodel.annotation.RangeAnnotation;
+import de.spinfo.arc.model2model.ChrestomatieConst;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
+import de.spinfo.arc.persistance.repository.WordImplDaoRepository;
+import de.spinfo.arc.persistance.repository.WorkingUnitDaoRepository;
+import de.spinfo.arc.persistance.repository.WorkingUnitImplDaoRepository;
+import de.spinfo.arc.persistance.service.query.WordQueries;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(classes = {MongoConfiguration.class})

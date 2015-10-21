@@ -1,18 +1,40 @@
 package de.spinfo.arc.model2model;
 
-import com.mongodb.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.bson.BasicBSONObject;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+
 import de.spinfo.arc.annotationmodel.annotatable.Word;
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
-import de.spinfo.arc.annotationmodel.annotation.*;
+import de.spinfo.arc.annotationmodel.annotation.Annotation;
 import de.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes;
-import de.spinfo.arc.annotationmodel.annotation.impl.*;
+import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
+import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.HasDetails;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
+import de.spinfo.arc.annotationmodel.annotation.PageRange;
+import de.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
+import de.spinfo.arc.annotationmodel.annotation.impl.ChapterRangeImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.FormAnnotationImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.LanguageRangeImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.PageRangeImpl;
+import de.spinfo.arc.annotationmodel.annotation.impl.RectangleAnnotationImpl;
 import de.spinfo.arc.annotationmodel.comparator.HasDetailsDateComparator;
 import de.spinfo.arc.annotationmodel.comparator.WordIndexComparator;
-import org.bson.BasicBSONObject;
-
-import java.util.*;
 
 
 public class RetriveWorkingUnitAnnotations {

@@ -1,9 +1,7 @@
 package de.spinfo.arc.persistance.repository;
 
-import de.spinfo.arc.annotationmodel.annotatable.Word;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
-import de.spinfo.arc.persistance.fixture.WorkingUnitPersistenceFixture;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +12,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
+import de.spinfo.arc.annotationmodel.annotatable.Word;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
+import de.spinfo.arc.persistance.fixture.WorkingUnitPersistenceFixture;
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(classes = {MongoConfiguration.class})
 public class TestRepositoryWorkingUnitQueryTitle {

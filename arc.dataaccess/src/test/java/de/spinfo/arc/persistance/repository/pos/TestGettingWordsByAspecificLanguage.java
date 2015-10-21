@@ -1,23 +1,5 @@
 package de.spinfo.arc.persistance.repository.pos;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
-import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
-import de.spinfo.arc.annotationmodel.annotation.PageRange;
-import de.spinfo.arc.data.*;
-import de.spinfo.arc.persistance.service.query.WordQueries;
-import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
-import de.uni_koeln.spinfo.arc.matcher.Token;
-import de.uni_koeln.spinfo.arc.utils.CrossvalidationGroupBuilder;
-import de.uni_koeln.spinfo.arc.utils.FileUtils;
-
-import de.uni_koeln.spinfo.arc.utils.TrainingTestSets;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -26,7 +8,35 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotation.LanguageRange;
+import de.spinfo.arc.annotationmodel.annotation.PageRange;
+import de.spinfo.arc.data.Entry;
+import de.spinfo.arc.data.ForStan;
+import de.spinfo.arc.data.IOMongo;
+import de.spinfo.arc.data.LangRange;
+import de.spinfo.arc.data.MongoWord;
+import de.spinfo.arc.persistance.service.query.WordQueries;
+import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
+import de.uni_koeln.spinfo.arc.matcher.Token;
+import de.uni_koeln.spinfo.arc.utils.CrossvalidationGroupBuilder;
+import de.uni_koeln.spinfo.arc.utils.FileUtils;
+import de.uni_koeln.spinfo.arc.utils.TrainingTestSets;
 
 public class TestGettingWordsByAspecificLanguage {
     static WorkingUnitQueries wuQueries = new WorkingUnitQueries();

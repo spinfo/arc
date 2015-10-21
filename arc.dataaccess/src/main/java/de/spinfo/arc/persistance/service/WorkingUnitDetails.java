@@ -1,5 +1,15 @@
 package de.spinfo.arc.persistance.service;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
+
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
@@ -7,15 +17,6 @@ import de.spinfo.arc.persistance.config.MongoConfiguration;
 import de.spinfo.arc.persistance.repository.WordImplDaoRepository;
 import de.spinfo.arc.persistance.repository.WorkingUnitDaoRepository;
 import de.spinfo.arc.persistance.repository.WorkingUnitImplDaoRepository;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 //@ContextConfiguration(classes = {MongoConfiguration.class})
 public class WorkingUnitDetails {

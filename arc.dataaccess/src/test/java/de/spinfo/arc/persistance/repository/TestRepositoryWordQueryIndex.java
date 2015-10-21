@@ -1,13 +1,12 @@
 package de.spinfo.arc.persistance.repository;
 
-import de.spinfo.arc.annotationmodel.annotatable.Word;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
-import de.spinfo.arc.annotationmodel.annotation.Annotation;
-import de.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes;
-import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
-import de.spinfo.arc.annotationmodel.comparator.HasDetailsDateComparator;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +17,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
+import de.spinfo.arc.annotationmodel.annotatable.Word;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.annotationmodel.annotation.Annotation;
+import de.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes;
+import de.spinfo.arc.annotationmodel.annotation.FormAnnotation;
+import de.spinfo.arc.annotationmodel.comparator.HasDetailsDateComparator;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(classes = {MongoConfiguration.class})

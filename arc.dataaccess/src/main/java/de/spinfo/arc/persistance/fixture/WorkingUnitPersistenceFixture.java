@@ -1,5 +1,7 @@
 package de.spinfo.arc.persistance.fixture;
 
+import java.util.Date;
+
 import de.spinfo.arc.annotationmodel.annotatable.Word;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
@@ -10,8 +12,6 @@ import de.spinfo.arc.annotationmodel.annotation.RectangleAnnotation;
 import de.spinfo.arc.annotationmodel.annotation.impl.FormAnnotationImpl;
 import de.spinfo.arc.annotationmodel.annotation.impl.PageRangeImpl;
 import de.spinfo.arc.annotationmodel.annotation.impl.RectangleAnnotationImpl;
-
-import java.util.Date;
 
 public class WorkingUnitPersistenceFixture {
 	static Date DATE = new Date();

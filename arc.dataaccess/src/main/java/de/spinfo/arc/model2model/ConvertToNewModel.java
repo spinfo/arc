@@ -1,15 +1,16 @@
 package de.spinfo.arc.model2model;
 
+import java.util.List;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
+
 import de.spinfo.arc.annotationmodel.annotatable.Word;
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.persistance.config.MongoConfiguration;
 import de.spinfo.arc.persistance.repository.WordDaoRepository;
 import de.spinfo.arc.persistance.repository.WorkingUnitDaoRepository;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
-
-import java.util.List;
 
 public class ConvertToNewModel implements ChrestomatieConst {
 	

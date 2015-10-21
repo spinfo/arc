@@ -1,16 +1,17 @@
 package de.spinfo.arc.persistance.service.query;
 
-import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
-import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
-import de.spinfo.arc.persistance.config.MongoConfiguration;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
+import java.util.List;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
+import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
+import de.spinfo.arc.annotationmodel.annotatable.impl.WorkingUnitImpl;
+import de.spinfo.arc.persistance.config.MongoConfiguration;
 
 public class WorkingUnitQueries {
 	

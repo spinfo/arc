@@ -1,29 +1,34 @@
 package de.spinfo.arc.persistance.repository.pos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import de.spinfo.arc.annotationmodel.annotatable.Word;
 import de.spinfo.arc.annotationmodel.annotatable.WorkingUnit;
 import de.spinfo.arc.annotationmodel.annotatable.impl.WordImpl;
 import de.spinfo.arc.annotationmodel.annotation.Annotation.AnnotationTypes;
 import de.spinfo.arc.annotationmodel.annotation.ChapterRange;
-import de.spinfo.arc.annotationmodel.annotation.PageRange;
 import de.spinfo.arc.annotationmodel.annotation.PosAnnotation;
 import de.spinfo.arc.annotationmodel.annotation.impl.PosAnnotationImpl;
 import de.spinfo.arc.persistance.service.query.WordQueries;
 import de.spinfo.arc.persistance.service.query.WorkingUnitQueries;
 import de.spinfo.arc.persistance.service.update.WordUpdater;
 import de.spinfo.arc.persistance.util.PosChecker;
-import de.uni_koeln.spinfo.arc.utils.FileUtils;
 import de.uni_koeln.spinfo.arc.matcher.Token;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import de.uni_koeln.spinfo.arc.utils.FileUtils;
 
 public class TestEditingPos {
 
