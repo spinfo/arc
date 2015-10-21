@@ -25,16 +25,7 @@
            <artifactId>arc.utils</artifactId>
            <version>0.0.1-SNAPSHOT</version>
        </dependency>
-       <dependency>
-           <groupId>com.pdftextstream</groupId>
-           <artifactId>pdftextstream</artifactId>
-           <version>1.0</version>
-           <scope>system</scope>
-           <systemPath>${basedir}/lib/PDFxStream.jar
-           </systemPath>
-       </dependency>
-
-
+      
    </dependencies>
 
 </project>
