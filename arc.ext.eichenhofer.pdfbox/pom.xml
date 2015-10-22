@@ -8,7 +8,7 @@
 	
 	<parent>
 		<groupId>de.uni_koeln.spinfo.arc</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>arc.parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../arc.parent</relativePath>
 	</parent>
