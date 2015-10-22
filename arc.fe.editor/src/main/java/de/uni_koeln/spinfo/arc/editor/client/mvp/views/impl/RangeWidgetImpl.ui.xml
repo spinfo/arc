@@ -1,0 +1,61 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.title {
+			font-size: 16px;
+			margin : 5px;
+	}
+		.bold {
+	font-weight: bold;
+
+	}
+	</ui:style> 
+		<g:VerticalPanel>
+<!-- 			 <g:HTMLPanel ui:field="upperLine"> -->
+<!--   									<hr style="width:100%;" /> -->
+<!--  			</g:HTMLPanel> -->
+			<g:HorizontalPanel  styleName="{style.title} ">
+						<g:Label ui:field="ordinalLabel" styleName="{style.title}">0</g:Label>
+						<g:Button ui:field="removeBtn">remove</g:Button>
+						<g:Button ui:field="editBtn">edit</g:Button>
+						<g:Label ui:field="titleLabel" styleName="{style.title} {style.bold}">rangeTitle</g:Label>
+			</g:HorizontalPanel>
+			<g:HorizontalPanel  styleName="{style.title} ">
+						<g:Label  styleName="{style.title}">page:</g:Label>
+						<g:Button ui:field="fromPageBtn" >0</g:Button>
+						<g:Label  styleName="{style.title}"> - </g:Label>
+						<g:Button ui:field="toPageBtn" >10</g:Button>
+						<g:Label ui:field="fromIndexLabel" styleName="{style.title}">0</g:Label>
+						<g:Label  styleName="{style.title}"> - </g:Label>
+						<g:Label ui:field="toIndexLabel" styleName="{style.title}">10</g:Label>
+			</g:HorizontalPanel>
+			 <g:HTMLPanel ui:field="lowerLine">
+  									<hr style="width:100%;" />
+ 			</g:HTMLPanel>
+		</g:VerticalPanel>
+<!-- 		<g:HTMLPanel> -->
+<!-- 		<table width="100%" height="100%" > -->
+<!-- 			<tr align="left"> -->
+<!-- 				<td > -->
+<!-- 					<g:Button ui:field="removeBtn">remove</g:Button> -->
+<!-- 				</td > -->
+<!-- 				<td > -->
+<!-- 					<g:Label ui:field="ordinalLabel" styleName="{style.title}">0</g:Label> -->
+<!-- 				</td> -->
+<!-- 				<td > -->
+<!-- 					<g:Label ui:field="titleLabel" styleName="{style.title}">rangeTitle</g:Label> -->
+<!-- 				</td > -->
+<!-- 				<td > -->
+<!-- 					<g:Label ui:field="fromPageLabel" styleName="{style.title}">0</g:Label> -->
+<!-- 				</td> -->
+<!-- 				<td > -->
+<!-- 					<g:Label  styleName="{style.title}"> - </g:Label> -->
+<!-- 				</td> -->
+<!-- 				<td > -->
+<!-- 					<g:Label ui:field="toPageLabel" styleName="{style.title}">10</g:Label> -->
+<!-- 				</td> -->
+<!-- 			</tr> -->
+<!-- 		</table> -->
+<!-- 	</g:HTMLPanel> -->
+</ui:UiBinder> 

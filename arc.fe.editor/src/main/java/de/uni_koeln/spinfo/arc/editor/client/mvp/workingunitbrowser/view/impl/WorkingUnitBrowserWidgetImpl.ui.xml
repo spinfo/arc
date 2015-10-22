@@ -1,0 +1,50 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	<ui:style>
+	.title {
+		text-align: center;
+		vertical-align: middle;
+		padding: 5px;
+		background-color: silver;
+		font-size: 20px;
+		font-weight: 900;
+	}
+	
+	.infoBlock {
+		
+	}
+	
+	.info {
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 10px;
+		background-color: #E0F5FF;
+		font-size: 16px;
+		font-weight: normal;
+	}
+	
+	.subInfo {
+		text-align: left;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 15px;
+		background-color: #EBF5FF;
+		font-size: 20px;
+		font-weight: normal;
+	}
+	
+	.bg {
+		background-color: #E0F5FF;
+	}
+	</ui:style>
+			<g:DockLayoutPanel unit="PCT">
+				<g:south size="20">
+					<c:SimplePager ui:field="pager" location="CENTER" />
+				</g:south>
+				<g:center>
+					<c:DataGrid ui:field="workingUnitDataGrid"></c:DataGrid>
+				</g:center>
+			</g:DockLayoutPanel>
+</ui:UiBinder> 
